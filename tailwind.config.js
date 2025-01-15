@@ -6,6 +6,7 @@ export default {
     colors: {
       'light-brown-custom': '#73270D',
       'white-custom': '#FDF5ED',
+      'tertiary': '#A3A3A3',
     },
   },
   plugins: [],
