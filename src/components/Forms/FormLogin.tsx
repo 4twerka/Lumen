@@ -15,6 +15,9 @@ import {
   Typography,
 } from "@mui/material";
 import GoogleIcon from "../../icons/flat-color-icons_google.svg?react";
+import FormButtonSocial from "./FormButtonSocial";
+import FormButtonSubmit from "./FormButtonSubmit";
+import FormTitle from "./FormTitle";
 
 const schema = yup
   .object({
@@ -42,7 +45,7 @@ function FormLogin() {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
-  
+
   const checkBoxRef = useRef<HTMLInputElement | null>(null);
 
   const onSubmit = (data: FormData) => {
@@ -59,18 +62,7 @@ function FormLogin() {
 
   return (
     <Box sx={{ padding: 2, display: "flex", flexDirection: "column" }}>
-      <Typography
-        variant="h3"
-        sx={{
-          fontSize: "24px",
-          fontWeight: 600,
-          textAlign: "center",
-          mb: 4,
-          mt: 6,
-        }}
-      >
-        Вхід
-      </Typography>
+      <FormTitle>Вхід</FormTitle>
       <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
         <Box
           sx={{
@@ -110,19 +102,7 @@ function FormLogin() {
             label="Запам'ятати?"
           />
         </Box>
-        <Button
-          type="submit"
-          fullWidth
-          sx={{
-            borderRadius: 2,
-            backgroundColor: "#73270D",
-            height: "56px",
-            color: "#FDF5ED",
-            fontWeight: 600,
-          }}
-        >
-          Увійти
-        </Button>
+        <FormButtonSubmit>Увійти</FormButtonSubmit>
       </Box>
       <Box sx={{ textAlign: "right", p: "10px" }}>
         <Link sx={{ cursor: "pointer", display: "inline-block" }}>
@@ -131,26 +111,12 @@ function FormLogin() {
       </Box>
       <Divider sx={{ mt: "32px" }}>або за допомогою</Divider>
       <Box sx={{ display: "flex", gap: "16px", pt: "32px", pb: "48px" }}>
-        <Button
-          fullWidth
-          sx={{
-            backgroundColor: "#FDF5ED",
-            height: "46px",
-            borderRadius: "8px",
-          }}
-        >
+        <FormButtonSocial>
           <GoogleIcon />
-        </Button>
-        <Button
-          fullWidth
-          sx={{
-            backgroundColor: "#FDF5ED",
-            height: "46px",
-            borderRadius: "8px",
-          }}
-        >
+        </FormButtonSocial>
+        <FormButtonSocial>
           <GoogleIcon />
-        </Button>
+        </FormButtonSocial>
       </Box>
       <FormControlLabel
         control={
@@ -164,11 +130,26 @@ function FormLogin() {
             }}
           />
         }
-        label={<Box sx={{fontSize:'16px', fontWeight:400}}><span style={{ color: "#A3A3A3" }}>Даю згоду на обробку своїх персональних даних</span>{" "}<span style={{ color: "black" }}>відповідно до даної офертою</span></Box>}
+        label={
+          <Box sx={{ fontSize: "16px", fontWeight: 400 }}>
+            <span style={{ color: "#A3A3A3" }}>
+              Даю згоду на обробку своїх персональних даних
+            </span>{" "}
+            <span style={{ color: "black" }}>відповідно до даної офертою</span>
+          </Box>
+        }
       />
-      <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', gap:'4px', mt:'60px'}}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "4px",
+          mt: "60px",
+        }}
+      >
         <Typography>Потрібен аккаунт?</Typography>
-        <Link>Реєструйся</Link>
+        <Link sx={{ color: "#73270D", cursor: "pointer" }}>Реєструйся</Link>
       </Box>
     </Box>
   );

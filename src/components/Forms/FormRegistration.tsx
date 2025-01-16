@@ -6,7 +6,6 @@ import * as yup from "yup";
 import { useRef, useState } from "react";
 import {
   Box,
-  Button,
   Checkbox,
   Divider,
   FormControlLabel,
@@ -15,6 +14,9 @@ import {
   Typography,
 } from "@mui/material";
 import GoogleIcon from "../../icons/flat-color-icons_google.svg?react";
+import FormButtonSocial from "./FormButtonSocial";
+import FormButtonSubmit from "./FormButtonSubmit";
+import FormTitle from "./FormTitle";
 
 const schema = yup
   .object({
@@ -22,19 +24,19 @@ const schema = yup
       .string()
       .required("* Електронна пошта є обов'язковою!")
       .email("* Введіть коректну електронну пошту!"),
-      passwordReg: yup
+    passwordReg: yup
       .string()
       .required("* Пароль є обов'язковим!")
       .min(8, "* Пароль повинен містити мінімум 8 символів!")
       .matches(/[A-Z]/, "* Пароль повинен містити хоча б одну велику літеру!")
       .matches(/[0-9]/, "* Пароль повинен містити хоча б одну цифру!"),
-      passwordConfirm: yup
+    passwordConfirm: yup
       .string()
       .required("* Пароль є обов'язковим!")
       .min(8, "* Пароль повинен містити мінімум 8 символів!")
       .matches(/[A-Z]/, "* Пароль повинен містити хоча б одну велику літеру!")
       .matches(/[0-9]/, "* Пароль повинен містити хоча б одну цифру!")
-      .oneOf([yup.ref('passwordReg')], "* Паролі повинні співпадати!"),
+      .oneOf([yup.ref("passwordReg")], "* Паролі повинні співпадати!"),
   })
   .required();
 type FormData = yup.InferType<typeof schema>;
@@ -50,7 +52,7 @@ function FormRegistration() {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
-  
+
   const checkBoxRef = useRef<HTMLInputElement | null>(null);
 
   const onSubmit = (data: FormData) => {
@@ -70,18 +72,7 @@ function FormRegistration() {
 
   return (
     <Box sx={{ padding: 2, display: "flex", flexDirection: "column" }}>
-      <Typography
-        variant="h3"
-        sx={{
-          fontSize: "24px",
-          fontWeight: 600,
-          textAlign: "center",
-          mb: 4,
-          mt: 6,
-        }}
-      >
-        Реєстрація
-      </Typography>
+      <FormTitle>Реєстрація</FormTitle>
       <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
         <Box
           sx={{
@@ -118,7 +109,11 @@ function FormRegistration() {
             type={seePasswordConfirm}
             icon={
               <IconButton onClick={handleTogglePasswordConfirm}>
-                {seePasswordConfirm === "text" ? <VisibilityOff /> : <Visibility />}
+                {seePasswordConfirm === "text" ? (
+                  <VisibilityOff />
+                ) : (
+                  <Visibility />
+                )}
               </IconButton>
             }
           />
@@ -133,19 +128,7 @@ function FormRegistration() {
             label="Запам'ятати?"
           />
         </Box>
-        <Button
-          type="submit"
-          fullWidth
-          sx={{
-            borderRadius: 2,
-            backgroundColor: "#73270D",
-            height: "56px",
-            color: "#FDF5ED",
-            fontWeight: 600,
-          }}
-        >
-          Увійти
-        </Button>
+        <FormButtonSubmit>Увійти</FormButtonSubmit>
       </Box>
       <Box sx={{ textAlign: "right", p: "10px" }}>
         <Link sx={{ cursor: "pointer", display: "inline-block" }}>
@@ -154,26 +137,12 @@ function FormRegistration() {
       </Box>
       <Divider sx={{ mt: "32px" }}>або за допомогою</Divider>
       <Box sx={{ display: "flex", gap: "16px", pt: "32px", pb: "48px" }}>
-        <Button
-          fullWidth
-          sx={{
-            backgroundColor: "#FDF5ED",
-            height: "46px",
-            borderRadius: "8px",
-          }}
-        >
+        <FormButtonSocial>
           <GoogleIcon />
-        </Button>
-        <Button
-          fullWidth
-          sx={{
-            backgroundColor: "#FDF5ED",
-            height: "46px",
-            borderRadius: "8px",
-          }}
-        >
+        </FormButtonSocial>
+        <FormButtonSocial>
           <GoogleIcon />
-        </Button>
+        </FormButtonSocial>
       </Box>
       <FormControlLabel
         control={
@@ -187,11 +156,26 @@ function FormRegistration() {
             }}
           />
         }
-        label={<Box sx={{fontSize:'16px', fontWeight:400}}><span style={{ color: "#A3A3A3" }}>Даю згоду на обробку своїх персональних даних</span>{" "}<span style={{ color: "black" }}>відповідно до даної офертою</span></Box>}
+        label={
+          <Box sx={{ fontSize: "16px", fontWeight: 400 }}>
+            <span style={{ color: "#A3A3A3" }}>
+              Даю згоду на обробку своїх персональних даних
+            </span>{" "}
+            <span style={{ color: "black" }}>відповідно до даної офертою</span>
+          </Box>
+        }
       />
-      <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', gap:'4px', mt:'60px'}}>
-        <Typography>Потрібен аккаунт?</Typography>
-        <Link>Реєструйся</Link>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "4px",
+          mt: "60px",
+        }}
+      >
+        <Typography>Вже маєш аккаунт?</Typography>
+        <Link sx={{ color: "#73270D", cursor: "pointer" }}>Вхід</Link>
       </Box>
     </Box>
   );

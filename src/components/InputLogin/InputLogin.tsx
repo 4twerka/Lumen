@@ -35,6 +35,7 @@ export const InputLogin: React.FC<InputProps> = ({
           type={type}
           onChange={onChange}
           value={value}
+          placeholder="Type here"
         />
         {icon && <div className={styles.iconWrapper}>{icon}</div>}
       </div>

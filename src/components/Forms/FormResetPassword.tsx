@@ -2,11 +2,9 @@ import { InputLogin } from "../../components/InputLogin/InputLogin";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {
-  Box,
-  Button,
-  Typography,
-} from "@mui/material";
+import { Box } from "@mui/material";
+import FormButtonSubmit from "./FormButtonSubmit";
+import FormTitle from "./FormTitle";
 
 const schema = yup
   .object({
@@ -19,35 +17,34 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 
 function FormResetPassword() {
-
   const {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
+  const emails = ["test@i.ua", "test1@i.ua", "test2@i.ua"];
+
   const onSubmit = (data: FormData) => {
     console.log(data);
-    reset();
+    if (!emails.includes(data.emailForgott)) {
+      setError("emailForgott", {
+        type: "manual",
+        message: "* Не існує такого email",
+      });
+    } else {
+      console.log("запит відправлено");
+      reset();
+    }
   };
 
   return (
     <Box sx={{ padding: 2, display: "flex", flexDirection: "column" }}>
-      <Typography
-        variant="h3"
-        sx={{
-          fontSize: "24px",
-          fontWeight: 600,
-          textAlign: "center",
-          mb: 4,
-          mt: 6,
-        }}
-      >
-        Забули пароль
-      </Typography>
+      <FormTitle>Забули пароль</FormTitle>
       <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
         <Box
           sx={{
@@ -64,19 +61,7 @@ function FormResetPassword() {
             label="Email"
             type="text"
           />
-          <Button
-            type="submit"
-            fullWidth
-            sx={{
-              borderRadius: 2,
-              backgroundColor: "#73270D",
-              height: "56px",
-              color: "#FDF5ED",
-              fontWeight: 600,
-            }}
-          >
-            Увійти
-          </Button>
+          <FormButtonSubmit>Підтвердити</FormButtonSubmit>
         </Box>
       </Box>
     </Box>
