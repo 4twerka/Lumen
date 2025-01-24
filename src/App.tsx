@@ -1,19 +1,13 @@
-import React from 'react'
-import './App.css'
-import { Button } from './components/button/Button'
-import FormRegistration from './components/Forms/FormRegistration'
-import FormResetPassword from './components/Forms/FormResetPassword'
-import FormLogin from './components/Forms/FormLogin'
+import React from "react";
+import "./App.css";
+import RootRouter from "./router";
 
 function App() {
   return (
     <>
-    {/* <Button /> */}
-    <FormRegistration />
-    {/* <FormResetPassword /> */}
-    {/* <FormLogin /> */}
+      <RootRouter />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

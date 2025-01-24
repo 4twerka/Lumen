@@ -5,7 +5,13 @@ const theme = createTheme({
   palette: {
     primary: {
       main: '#73270D',
+      contrastText: '#FFFFFF', // White (N-95)
     },
+    primaryContainer: {
+      main: '#F7C6B6',
+      contrasText: '#272727'
+    },
+    
   },
 });
 

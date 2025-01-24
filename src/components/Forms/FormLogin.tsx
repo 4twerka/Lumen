@@ -3,10 +3,9 @@ import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Box,
-  Button,
   Checkbox,
   Divider,
   FormControlLabel,
@@ -18,6 +17,8 @@ import GoogleIcon from "../../icons/flat-color-icons_google.svg?react";
 import FormButtonSocial from "./FormButtonSocial";
 import FormButtonSubmit from "./FormButtonSubmit";
 import FormTitle from "./FormTitle";
+import { validationsDisplayErrors } from "./validationsDisplayErrors";
+import FormErrorsDisplay from "./FormErrorsDisplay";
 
 const schema = yup
   .object({
@@ -37,14 +38,19 @@ type FormData = yup.InferType<typeof schema>;
 
 function FormLogin() {
   const [seePassword, setSeePassword] = useState("password");
+  const [isValidationErrors, setIsValidationErrors] = useState(false);
+
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    watch,
+    formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
+    mode: "onChange",
   });
+  const watchedValues = watch();
 
   const checkBoxRef = useRef<HTMLInputElement | null>(null);
 
@@ -58,7 +64,32 @@ function FormLogin() {
 
   const handleTogglePassword = () => {
     setSeePassword((prev) => (prev === "text" ? "password" : "text"));
+    setIsValidationErrors(true);
   };
+  const handleFocus = () => {
+    setIsValidationErrors(true);
+  };
+
+  useEffect(() => {
+    const inputPassword = document.getElementById("password");
+    const inputEmail = document.getElementById("email");
+    if (inputPassword && inputEmail) {
+      const handleFocus = () => {
+        setIsValidationErrors(true);
+      };
+      const handleUnFocus = () => {
+        setIsValidationErrors(false);
+      };
+
+      inputEmail.addEventListener("focus", handleUnFocus);
+      inputPassword.addEventListener("focus", handleFocus);
+
+      return () => {
+        inputEmail.removeEventListener("focus", handleUnFocus);
+        inputPassword.removeEventListener("focus", handleFocus);
+      };
+    }
+  }, []);
 
   return (
     <Box sx={{ padding: 2, display: "flex", flexDirection: "column" }}>
@@ -79,18 +110,30 @@ function FormLogin() {
             label="Email"
             type="text"
           />
-          <InputLogin
-            errors={errors}
-            register={register}
-            id="password"
-            label="Password"
-            type={seePassword}
-            icon={
-              <IconButton onClick={handleTogglePassword}>
-                {seePassword === "text" ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            }
-          />
+          <Box>
+            <InputLogin
+              errors={errors}
+              register={register}
+              id="password"
+              label="Password"
+              type={seePassword}
+              isErrors={false}
+              icon={
+                <IconButton
+                  onClick={handleTogglePassword}
+                  onFocus={handleFocus}
+                >
+                  {seePassword === "text" ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              }
+            />
+            {isValidationErrors && (
+              <FormErrorsDisplay
+                displayErrors={validationsDisplayErrors}
+                value={watchedValues?.password}
+              />
+            )}
+          </Box>
           <FormControlLabel
             sx={{ height: "21px", alignItems: "normal" }}
             control={
@@ -102,7 +145,9 @@ function FormLogin() {
             label="Запам'ятати?"
           />
         </Box>
-        <FormButtonSubmit>Увійти</FormButtonSubmit>
+        <FormButtonSubmit disabled={isValid ? false : true}>
+          Увійти
+        </FormButtonSubmit>
       </Box>
       <Box sx={{ textAlign: "right", p: "10px" }}>
         <Link sx={{ cursor: "pointer", display: "inline-block" }}>
@@ -110,10 +155,7 @@ function FormLogin() {
         </Link>
       </Box>
       <Divider sx={{ mt: "32px" }}>або за допомогою</Divider>
-      <Box sx={{ display: "flex", gap: "16px", pt: "32px", pb: "48px" }}>
-        <FormButtonSocial>
-          <GoogleIcon />
-        </FormButtonSocial>
+      <Box sx={{ pt: "32px", pb: "48px" }}>
         <FormButtonSocial>
           <GoogleIcon />
         </FormButtonSocial>

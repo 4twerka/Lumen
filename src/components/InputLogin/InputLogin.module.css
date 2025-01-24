@@ -10,6 +10,11 @@
     outline: none;
 }
 
+.inputError, .inputError:focus {
+    outline: 1px solid #E60606;
+    color: #E60606;
+}
+
 .inputWrapper {
     position: relative;
 }
@@ -37,7 +42,7 @@
 .error {
     color: #E60606;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 12px;
     padding: 8px 16px;
 }
 

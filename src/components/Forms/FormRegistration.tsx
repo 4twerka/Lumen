@@ -3,7 +3,7 @@ import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Box,
   Checkbox,
@@ -17,6 +17,8 @@ import GoogleIcon from "../../icons/flat-color-icons_google.svg?react";
 import FormButtonSocial from "./FormButtonSocial";
 import FormButtonSubmit from "./FormButtonSubmit";
 import FormTitle from "./FormTitle";
+import { validationsDisplayErrors } from "./validationsDisplayErrors";
+import FormErrorsDisplay from "./FormErrorsDisplay";
 
 const schema = yup
   .object({
@@ -44,16 +46,30 @@ type FormData = yup.InferType<typeof schema>;
 function FormRegistration() {
   const [seePassword, setSeePassword] = useState("password");
   const [seePasswordConfirm, setSeePasswordConfirm] = useState("password");
+  const [isValidationErrorsPass, setIsValidationErrorsPass] = useState(false);
+  const [isValidationErrorsPassConfirm, setIsValidationErrorsPassConfirm] =
+    useState(false);
   const {
     register,
     handleSubmit,
+    trigger,
     reset,
-    formState: { errors },
+    watch,
+    formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
+    mode: "onChange",
   });
 
   const checkBoxRef = useRef<HTMLInputElement | null>(null);
+  const passwordReg = watch().passwordReg;
+  const passwordConfirm = watch().passwordConfirm;
+
+  useEffect(() => {
+    if (passwordConfirm) {
+      trigger("passwordConfirm");
+    }
+  }, [passwordReg, passwordConfirm, trigger]);
 
   const onSubmit = (data: FormData) => {
     if (checkBoxRef.current?.checked && data) {
@@ -69,6 +85,39 @@ function FormRegistration() {
   const handleTogglePasswordConfirm = () => {
     setSeePasswordConfirm((prev) => (prev === "text" ? "password" : "text"));
   };
+
+  useEffect(() => {
+    const inputPasswordReg = document.getElementById("passwordReg");
+    const inputPasswordConfirm = document.getElementById("passwordConfirm");
+    const inputEmail = document.getElementById("emailReg");
+    if (inputPasswordReg && inputPasswordConfirm && inputEmail) {
+      const handleFocusPass = () => {
+        setIsValidationErrorsPass(true);
+        setIsValidationErrorsPassConfirm(false);
+      };
+      const handleFocusPassConfirm = () => {
+        setIsValidationErrorsPass(false);
+        setIsValidationErrorsPassConfirm(true);
+      };
+      const handleUnFocusEmail = () => {
+        setIsValidationErrorsPass(false);
+        setIsValidationErrorsPassConfirm(false);
+      };
+
+      inputEmail.addEventListener("focus", handleUnFocusEmail);
+      inputPasswordReg.addEventListener("focus", handleFocusPass);
+      inputPasswordConfirm.addEventListener("focus", handleFocusPassConfirm);
+
+      return () => {
+        inputEmail.removeEventListener("focus", handleUnFocusEmail);
+        inputPasswordReg.removeEventListener("focus", handleFocusPass);
+        inputPasswordConfirm.removeEventListener(
+          "focus",
+          handleFocusPassConfirm
+        );
+      };
+    }
+  }, []);
 
   return (
     <Box sx={{ padding: 2, display: "flex", flexDirection: "column" }}>
@@ -89,34 +138,52 @@ function FormRegistration() {
             label="Email"
             type="text"
           />
-          <InputLogin
-            errors={errors}
-            register={register}
-            id="passwordReg"
-            label="Пароль"
-            type={seePassword}
-            icon={
-              <IconButton onClick={handleTogglePassword}>
-                {seePassword === "text" ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            }
-          />
-          <InputLogin
-            errors={errors}
-            register={register}
-            id="passwordConfirm"
-            label="Підтвердіть ваш пароль"
-            type={seePasswordConfirm}
-            icon={
-              <IconButton onClick={handleTogglePasswordConfirm}>
-                {seePasswordConfirm === "text" ? (
-                  <VisibilityOff />
-                ) : (
-                  <Visibility />
-                )}
-              </IconButton>
-            }
-          />
+          <Box>
+            <InputLogin
+              errors={errors}
+              register={register}
+              id="passwordReg"
+              label="Пароль"
+              type={seePassword}
+              isErrors={false}
+              icon={
+                <IconButton onClick={handleTogglePassword}>
+                  {seePassword === "text" ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              }
+            />
+            {isValidationErrorsPass && (
+              <FormErrorsDisplay
+                displayErrors={validationsDisplayErrors}
+                value={passwordReg}
+              />
+            )}
+          </Box>
+          <Box>
+            <InputLogin
+              errors={errors}
+              register={register}
+              id="passwordConfirm"
+              label="Підтвердіть ваш пароль"
+              type={seePasswordConfirm}
+              isErrors={false}
+              icon={
+                <IconButton onClick={handleTogglePasswordConfirm}>
+                  {seePasswordConfirm === "text" ? (
+                    <VisibilityOff />
+                  ) : (
+                    <Visibility />
+                  )}
+                </IconButton>
+              }
+            />
+            {isValidationErrorsPassConfirm && (
+              <FormErrorsDisplay
+                displayErrors={validationsDisplayErrors}
+                value={passwordConfirm}
+              />
+            )}
+          </Box>
           <FormControlLabel
             sx={{ height: "21px", alignItems: "normal" }}
             control={
@@ -128,7 +195,9 @@ function FormRegistration() {
             label="Запам'ятати?"
           />
         </Box>
-        <FormButtonSubmit>Увійти</FormButtonSubmit>
+        <FormButtonSubmit disabled={isValid ? false : true}>
+          Увійти
+        </FormButtonSubmit>
       </Box>
       <Box sx={{ textAlign: "right", p: "10px" }}>
         <Link sx={{ cursor: "pointer", display: "inline-block" }}>
@@ -136,10 +205,7 @@ function FormRegistration() {
         </Link>
       </Box>
       <Divider sx={{ mt: "32px" }}>або за допомогою</Divider>
-      <Box sx={{ display: "flex", gap: "16px", pt: "32px", pb: "48px" }}>
-        <FormButtonSocial>
-          <GoogleIcon />
-        </FormButtonSocial>
+      <Box sx={{ pt: "32px", pb: "48px" }}>
         <FormButtonSocial>
           <GoogleIcon />
         </FormButtonSocial>
