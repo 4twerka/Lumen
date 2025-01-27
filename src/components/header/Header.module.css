@@ -1,0 +1,145 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    height: 40px; 
+}
+
+.burgerMenu {
+    display: none; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.burgerLine {
+    width: 25px;
+    height: 3px;
+    background-color: black;
+    margin: 4px 0;
+    transition: background-color 0.3s ease;
+}
+
+.burgerMenu:hover .burgerLine {
+    background-color: #666;
+}
+
+.nav {
+    flex-grow: 1;
+}
+
+.navList {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navItem {
+    font-size: 16px;
+    cursor: pointer;
+    color: #000;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.searchContainer {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+
+.searchInput {
+    border: none;
+    outline: none;
+    flex: 1;
+    margin: 0 5px;
+}
+
+.searchButton,
+.microphoneButton,
+.iconButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.iconButton img {
+    width: 20px;
+    height: 20px;
+}
+
+@media (max-width: 768px) {
+    .nav {
+        display: none;
+    }
+
+    .burgerMenu {
+        display: flex;
+        height: 30px;
+    }
+
+    .logo {
+        order: 2;
+        margin-left: 10px;
+        height: 25px;
+    }
+
+    .logoContainer {
+        justify-content: flex-start;
+        gap: 10px;
+    }
+
+    .searchContainer {
+        flex: 1;
+    }
+
+    .searchInput {
+        width: 60px; 
+        font-size: 14px; 
+    }
+
+    .actions {
+        gap: 5px;
+    }
+
+    .actions .iconButton:nth-child(2),
+    .actions .iconButton:nth-child(3) {
+        display: none;
+    }
+}
+
+@media (max-width: 1024px) {
+    .navList {
+        gap: 10px; 
+    }
+
+    .navItem {
+        font-size: 14px; 
+    }
+}
