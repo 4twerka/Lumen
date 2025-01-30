@@ -19,13 +19,18 @@ import FormButtonSubmit from "./FormButtonSubmit";
 import FormTitle from "./FormTitle";
 import { validationsDisplayErrors } from "./validationsDisplayErrors";
 import FormErrorsDisplay from "./FormErrorsDisplay";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { clearErrors, loginUser } from "../../store/slices/userSlice";
+import { useNavigate } from "react-router";
+
+const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,}$/;
 
 const schema = yup
   .object({
     email: yup
       .string()
       .required("* Електронна пошта є обов'язковою!")
-      .email("* Введіть коректну електронну пошту!"),
+      .matches(emailRegExp, "* Введіть коректну електронну пошту!"),
     password: yup
       .string()
       .required("* Пароль є обов'язковим!")
@@ -39,11 +44,14 @@ type FormData = yup.InferType<typeof schema>;
 function FormLogin() {
   const [seePassword, setSeePassword] = useState("password");
   const [isValidationErrors, setIsValidationErrors] = useState(false);
-
+  const [isCheckedAgreement, setIsCheckedAgreement] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const loginError = useAppSelector((state) => state.user.error);
+  
   const {
     register,
     handleSubmit,
-    reset,
     watch,
     formState: { errors, isValid },
   } = useForm<FormData>({
@@ -53,13 +61,28 @@ function FormLogin() {
   const watchedValues = watch();
 
   const checkBoxRef = useRef<HTMLInputElement | null>(null);
+  const checkBoxAgreementRef = useRef<HTMLInputElement | null>(null);
 
-  const onSubmit = (data: FormData) => {
-    if (checkBoxRef.current?.checked && data) {
-      console.log("запамятати!");
+  useEffect(() => {
+    return () => {
+      dispatch(clearErrors())
     }
-    console.log(data);
-    reset();
+  }, [dispatch])
+
+  const onSubmit = async (data: FormData) => {
+    try {
+      const authToken = await dispatch(loginUser(data)).unwrap();
+
+      if (checkBoxRef.current?.checked) {
+        localStorage.setItem("authToken", JSON.stringify(authToken));
+      } else {
+        sessionStorage.setItem("authToken", JSON.stringify(authToken));
+      }
+      navigate("/");
+
+    } catch (error) {
+      console.log("Виникла помилка: ", error);
+    }
   };
 
   const handleTogglePassword = () => {
@@ -103,13 +126,16 @@ function FormLogin() {
             mb: "32px",
           }}
         >
-          <InputLogin
-            errors={errors}
-            register={register}
-            id="email"
-            label="Email"
-            type="text"
-          />
+          <Box>
+            <InputLogin
+              errors={errors}
+              register={register}
+              id="email"
+              label="Email"
+              type="text"
+              serverError={loginError}
+            />
+          </Box>
           <Box>
             <InputLogin
               errors={errors}
@@ -145,12 +171,12 @@ function FormLogin() {
             label="Запам'ятати?"
           />
         </Box>
-        <FormButtonSubmit disabled={isValid ? false : true}>
+        <FormButtonSubmit disabled={!isValid || !isCheckedAgreement}>
           Увійти
         </FormButtonSubmit>
       </Box>
       <Box sx={{ textAlign: "right", p: "10px" }}>
-        <Link sx={{ cursor: "pointer", display: "inline-block" }}>
+        <Link onClick={() => navigate('/reset-password')} sx={{ cursor: "pointer", display: "inline-block", fontWeight: 600 }}>
           Забули пароль
         </Link>
       </Box>
@@ -161,9 +187,11 @@ function FormLogin() {
         </FormButtonSocial>
       </Box>
       <FormControlLabel
+        sx={{ alignItems: "baseline" }}
         control={
           <Checkbox
-            // inputRef={checkBoxRef}
+            onChange={() => setIsCheckedAgreement(!isCheckedAgreement)}
+            inputRef={checkBoxAgreementRef}
             sx={{
               color: "black",
               alignSelf: "flex-start",
@@ -191,7 +219,7 @@ function FormLogin() {
         }}
       >
         <Typography>Потрібен аккаунт?</Typography>
-        <Link sx={{ color: "#73270D", cursor: "pointer" }}>Реєструйся</Link>
+        <Link onClick={() => navigate('/registration')} sx={{ color: "#73270D", cursor: "pointer", fontWeight: 600 }}>Реєструйся</Link>
       </Box>
     </Box>
   );
