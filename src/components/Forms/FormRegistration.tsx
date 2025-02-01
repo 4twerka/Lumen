@@ -22,6 +22,7 @@ import FormErrorsDisplay from "./FormErrorsDisplay";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { clearErrors, registerUser } from "../../store/slices/userSlice";
 import { useNavigate } from "react-router";
+import Loader from "../Loader/Loader";
 
 const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,}$/;
 
@@ -74,6 +75,7 @@ function FormRegistration() {
   const passwordReg = watch().passwordReg;
   const passwordConfirm = watch().passwordConfirm;
   const registerError = useAppSelector((state) => state.user.error);
+  const isLoading = useAppSelector((state) => state.user.isLoading);
 
   useEffect(() => {
     if (passwordConfirm) {
@@ -224,8 +226,12 @@ function FormRegistration() {
             label="Запам'ятати?"
           />
         </Box>
-        <FormButtonSubmit disabled={!isValid || !isCheckedAgreement}>
-          Увійти
+        <FormButtonSubmit disabled={!isValid || !isCheckedAgreement || isLoading}>
+          {isLoading ? (
+            <Loader size="11px" />
+          ) : (
+            "Увійти"
+          )}
         </FormButtonSubmit>
       </Box>
       <Box sx={{ textAlign: "right", p: "10px" }}>

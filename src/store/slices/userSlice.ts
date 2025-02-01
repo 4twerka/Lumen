@@ -20,6 +20,7 @@ interface UserState {
   users: User[];
   error: string | null;
   status: string;
+  isLoading: boolean;
 }
 
 const initialState: UserState = {
@@ -28,6 +29,7 @@ const initialState: UserState = {
     users: [],
     error: null,
     status: '',
+    isLoading: false,
 }
 
 export const registerUser = createAsyncThunk<User, UserRegister, {rejectValue: string}>(
@@ -87,16 +89,26 @@ const userSlice = createSlice({
         .addCase(registerUser.fulfilled, (state, action) => {
             state.users.push(action.payload);
             state.error = null;
+            state.isLoading = false;
         })
         .addCase(registerUser.rejected, (state, action) => {
             state.error = action.payload || "Something went wrong";
+            state.isLoading = false;
+        })
+        .addCase(registerUser.pending, (state) => {
+            state.isLoading = true;
         })
         .addCase(loginUser.fulfilled, (state, action) => {
             state.token = action.payload;
             state.error = null;
+            state.isLoading = false;
         })
         .addCase(loginUser.rejected, (state, action) => {
             state.error = action.payload || "Something went wrong";
+            state.isLoading = false;
+        })
+        .addCase(loginUser.pending, (state) => {
+            state.isLoading = true;
         })
         .addCase(accoutRecoveryUser.fulfilled, (state, action) => {
             state.status = action.payload;
