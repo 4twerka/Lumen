@@ -14,8 +14,6 @@ function FormResetPassword() {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [userResetPasword, setUserResetPasword] = useState<UserResetPassword>({email: ''});
 
-  console.log("userResetPasword", userResetPasword);
-
   return (
     <Box sx={{ padding: 2, display: "flex", flexDirection: "column", width:'100%' }}>
       <FormTitle>Забули пароль</FormTitle>

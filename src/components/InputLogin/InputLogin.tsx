@@ -11,6 +11,7 @@ interface InputProps {
   register?: UseFormRegister<T>;
   errors?: FieldErrors<T>;
   isErrors?:boolean;
+  serverError?: string | null;
 }
 
 export const InputLogin: React.FC<InputProps> = ({
@@ -22,7 +23,8 @@ export const InputLogin: React.FC<InputProps> = ({
   icon,
   register,
   errors,
-  isErrors = true
+  isErrors = true,
+  serverError
 }) => {
   
   return (
@@ -33,7 +35,7 @@ export const InputLogin: React.FC<InputProps> = ({
       <div className={styles.inputWrapper}>
         <input
           {...(register ? register(id) : {})}
-          className={`${styles.input} ${(errors && errors[id]) ? styles.inputError : ''}`}
+          className={`${styles.input} ${(errors && errors[id] || serverError) ? styles.inputError : ''}`}
           id={id}
           type={type}
           // onChange={onChange}
@@ -44,6 +46,9 @@ export const InputLogin: React.FC<InputProps> = ({
       </div>
       {isErrors && errors && errors[id] && (
         <p className={styles.error}>{errors[id]?.message}</p>
+      )}
+      {serverError && (
+        <p className={styles.error}>* {serverError}</p>
       )}
     </div>
   );

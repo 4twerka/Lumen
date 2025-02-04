@@ -5,6 +5,8 @@ import { InputLogin } from "../../InputLogin/InputLogin";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useAppDispatch } from "../../../hooks";
+import { accoutRecoveryUser } from "../../../store/slices/userSlice";
 
 const schemaEmail = yup
   .object({
@@ -23,7 +25,7 @@ interface EmailFormProps {
 }
 
 const EmailForm:React.FC<EmailFormProps> = ({setIsEmailVerified, setUserResetPasword}) => {
-  const emails = ["test@i.ua", "test1@i.ua", "test2@i.ua"];
+
   const {
     register,
     handleSubmit,
@@ -32,17 +34,27 @@ const EmailForm:React.FC<EmailFormProps> = ({setIsEmailVerified, setUserResetPas
   } = useForm<FormDataEmail>({
     resolver: yupResolver(schemaEmail)
   });
-  const onSubmitEmail = (data: FormDataEmail) => {
+
+  const dispatch = useAppDispatch();
+
+  const onSubmitEmail = async (data: FormDataEmail) => {
     console.log(data);
-    if (!emails.includes(data.emailForgott)) {
-      setError("emailForgott", {
-        type: "manual",
-        message: "* Не існує такого email",
-      });
-    } else {
+    try {
+      const actionResult = await dispatch(accoutRecoveryUser({email: data.emailForgott}));
       setIsEmailVerified(true);
-      setUserResetPasword({email: data.emailForgott})
+    } catch (error) {
+      console.log(error);
+      
     }
+    // if (!emails.includes(data.emailForgott)) {
+    //   setError("emailForgott", {
+    //     type: "manual",
+    //     message: "* Не існує такого email",
+    //   });
+    // } else {
+    //   setIsEmailVerified(true);
+    //   setUserResetPasword({email: data.emailForgott})
+    // }
   };
   return (
     <Box component={"form"} onSubmit={handleSubmit(onSubmitEmail)}>

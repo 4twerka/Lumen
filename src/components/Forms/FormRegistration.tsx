@@ -19,13 +19,19 @@ import FormButtonSubmit from "./FormButtonSubmit";
 import FormTitle from "./FormTitle";
 import { validationsDisplayErrors } from "./validationsDisplayErrors";
 import FormErrorsDisplay from "./FormErrorsDisplay";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { clearErrors, registerUser } from "../../store/slices/userSlice";
+import { useNavigate } from "react-router";
+import Loader from "../Loader/Loader";
+
+const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,}$/;
 
 const schema = yup
   .object({
     emailReg: yup
       .string()
       .required("* Електронна пошта є обов'язковою!")
-      .email("* Введіть коректну електронну пошту!"),
+      .matches(emailRegExp, "* Введіть коректну електронну пошту!"),
     passwordReg: yup
       .string()
       .required("* Пароль є обов'язковим!")
@@ -49,21 +55,27 @@ function FormRegistration() {
   const [isValidationErrorsPass, setIsValidationErrorsPass] = useState(false);
   const [isValidationErrorsPassConfirm, setIsValidationErrorsPassConfirm] =
     useState(false);
+  const [isCheckedAgreement, setIsCheckedAgreement] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     trigger,
-    reset,
+    setError,
     watch,
     formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
-    mode: "onChange",
+    mode: "onSubmit",
   });
 
   const checkBoxRef = useRef<HTMLInputElement | null>(null);
+  const checkBoxAgreementRef = useRef<HTMLInputElement | null>(null);
   const passwordReg = watch().passwordReg;
   const passwordConfirm = watch().passwordConfirm;
+  const registerError = useAppSelector((state) => state.user.error);
+  const isLoading = useAppSelector((state) => state.user.isLoading);
 
   useEffect(() => {
     if (passwordConfirm) {
@@ -71,12 +83,33 @@ function FormRegistration() {
     }
   }, [passwordReg, passwordConfirm, trigger]);
 
-  const onSubmit = (data: FormData) => {
-    if (checkBoxRef.current?.checked && data) {
-      console.log("запамятати!");
+  useEffect(() => {
+    return () => {
+      dispatch(clearErrors())
     }
-    console.log(data);
-    reset();
+  }, [dispatch])
+
+  const onSubmit = async (data: FormData) => {
+    try {
+      if (checkBoxAgreementRef.current?.checked) {
+        await dispatch(
+          registerUser({ email: data.emailReg, password: data.passwordReg })
+        ).unwrap();
+        // if (checkBoxRef.current?.checked && data) {
+        //   localStorage.setItem("authToken", "token");
+        // } else {
+        //   sessionStorage.setItem("authToken", "token");
+        // }
+        navigate("/login");
+      } else {
+        setError("emailReg", {
+          type: "manual",
+          message: "* Надайте згоду на обробку своїх персональних даних",
+        });
+      }
+    } catch (error) {
+      console.log("Виникла помилка: ", error);
+    }
   };
 
   const handleTogglePassword = () => {
@@ -111,14 +144,11 @@ function FormRegistration() {
       return () => {
         inputEmail.removeEventListener("focus", handleUnFocusEmail);
         inputPasswordReg.removeEventListener("focus", handleFocusPass);
-        inputPasswordConfirm.removeEventListener(
-          "focus",
-          handleFocusPassConfirm
-        );
+        inputPasswordConfirm.removeEventListener("focus", handleFocusPassConfirm);
       };
     }
   }, []);
-
+  
   return (
     <Box sx={{ padding: 2, display: "flex", flexDirection: "column" }}>
       <FormTitle>Реєстрація</FormTitle>
@@ -137,6 +167,7 @@ function FormRegistration() {
             id="emailReg"
             label="Email"
             type="text"
+            serverError={registerError}
           />
           <Box>
             <InputLogin
@@ -195,12 +226,16 @@ function FormRegistration() {
             label="Запам'ятати?"
           />
         </Box>
-        <FormButtonSubmit disabled={isValid ? false : true}>
-          Увійти
+        <FormButtonSubmit disabled={!isValid || !isCheckedAgreement || isLoading}>
+          {isLoading ? (
+            <Loader size="11px" />
+          ) : (
+            "Увійти"
+          )}
         </FormButtonSubmit>
       </Box>
       <Box sx={{ textAlign: "right", p: "10px" }}>
-        <Link sx={{ cursor: "pointer", display: "inline-block" }}>
+        <Link onClick={() => navigate('/reset-password')} sx={{ cursor: "pointer", display: "inline-block", fontWeight: 600 }}>
           Забули пароль
         </Link>
       </Box>
@@ -213,7 +248,8 @@ function FormRegistration() {
       <FormControlLabel
         control={
           <Checkbox
-            // inputRef={checkBoxRef}
+            inputRef={checkBoxAgreementRef}
+            onChange={() => setIsCheckedAgreement(!isCheckedAgreement)}
             sx={{
               color: "black",
               alignSelf: "flex-start",
@@ -241,7 +277,7 @@ function FormRegistration() {
         }}
       >
         <Typography>Вже маєш аккаунт?</Typography>
-        <Link sx={{ color: "#73270D", cursor: "pointer" }}>Вхід</Link>
+        <Link onClick={() => (navigate('/login'))} sx={{ color: "#73270D", cursor: "pointer", fontWeight: 600 }}>Вхід</Link>
       </Box>
     </Box>
   );
