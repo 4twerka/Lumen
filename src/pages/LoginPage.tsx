@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React from "react";
 import FormLogin from "../components/Forms/FormLogin";
 
-const LoginPage = () => {
+const LoginPage: React.FC = () => {
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
       <Box

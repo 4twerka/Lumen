@@ -5,7 +5,7 @@ import RegistrationPage from '../pages/RegistrationPage'
 import ResetPassworPage from '../pages/ResetPassworPage'
 import HomePage from '../pages/HomePage'
 
-const RootRouter  = () => {
+const RootRouter: React.FC  = () => {
   return (
     <Routes>
         <Route path='/' element={<HomePage />} />

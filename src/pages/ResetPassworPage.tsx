@@ -2,7 +2,7 @@ import React from 'react'
 import FormResetPassword from '../components/Forms/FormResetPassword/FormResetPassword'
 import { Box } from '@mui/material'
 
-const ResetPassworPage = () => {
+const ResetPassworPage: React.FC = () => {
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
       <Box

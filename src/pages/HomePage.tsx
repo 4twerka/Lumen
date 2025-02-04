@@ -4,10 +4,10 @@ import { jwtDecode } from "jwt-decode";
 import { Header } from '../components/header/Header';
 import { Footer } from '../components/footer/Footer';
 
-const HomePage = () => {
-    // const token = useAppSelector((state) => state.user.token);
-    // const decoded = jwtDecode(token);
-    // console.log('decoded',decoded);
+const HomePage: React.FC = () => {
+    const token = useAppSelector((state) => state.user.token);
+    const decoded = jwtDecode(token);
+    console.log('decoded',decoded);
     
   return (
     <div>
