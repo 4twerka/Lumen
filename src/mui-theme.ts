@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from '@mui/material';
 
 const theme = createTheme({
   cssVariables: true,
@@ -7,11 +7,6 @@ const theme = createTheme({
       main: '#73270D',
       contrastText: '#FFFFFF', // White (N-95)
     },
-    primaryContainer: {
-      main: '#F7C6B6',
-      contrasText: '#272727'
-    },
-    
   },
 });
 

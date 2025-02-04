@@ -67,7 +67,7 @@ function FormRegistration() {
     formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
-    mode: "onSubmit",
+    mode: "onChange",
   });
 
   const checkBoxRef = useRef<HTMLInputElement | null>(null);

@@ -21,15 +21,14 @@ type FormDataEmail = yup.InferType<typeof schemaEmail>;
 
 interface EmailFormProps {
     setIsEmailVerified: (value:boolean) => void;
-    setUserResetPasword: (value: {email:string}) => void;
+    // setUserResetPasword: (value: {email:string}) => void;
 }
 
-const EmailForm:React.FC<EmailFormProps> = ({setIsEmailVerified, setUserResetPasword}) => {
+const EmailForm:React.FC<EmailFormProps> = ({setIsEmailVerified}) => {
 
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm<FormDataEmail>({
     resolver: yupResolver(schemaEmail)
@@ -40,7 +39,7 @@ const EmailForm:React.FC<EmailFormProps> = ({setIsEmailVerified, setUserResetPas
   const onSubmitEmail = async (data: FormDataEmail) => {
     console.log(data);
     try {
-      const actionResult = await dispatch(accoutRecoveryUser({email: data.emailForgott}));
+      await dispatch(accoutRecoveryUser({email: data.emailForgott}));
       setIsEmailVerified(true);
     } catch (error) {
       console.log(error);
