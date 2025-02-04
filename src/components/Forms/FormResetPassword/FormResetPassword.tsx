@@ -26,7 +26,7 @@ function FormResetPassword() {
       ) : (
         <EmailForm
           setIsEmailVerified={setIsEmailVerified}
-          setUserResetPasword={setUserResetPasword}
+          // setUserResetPasword={setUserResetPasword}
         />
       )}
     </Box>

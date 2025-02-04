@@ -1,9 +1,9 @@
-import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { UseFormRegister, FieldErrors, FieldValues, Path } from "react-hook-form";
 import styles from "./InputLogin.module.css";
 
-interface InputProps {
+interface InputProps<T extends FieldValues> {
   label: string;
-  id: string;
+  id: Path<T>;
   type: string;
   icon?: React.ReactNode;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -14,18 +14,24 @@ interface InputProps {
   serverError?: string | null;
 }
 
-export const InputLogin: React.FC<InputProps> = ({
+export const InputLogin = <T extends FieldValues>({
   label,
   id,
   type,
-  // onChange,
   value,
   icon,
   register,
   errors,
   isErrors = true,
   serverError
+<<<<<<< HEAD
 }) => {
+=======
+}: InputProps<T>) => {
+
+  const errorMessage = errors && errors[id]?.message;
+  const serverErrorMessage = serverError;
+>>>>>>> ebc4714944d618785f564cc6cacff517a1bd377e
   
   return (
     <div>
@@ -35,7 +41,11 @@ export const InputLogin: React.FC<InputProps> = ({
       <div className={styles.inputWrapper}>
         <input
           {...(register ? register(id) : {})}
+<<<<<<< HEAD
           className={`${styles.input} ${(errors && errors[id] || serverError) ? styles.inputError : ''}`}
+=======
+          className={`${styles.input} ${(errorMessage || serverErrorMessage) ? styles.inputError : ''}`}
+>>>>>>> ebc4714944d618785f564cc6cacff517a1bd377e
           id={id}
           type={type}
           // onChange={onChange}
@@ -44,8 +54,11 @@ export const InputLogin: React.FC<InputProps> = ({
         />
         {icon && <div className={styles.iconWrapper}>{icon}</div>}
       </div>
-      {isErrors && errors && errors[id] && (
-        <p className={styles.error}>{errors[id]?.message}</p>
+      {isErrors && errorMessage && (
+        <p className={styles.error}>{typeof errorMessage === "string" ? errorMessage : String(errorMessage)}</p>
+      )}
+      {serverError && (
+        <p className={styles.error}>* {serverErrorMessage}</p>
       )}
       {serverError && (
         <p className={styles.error}>* {serverError}</p>
