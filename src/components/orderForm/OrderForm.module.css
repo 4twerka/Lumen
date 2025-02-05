@@ -1,162 +1,182 @@
 .container {
-    display: flex;
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .formSection {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .cartSection {
-    flex: 1;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    background: #f9f9f9;
-  }
-  
-  .card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-  }
-  
-  .title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .emailBlock {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .email {
-    font-size: 16px;
-  }
-  
-  .logout {
-    background: none;
-    border: none;
-    color: red;
-    cursor: pointer;
-  }
-  
-  .inputGroup {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .checkbox {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .radioGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .radio {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .radio input {
-    margin-right: 10px;
-  }
-  
-  .radio.active {
-    border: 2px solid brown;
-  }
-  
-  .textarea {
-    width: 100%;
-    height: 80px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-top: 10px;
-  }
-  
-  .button {
-    width: 100%;
-    background: brown;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .cartTitle {
-    font-size: 18px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .cartCount {
-    background: green;
-    color: white;
-    padding: 4px 8px;
-    border-radius: 50%;
-    font-size: 14px;
-  }
-  
-  .cartItem {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 10px 0;
-  }
-  
-  .cartImage {
-    width: 50px;
-    height: 50px;
-    border-radius: 4px;
-  }
-  
-  .cartDetails {
-    flex: 1;
-  }
-  
-  .cartRemove {
-    background: none;
-    border: none;
-    color: red;
-    font-size: 18px;
-    cursor: pointer;
-  }
-  
-  .cartSummary {
-    font-size: 16px;
-    font-weight: bold;
-    text-align: right;
-    margin-top: 20px;
-  }
-  
+  display: flex;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.formSection {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cartSection {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background: #f9f9f9;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.emailBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.email {
+  font-size: 16px;
+}
+
+.logout {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.input {
+  flex: 1;
+  padding: 17px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.radio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.radioTop {
+  display: flex;
+  align-items: center; 
+  width: 100%;
+  justify-content: space-between;
+}
+
+.radioBottom {
+  font-size: 14px;
+  color: #777;
+  margin-left: 26px; 
+  line-height: 1.4;
+  max-width: 90%;
+}
+
+.radio input {
+  margin-right: 8px;
+}
+
+.radio.active {
+  border: 2px solid brown;
+}
+
+.textarea {
+  width: 50%;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.button {
+  width: 100%;
+  background: brown;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cartTitle {
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cartCount {
+  background: green;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 50%;
+  font-size: 14px;
+}
+
+.cartItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.cartImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+}
+
+.cartDetails {
+  flex: 1;
+}
+
+.cartRemove {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.cartSummary {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 20px;
+}
