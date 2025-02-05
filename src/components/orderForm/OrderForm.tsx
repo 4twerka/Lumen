@@ -36,38 +36,18 @@ function OrderForm() {
         <div className={styles.card}>
           <h2 className={styles.title}>3. Метод доставки</h2>
           <div className={styles.radioGroup}>
-            <label className={styles.radio}>
-              <div className={styles.radioTop}>
-                <span>
-                  <input className={styles.inputRadio} type="radio" name="delivery" />
-                  Delivery method
-                </span>
-                <Typography variant="body2" className={styles.priceText}>Price</Typography>
-              </div>
-              <div className={styles.radioBottom}>Delivery period</div>
-            </label>
-
-            <label className={styles.radio}>
-              <div className={styles.radioTop}>
-                <span>
-                  <input className={styles.inputRadio} type="radio" name="delivery" />
-                  Delivery method
-                </span>
-                <Typography variant="body2" className={styles.priceText}>Price</Typography>
-              </div>
-              <div className={styles.radioBottom}>Delivery period</div>
-            </label>
-
-            <label className={`${styles.radio} ${styles.active}`}>
-              <div className={styles.radioTop}>
-                <span>
-                  <input className={styles.inputRadio} type="radio" name="delivery" checked />
-                  Delivery method
-                </span>
-                <Typography variant="body2" className={styles.priceText}>Price</Typography>
-              </div>
-              <div className={styles.radioBottom}>Delivery period</div>
-            </label>
+            {[1, 2, 3].map((_, index) => (
+              <label key={index} className={`${styles.radio} ${index === 2 ? styles.active : ""}`}>
+                <div className={styles.radioTop}>
+                  <span>
+                    <input className={styles.inputRadio} type="radio" name="delivery" defaultChecked={index === 2} />
+                    Delivery method
+                  </span>
+                  <Typography variant="body2" className={styles.priceText}>Price</Typography>
+                </div>
+                <div className={styles.radioBottom}>Delivery period</div>
+              </label>
+            ))}
           </div>
         </div>
 
@@ -89,7 +69,7 @@ function OrderForm() {
             <label className={`${styles.radio} ${styles.active}`}>
               <div className={styles.radioTop}>
                 <span>
-                  <input className={styles.inputRadio} type="radio" name="payment" checked />
+                  <input className={styles.inputRadio} type="radio" name="payment" defaultChecked />
                   Pay with Visa/Mastercard
                 </span>
               </div>
@@ -107,18 +87,34 @@ function OrderForm() {
 
       <div className={styles.cartSection}>
         <h2 className={styles.cartTitle}>
-          Ваше замовлення <span className={styles.cartCount}>3</span>
+          Ваше замовлення <span className={styles.cartCount}>8</span>
         </h2>
-        <div className={styles.cartItem}>
-          <img src={Image} alt="order" className={styles.cartImage} />
-          <div className={styles.cartDetails}>
-            <p>Made By Zen Chi Ceramic Aroma Diffuser</p>
-            <span>1600 UAH</span>
+        {[1, 2, 3].map((_, index) => (
+          <div key={index} className={styles.cartItem}>
+            <img src={Image} alt="order" className={styles.cartImage} />
+            <div className={styles.cartDetails}>
+              <p>Made By Zen Chi Ceramic Aroma Diffuser</p>
+              <div className={styles.cartInfo}>
+              <span>1600 UAH</span>
+              <span className={styles.price}>1600 UAH</span>
+              <div className={styles.quantityControl}>
+                <button className={`${styles.quantityBtn} ${styles.quantityBtnMinus}`}>-</button>
+                <span>1</span>
+                <button className={styles.quantityBtn}>+</button>
+              </div>
+              </div>
+            </div>
+            <button className={styles.cartRemove}>✖</button>
           </div>
-          <button className={styles.cartRemove}>✖</button>
-        </div>
+        ))}
         <div className={styles.cartSummary}>
           <p>Сума: <span>12350 UAH</span></p>
+          <span>Маю промокод</span>
+          <div className={styles.promoBlock}>
+            <input type="text" placeholder="номер" className={styles.promoInput} />
+            <button className={styles.promoButton}>Відправити</button>
+          </div>
+          <p className={styles.totalSum}>Загальна сума <span>12350 UAH</span></p>
         </div>
       </div>
     </div>

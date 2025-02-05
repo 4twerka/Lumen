@@ -18,7 +18,7 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 20px;
-  background: #f9f9f9;
+  background: #F1F1F4;
 }
 
 .card {
@@ -115,7 +115,7 @@
 }
 
 .textarea {
-  width: 50%;
+  width: 100%;
   height: 100px;
   padding: 10px;
   border: 1px solid #ccc;
@@ -139,6 +139,7 @@
   font-weight: bold;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .cartCount {
@@ -154,6 +155,8 @@
   align-items: center;
   gap: 10px;
   margin: 10px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
 .cartImage {
@@ -164,6 +167,9 @@
 
 .cartDetails {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .cartRemove {
@@ -183,4 +189,67 @@
 
 .inputRadio {
   accent-color: #73270D;
+}
+
+.promoSection {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.promoInput {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.promoButton {
+  padding: 10px 15px;
+  border: 1px solid #73270D;
+  background: white;
+  color: #73270D;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.totalSummary {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 20px;
+}
+
+.quantityBtn {
+  background-color: #73270D;
+  color: white;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  font-size: 18px;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.quantityBtnMinus {
+  background: none;
+  color: black;
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cartInfo {
+  display: flex;
+}
+
+.promoBlock {
+  display: flex;
 }
