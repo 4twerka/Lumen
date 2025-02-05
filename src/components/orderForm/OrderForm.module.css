@@ -46,7 +46,7 @@
 .logout {
   background: none;
   border: none;
-  color: red;
+  color: #73270D;
   cursor: pointer;
 }
 
@@ -111,7 +111,7 @@
 }
 
 .radio.active {
-  border: 2px solid brown;
+  border: 2px solid #73270D;
 }
 
 .textarea {
@@ -125,7 +125,7 @@
 
 .button {
   width: 100%;
-  background: brown;
+  background: #73270D;
   color: white;
   padding: 12px;
   border: none;
@@ -169,7 +169,7 @@
 .cartRemove {
   background: none;
   border: none;
-  color: red;
+  color: black;
   font-size: 18px;
   cursor: pointer;
 }
@@ -179,4 +179,8 @@
   font-weight: bold;
   text-align: right;
   margin-top: 20px;
+}
+
+.inputRadio {
+  accent-color: #73270D;
 }

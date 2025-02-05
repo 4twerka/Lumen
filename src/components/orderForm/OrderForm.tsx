@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./OrderForm.module.css";
 import { Typography } from "@mui/material";
+import Image from "../../assets/test.png";
 
 function OrderForm() {
   return (
@@ -28,7 +29,7 @@ function OrderForm() {
             <input type="email" placeholder="E-mail *" className={styles.input} />
           </div>
           <label className={styles.checkbox}>
-            <input type="checkbox" /> Зберегти дані для подальших замовлень
+            <input className={styles.inputRadio} type="checkbox" /> Зберегти дані для подальших замовлень
           </label>
         </div>
 
@@ -38,7 +39,7 @@ function OrderForm() {
             <label className={styles.radio}>
               <div className={styles.radioTop}>
                 <span>
-                  <input type="radio" name="delivery" />
+                  <input className={styles.inputRadio} type="radio" name="delivery" />
                   Delivery method
                 </span>
                 <Typography variant="body2" className={styles.priceText}>Price</Typography>
@@ -49,10 +50,10 @@ function OrderForm() {
             <label className={styles.radio}>
               <div className={styles.radioTop}>
                 <span>
-                  <input type="radio" name="delivery" />
+                  <input className={styles.inputRadio} type="radio" name="delivery" />
                   Delivery method
                 </span>
-                <span>Price</span>
+                <Typography variant="body2" className={styles.priceText}>Price</Typography>
               </div>
               <div className={styles.radioBottom}>Delivery period</div>
             </label>
@@ -60,10 +61,10 @@ function OrderForm() {
             <label className={`${styles.radio} ${styles.active}`}>
               <div className={styles.radioTop}>
                 <span>
-                  <input type="radio" name="delivery" checked />
+                  <input className={styles.inputRadio} type="radio" name="delivery" checked />
                   Delivery method
                 </span>
-                <span>Price</span>
+                <Typography variant="body2" className={styles.priceText}>Price</Typography>
               </div>
               <div className={styles.radioBottom}>Delivery period</div>
             </label>
@@ -76,7 +77,7 @@ function OrderForm() {
             <label className={styles.radio}>
               <div className={styles.radioTop}>
                 <span>
-                  <input type="radio" name="payment" />
+                  <input className={styles.inputRadio} type="radio" name="payment" />
                   Готівка при доставці
                 </span>
               </div>
@@ -88,14 +89,14 @@ function OrderForm() {
             <label className={`${styles.radio} ${styles.active}`}>
               <div className={styles.radioTop}>
                 <span>
-                  <input type="radio" name="payment" checked />
+                  <input className={styles.inputRadio} type="radio" name="payment" checked />
                   Pay with Visa/Mastercard
                 </span>
               </div>
             </label>
           </div>
           <label className={styles.checkbox}>
-            <input type="checkbox" /> Не телефонуйте мені
+            <input className={styles.inputRadio} type="checkbox" /> Не телефонуйте мені
           </label>
           <textarea placeholder="Додати коментар до замовлення" className={styles.textarea}></textarea>
           <p>0/500 символів</p>
@@ -109,7 +110,7 @@ function OrderForm() {
           Ваше замовлення <span className={styles.cartCount}>3</span>
         </h2>
         <div className={styles.cartItem}>
-          <img src="https://via.placeholder.com/50" alt="item" className={styles.cartImage} />
+          <img src={Image} alt="order" className={styles.cartImage} />
           <div className={styles.cartDetails}>
             <p>Made By Zen Chi Ceramic Aroma Diffuser</p>
             <span>1600 UAH</span>
