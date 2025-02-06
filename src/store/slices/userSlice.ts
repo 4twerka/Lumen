@@ -32,12 +32,12 @@ const initialState: UserState = {
     isLoading: false,
 }
 
-export const registerUser = createAsyncThunk<User, UserRegister, {rejectValue: string}>(
+export const registerUser = createAsyncThunk<string, UserRegister, {rejectValue: string}>(
     'user/registerUser',
     async (userData, {rejectWithValue}) => {
         try {
             const response = await axios.post(`${API}/api/auth/signUp`, userData);
-            return response.data as User;
+            return response.data as string;
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response) { 
               return rejectWithValue(error.response.data || "Server Error!");
@@ -82,12 +82,15 @@ const userSlice = createSlice({
   reducers:{
     clearErrors: (state) => {
         state.error = null;
+    },
+    clearStatus: (state) => {
+        state.status = '';
     }
   },
   extraReducers: (builder) => {
     builder
         .addCase(registerUser.fulfilled, (state, action) => {
-            state.users.push(action.payload);
+            state.status = action.payload;
             state.error = null;
             state.isLoading = false;
         })
@@ -119,6 +122,6 @@ const userSlice = createSlice({
   }
 })
 
-export const { clearErrors } = userSlice.actions;
+export const { clearErrors, clearStatus } = userSlice.actions;
 
 export default userSlice.reducer;

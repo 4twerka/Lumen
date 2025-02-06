@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   IconButton,
   Link,
+  Snackbar,
   Typography,
 } from "@mui/material";
 import GoogleIcon from "../../icons/flat-color-icons_google.svg?react";
@@ -63,6 +64,7 @@ function FormRegistration() {
     handleSubmit,
     trigger,
     setError,
+    reset,
     watch,
     formState: { errors, isValid },
   } = useForm<FormData>({
@@ -76,7 +78,8 @@ function FormRegistration() {
   const passwordConfirm = watch().passwordConfirm;
   const registerError = useAppSelector((state) => state.user.error);
   const isLoading = useAppSelector((state) => state.user.isLoading);
-
+  const [registerMessage, setRegisterMessage] = useState('');
+  
   useEffect(() => {
     if (passwordConfirm) {
       trigger("passwordConfirm");
@@ -85,22 +88,26 @@ function FormRegistration() {
 
   useEffect(() => {
     return () => {
-      dispatch(clearErrors())
+      dispatch(clearErrors());
     }
   }, [dispatch])
 
   const onSubmit = async (data: FormData) => {
     try {
       if (checkBoxAgreementRef.current?.checked) {
-        await dispatch(
+        const resultAction = await dispatch(
           registerUser({ email: data.emailReg, password: data.passwordReg })
         ).unwrap();
+        setRegisterMessage(resultAction);
         // if (checkBoxRef.current?.checked && data) {
         //   localStorage.setItem("authToken", "token");
         // } else {
         //   sessionStorage.setItem("authToken", "token");
         // }
-        navigate("/login");
+        // setTimeout(() => {
+        //   navigate("/login");
+        // }, 4000)
+        reset();
       } else {
         setError("emailReg", {
           type: "manual",
@@ -279,6 +286,12 @@ function FormRegistration() {
         <Typography>Вже маєш аккаунт?</Typography>
         <Link onClick={() => (navigate('/login'))} sx={{ color: "#73270D", cursor: "pointer", fontWeight: 600 }}>Вхід</Link>
       </Box>
+      <Snackbar 
+        open={!!registerMessage} 
+        message={registerMessage} 
+        autoHideDuration={6000} 
+        onClose={() => setRegisterMessage('')}
+      />
     </Box>
   );
 }
