@@ -242,7 +242,7 @@ function FormRegistration() {
         </FormButtonSubmit>
       </Box>
       <Box sx={{ textAlign: "right", p: "10px" }}>
-        <Link onClick={() => navigate('/reset-password')} sx={{ cursor: "pointer", display: "inline-block", fontWeight: 600 }}>
+        <Link onClick={() => navigate('/forgot-password')} sx={{ cursor: "pointer", display: "inline-block", fontWeight: 600 }}>
           Забули пароль
         </Link>
       </Box>

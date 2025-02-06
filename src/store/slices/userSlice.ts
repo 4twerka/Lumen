@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 const API = 'https://online-store-v28d.onrender.com'
@@ -15,7 +15,7 @@ interface User extends UserRegister {
 }
 
 interface UserState {
-  userId: string;
+  userId: string | null;
   token: string;
   users: User[];
   error: string | null;
@@ -24,7 +24,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-    userId: '',
+    userId: null,
     token: '',
     users: [],
     error: null,
@@ -65,7 +65,6 @@ export const accoutRecoveryUser = createAsyncThunk<string, { email: string }, {r
     async (userData, {rejectWithValue}) => {
         try {
             const response = await axios.post(`${API}/api/auth/accountRecovery`, userData);
-            console.log('accoutRecoveryUser',response);
             return response.data as string;
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response) { 
@@ -85,6 +84,9 @@ const userSlice = createSlice({
     },
     clearStatus: (state) => {
         state.status = '';
+    },
+    setUserId: (state, action: PayloadAction<string | null>) => {
+        state.userId = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -115,13 +117,18 @@ const userSlice = createSlice({
         })
         .addCase(accoutRecoveryUser.fulfilled, (state, action) => {
             state.status = action.payload;
+            state.isLoading = false;
+        })
+        .addCase(accoutRecoveryUser.pending, (state) => {
+            state.isLoading = true;
         })
         .addCase(accoutRecoveryUser.rejected, (state, action) => {
             state.error = action.payload || "Something went wrong";
+            state.isLoading = false;
         })
   }
 })
 
-export const { clearErrors, clearStatus } = userSlice.actions;
+export const { clearErrors, clearStatus, setUserId } = userSlice.actions;
 
 export default userSlice.reducer;
