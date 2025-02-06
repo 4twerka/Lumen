@@ -95,26 +95,32 @@ function OrderForm() {
             <div className={styles.cartDetails}>
               <p>Made By Zen Chi Ceramic Aroma Diffuser</p>
               <div className={styles.cartInfo}>
-              <span>1600 UAH</span>
-              <span className={styles.price}>1600 UAH</span>
-              <div className={styles.quantityControl}>
-                <button className={`${styles.quantityBtn} ${styles.quantityBtnMinus}`}>-</button>
-                <span>1</span>
-                <button className={styles.quantityBtn}>+</button>
-              </div>
+                <span className={styles.itemId}>75684143</span>
+                <span className={styles.price}>1600 UAH</span>
+                <div className={styles.quantityControl}>
+                  <button className={`${styles.quantityBtn} ${styles.quantityBtnMinus}`}>-</button>
+                  <span>1</span>
+                  <button className={styles.quantityBtn}>+</button>
+                </div>
               </div>
             </div>
             <button className={styles.cartRemove}>✖</button>
           </div>
         ))}
         <div className={styles.cartSummary}>
-          <p>Сума: <span>12350 UAH</span></p>
+          <div className={styles.sumControl}>
+            <p>Сума:</p>
+            <span>12350 UAH</span>
+          </div>
           <span>Маю промокод</span>
           <div className={styles.promoBlock}>
             <input type="text" placeholder="номер" className={styles.promoInput} />
             <button className={styles.promoButton}>Відправити</button>
           </div>
-          <p className={styles.totalSum}>Загальна сума <span>12350 UAH</span></p>
+          <div className={styles.sumControl}>
+            <p className={styles.totalSum}>Загальна сума</p>
+            <span className="typoH3">12350 UAH</span>
+          </div>
         </div>
       </div>
     </div>
