@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./OrderForm.module.css";
 import { Typography } from "@mui/material";
 import Image from "../../assets/test.png";
+import EmailIcon from "../../assets/email-icon.png";
 
 function OrderForm() {
   return (
@@ -10,6 +11,7 @@ function OrderForm() {
         <div className={styles.card}>
           <h2 className={styles.title}>1. Контактна інформація</h2>
           <div className={styles.emailBlock}>
+            <img src={EmailIcon} alt="Email" className={styles.emailIcon} />
             <span className={styles.email}>john@email.com</span>
             <button className={styles.logout}>Log Out</button>
           </div>
@@ -17,6 +19,7 @@ function OrderForm() {
 
         <div className={styles.card}>
           <h2 className={styles.title}>2. Особисті деталі</h2>
+          <span className={styles.subtitleCity}>Обери своє місто</span>
           <select className={styles.input}>
             <option>Обрати</option>
           </select>
@@ -35,6 +38,7 @@ function OrderForm() {
 
         <div className={styles.card}>
           <h2 className={styles.title}>3. Метод доставки</h2>
+          <span className={styles.subtitleCity}>Обери метод доставки</span>
           <div className={styles.radioGroup}>
             {[1, 2, 3].map((_, index) => (
               <label key={index} className={`${styles.radio} ${index === 2 ? styles.active : ""}`}>
@@ -93,7 +97,10 @@ function OrderForm() {
           <div key={index} className={styles.cartItem}>
             <img src={Image} alt="order" className={styles.cartImage} />
             <div className={styles.cartDetails}>
-              <p>Made By Zen Chi Ceramic Aroma Diffuser</p>
+              <div className={styles.cartHeader}>
+                <p className={styles.cartProductName}>Made By Zen Chi Ceramic Aroma Diffuser</p>
+                <button className={styles.cartRemove}>✖</button>
+              </div>
               <div className={styles.cartInfo}>
                 <span className={styles.itemId}>75684143</span>
                 <span className={styles.price}>1600 UAH</span>
@@ -104,7 +111,6 @@ function OrderForm() {
                 </div>
               </div>
             </div>
-            <button className={styles.cartRemove}>✖</button>
           </div>
         ))}
         <div className={styles.cartSummary}>
@@ -119,7 +125,7 @@ function OrderForm() {
           </div>
           <div className={styles.sumControl}>
             <p className={styles.totalSum}>Загальна сума</p>
-            <span className="typoH3">12350 UAH</span>
+            <span className={styles.typoH3}>12350 UAH</span>
           </div>
         </div>
       </div>
