@@ -23,7 +23,7 @@
 .title {
   font-size: 20px;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 30px;
 }
 
 .subtitle {
@@ -36,7 +36,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  border: 2px solid #ddd;  
+  border: 1px solid rgba(0, 0, 0,  0.3);  
   border-radius: 8px;
   padding: 16px 20px;  
   background: white;
@@ -191,22 +191,22 @@
 
 .cartItem {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ddd;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
 }
 
 .cartImage {
-  width: 50px;
-  height: 50px;
+  height: 50%;
   object-fit: cover;
   border-radius: 4px;
 }
 
 .cartDetails {
   flex: 1;
-  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
 }
 
 .cartHeader {
@@ -279,6 +279,7 @@
 .promoBlock {
   display: flex;
   gap: 10px;
+  margin-bottom: 20px;
 }
 
 .promoInput {
@@ -286,6 +287,7 @@
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  outline: none;
 }
 
 .promoButton {

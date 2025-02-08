@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./OrderForm.module.css";
 import { Typography } from "@mui/material";
 import Image from "../../assets/test.png";
 import EmailIcon from "../../assets/email-icon.png";
 
 function OrderForm() {
+  const [isClicked, setIsClicked] = useState(2);
+  const [paymentMethod, setPaymentMethod] = useState("cash");
+
   return (
     <div className={styles.container}>
       <div className={styles.formSection}>
@@ -41,10 +44,16 @@ function OrderForm() {
           <span className={styles.subtitleCity}>Обери метод доставки</span>
           <div className={styles.radioGroup}>
             {[1, 2, 3].map((_, index) => (
-              <label key={index} className={`${styles.radio} ${index === 2 ? styles.active : ""}`}>
+              <label key={index} className={`${styles.radio} ${isClicked === index ? styles.active : ""}`}>
                 <div className={styles.radioTop}>
                   <span>
-                    <input className={styles.inputRadio} type="radio" name="delivery" defaultChecked={index === 2} />
+                    <input
+                      checked={isClicked === index}
+                      onChange={() => setIsClicked(index)}
+                      className={styles.inputRadio}
+                      type="radio"
+                      name="delivery"
+                    />
                     Delivery method
                   </span>
                   <Typography variant="body2" className={styles.priceText}>Price</Typography>
@@ -58,10 +67,16 @@ function OrderForm() {
         <div className={styles.card}>
           <h2 className={styles.title}>4. Метод оплати</h2>
           <div className={styles.radioGroup}>
-            <label className={styles.radio}>
+            <label className={`${styles.radio} ${paymentMethod === "cash" ? styles.active : ""}`}>
               <div className={styles.radioTop}>
                 <span>
-                  <input className={styles.inputRadio} type="radio" name="payment" />
+                  <input
+                    checked={paymentMethod === "cash"}
+                    onChange={() => setPaymentMethod("cash")}
+                    className={styles.inputRadio}
+                    type="radio"
+                    name="payment"
+                  />
                   Готівка при доставці
                 </span>
               </div>
@@ -70,10 +85,16 @@ function OrderForm() {
               </div>
             </label>
 
-            <label className={`${styles.radio} ${styles.active}`}>
+            <label className={`${styles.radio} ${paymentMethod === "card" ? styles.active : ""}`}>
               <div className={styles.radioTop}>
                 <span>
-                  <input className={styles.inputRadio} type="radio" name="payment" defaultChecked />
+                  <input
+                    checked={paymentMethod === "card"}
+                    onChange={() => setPaymentMethod("card")}
+                    className={styles.inputRadio}
+                    type="radio"
+                    name="payment"
+                  />
                   Pay with Visa/Mastercard
                 </span>
               </div>
@@ -94,23 +115,26 @@ function OrderForm() {
           Ваше замовлення <span className={styles.cartCount}>8</span>
         </h2>
         {[1, 2, 3].map((_, index) => (
-          <div key={index} className={styles.cartItem}>
-            <img src={Image} alt="order" className={styles.cartImage} />
-            <div className={styles.cartDetails}>
-              <div className={styles.cartHeader}>
-                <p className={styles.cartProductName}>Made By Zen Chi Ceramic Aroma Diffuser</p>
-                <button className={styles.cartRemove}>✖</button>
-              </div>
-              <div className={styles.cartInfo}>
-                <span className={styles.itemId}>75684143</span>
-                <span className={styles.price}>1600 UAH</span>
-                <div className={styles.quantityControl}>
-                  <button className={`${styles.quantityBtn} ${styles.quantityBtnMinus}`}>-</button>
-                  <span>1</span>
-                  <button className={styles.quantityBtn}>+</button>
+          <div key={index}>
+            <div className={styles.cartItem}>
+              <img src={Image} alt="order" className={styles.cartImage} />
+              <div className={styles.cartDetails}>
+                <div className={styles.cartHeader}>
+                  <p className={styles.cartProductName}>Made By Zen Chi Ceramic Aroma Diffuser</p>
+                  <button className={styles.cartRemove}>✖</button>
+                </div>
+                <div className={styles.cartInfo}>
+                  <span className={styles.itemId}>75684143</span>
+                  <span className={styles.price}>1600 UAH</span>
+                  <div className={styles.quantityControl}>
+                    <button className={`${styles.quantityBtn} ${styles.quantityBtnMinus}`}>-</button>
+                    <span>1</span>
+                    <button className={styles.quantityBtn}>+</button>
+                  </div>
                 </div>
               </div>
             </div>
+            <hr />
           </div>
         ))}
         <div className={styles.cartSummary}>
@@ -123,6 +147,7 @@ function OrderForm() {
             <input type="text" placeholder="номер" className={styles.promoInput} />
             <button className={styles.promoButton}>Відправити</button>
           </div>
+          <hr />
           <div className={styles.sumControl}>
             <p className={styles.totalSum}>Загальна сума</p>
             <span className={styles.typoH3}>12350 UAH</span>
