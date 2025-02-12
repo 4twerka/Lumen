@@ -7,6 +7,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import { useAppSelector, useQueryParam } from "../../../hooks";
+import FormWrapper from "./FormWrapper";
+import Loader from "../../Loader/Loader";
 
 const schemaPassword = yup
   .object({
@@ -21,18 +24,7 @@ const schemaPassword = yup
 
 type FormDataPassword = yup.InferType<typeof schemaPassword>;
 
-interface PasswordFormProps {
-  setUserResetPasword: (value: { email: string, password?: string }) => void;
-  userResetPasword: { email: string; password?: string };
-  setIsEmailVerified: (value: boolean) => void;
-}
-
-const PasswordForm: React.FC<PasswordFormProps> = ({
-  setUserResetPasword,
-  userResetPasword,
-  setIsEmailVerified
-}) => {
-
+const PasswordForm: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -41,45 +33,48 @@ const PasswordForm: React.FC<PasswordFormProps> = ({
     resolver: yupResolver(schemaPassword),
   });
   const [seePassword, setSeePassword] = useState("password");
+  const token = useQueryParam("token");
+  console.log("token", token);
+  const isLoading = useAppSelector((state) => state.user.isLoading);
 
   const handleTogglePassword = () => {
     setSeePassword((prev) => (prev === "password" ? "text" : "password"));
   };
-  
+
   const onSubmitEmail = (data: FormDataPassword) => {
     console.log(data);
-    setUserResetPasword({
-      ...userResetPasword,
-      password: data.passwordForgott,
-    });
-    setIsEmailVerified(false);
+
   };
 
   return (
-    <Box component={"form"} onSubmit={handleSubmit(onSubmitEmail)}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "24px",
-          mb: "32px",
-        }}
-      >
-        <InputLogin
-          errors={errors}
-          register={register}
-          id="passwordForgott"
-          label="Новий пароль"
-          type={seePassword}
-          icon={
-            <IconButton onClick={handleTogglePassword}>
-              {seePassword === "text" ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          }
-        />
-        <FormButtonSubmit>Підтвердити</FormButtonSubmit>
+    <FormWrapper>
+      <Box component={"form"} onSubmit={handleSubmit(onSubmitEmail)}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+            mb: "32px",
+          }}
+        >
+          <InputLogin
+            errors={errors}
+            register={register}
+            id="passwordForgott"
+            label="Новий пароль"
+            type={seePassword}
+            icon={
+              <IconButton onClick={handleTogglePassword}>
+                {seePassword === "text" ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            }
+          />
+          <FormButtonSubmit disabled={isLoading}>
+            {isLoading ? <Loader size="11px" /> : "Підтвердити"}
+          </FormButtonSubmit>
+        </Box>
       </Box>
-    </Box>
+    </FormWrapper>
   );
 };
 

@@ -1,8 +1,8 @@
-import React from 'react'
-import FormResetPassword from '../components/Forms/FormResetPassword/FormResetPassword'
-import { Box } from '@mui/material'
+import React from "react";
+import { Box } from "@mui/material";
+import PasswordForm from "../components/Forms/FormResetPassword/PasswordForm";
 
-const ResetPassworPage: React.FC = () => {
+const ResetPasswordPage: React.FC = () => {
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
       <Box
@@ -20,16 +20,16 @@ const ResetPassworPage: React.FC = () => {
         sx={{
           width: { xs: "100%", sm: "55%" },
           padding: { xs: 0, sm: "0 30px", md: "0 50px" },
-          minHeight: '100%',
+          minHeight: "100%",
           overflowY: "auto",
-          display:'grid',
-          placeItems:'center'
+          display: "grid",
+          placeItems: "center",
         }}
       >
-        <FormResetPassword />
+        <PasswordForm />
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default ResetPassworPage
+export default ResetPasswordPage;
