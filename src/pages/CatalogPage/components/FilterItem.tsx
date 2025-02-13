@@ -1,7 +1,6 @@
-import { CheckBox, ExpandLess, ExpandMore } from "@mui/icons-material";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import {
   Box,
-  Button,
   Checkbox,
   Collapse,
   FormControlLabel,
@@ -50,6 +49,7 @@ const FilterItem: React.FC<FilterItemProps> = ({ filterName, options, selectedOp
         <List sx={{ pl: 2, display: 'flex', flexDirection: 'column' }}>
           {options.map((option) => (
             <FormControlLabel
+              sx={{'& .MuiTypography-root': {fontSize: '14px', fontWeight: 400}}}
               key={option}
               control={
                 <Checkbox

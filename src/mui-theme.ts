@@ -11,6 +11,9 @@ const theme = createTheme({
       main: '#0E402D'
     }
   },
+  typography: {
+    fontFamily: "Inter, sans-serif",
+  },
 });
 
 export default theme;

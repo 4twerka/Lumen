@@ -1,5 +1,5 @@
 import React from "react";
-import FilterItem from "../../../components/FilterItem/FilterItem";
+import FilterItem from "./FilterItem";
 import { FiltersState } from "../../../types";
 import {
   Checkbox,
@@ -34,7 +34,6 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
       [filterName]: !prev[filterName],
     }));
   };
-  console.log('filtersState',filtersState);
   
   return (
     <>

@@ -1,13 +1,22 @@
+interface ProductDescribe {
+    aroma: string,
+    burning_time: string,
+    short_describe: string,
+    type: string,
+    size: string,
+    color: string,
+    assignment: string,
+    material: string,
+    form: string,
+    features: string,
+}
+
 export interface Product {
     image: string[];
     _id: string;
     comments: string[];
     collections: string;
-    describe: {
-        aroma: string,
-        burning_time: string,
-        short_describe: string
-    };
+    describe: ProductDescribe;
     title: string;
     price: number;
     stock: number;

@@ -6,16 +6,20 @@ import {
   PaginationItem,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { fetchFilteredPriceProducts, fetchProducts } from "../../store/slices/productSlice";
+import {
+  fetchFilteredPriceProducts,
+  fetchProducts,
+} from "../../store/slices/productSlice";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import { Product } from "../../types";
 import CatalogFilters from "./components/CatalogFilters";
-import { FiltersState } from "../../types";
-import { getPriceRange } from "../../utils/filter";
+import { FiltersState, Product } from "../../types";
 import FilterSelect from "./components/FilterSelect";
-import { useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
+import Loader from "../../components/Loader/Loader";
+import { getFilteredProducts } from "../../utils/filteredPoducts";
+import { getPaginatedProducts } from "../../utils/getPaginatedArray";
 
 const buttonStyles = {
   fontWeight: 600,
@@ -26,6 +30,7 @@ const buttonStyles = {
 
 const CatalogPage: React.FC = () => {
   const products = useAppSelector((state) => state.products.products);
+  const isLoading = useAppSelector((state) => state.products.isLoading);
   const dispatch = useAppDispatch();
   const [filtersState, setFiltersState] = useState<FiltersState>({
     types: [],
@@ -43,36 +48,63 @@ const CatalogPage: React.FC = () => {
   const [typeProducts, setTypeProducts] = useState<
     "allProducts" | "filteredProducts"
   >("allProducts");
-  const [filter, setFilter] = useState<'asc' | 'desc' | 'rating' | 'new'>('asc');
-  const [serachParams, setSerachParams] = useSearchParams();
-  const priceRange = getPriceRange(filtersState.price);
-  console.log("products", products);
+  const [filter, setFilter] = useState<"asc" | "desc" | "rating" | "new">(
+    "asc"
+  );
+  const [allProductPage, setAllProductPage] = useState(1);
+  const [filteredProductPage, setFilteredProductPage] = useState(1);
+  const [, setSearchParams] = useSearchParams();
+  const [displayProducts, setDisplayProducts] = useState<Product[][]>([]);
+  const filteredProducts = useMemo(
+    () => getFilteredProducts(products, filtersState),
+    [products, filtersState]
+  );
+  const pagintedProducts = useMemo(
+    () =>
+      getPaginatedProducts(
+        typeProducts === "allProducts" ? products : filteredProducts,
+        9
+      ),
+    [products, filteredProducts, typeProducts]
+  );
 
-  const filteredProducts: Product[] = products.filter((product) => {
-    const filteredPriceProducts =
-      filtersState.price.length === 0 ||
-      priceRange.some(
-        (range) => product.price >= range.min && product.price <= range.max
-      );
-    const filterAromaProducts =
-      filtersState.aroma.length === 0 ||
-      filtersState.aroma.some((aromaItem) =>
-        product.describe?.aroma?.includes(aromaItem.toLowerCase())
-      );
-    return filteredPriceProducts && filterAromaProducts;
-  });
-  console.log("filteredProducts", filteredProducts);
+  const handleChangePage = (_: unknown, newPage: number) => {
+    if (typeProducts === "allProducts") {
+      setAllProductPage(newPage);
+    } else {
+      setFilteredProductPage(newPage);
+    }
+  };
+
+  const currentPage =
+    typeProducts === "allProducts" ? allProductPage : filteredProductPage;
+
+  const handleAddProducts = () => {
+    if (currentPage < displayProducts.length) {
+      const updatedProducts = [...displayProducts];
+      updatedProducts[currentPage - 1] = [
+        ...updatedProducts[currentPage - 1],
+        ...updatedProducts[currentPage],
+      ];
+      updatedProducts.splice(currentPage, 1);
+      setDisplayProducts(updatedProducts);
+    }
+  };
 
   useEffect(() => {
     if (filter) {
-      setSerachParams({sort: filter});
-      if (filter === 'asc' || filter === 'desc') {
-        dispatch(fetchFilteredPriceProducts(filter))
+      setSearchParams({ sort: filter });
+      if (filter === "asc" || filter === "desc") {
+        dispatch(fetchFilteredPriceProducts(filter));
       }
     } else {
       dispatch(fetchProducts());
     }
-  }, [dispatch, filter, setSerachParams]);
+  }, [dispatch, filter, setSearchParams]);
+
+  useEffect(() => {
+    setDisplayProducts(pagintedProducts);
+  }, [pagintedProducts]);
 
   const handleAllProducts = () => {
     setTypeProducts("allProducts");
@@ -88,6 +120,7 @@ const CatalogPage: React.FC = () => {
         width: "100%",
         padding: "48px 80px",
         gap: "1.25rem",
+        backgroundColor: '#FCFCFC'
       }}
     >
       <Box sx={{ width: "25%" }}>
@@ -97,28 +130,30 @@ const CatalogPage: React.FC = () => {
         />
       </Box>
       <Box sx={{ width: "75%" }}>
-        <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-        <Box sx={{ display: "flex", gap: "0.3rem" }}>
-          <Button
-            onClick={handleAllProducts}
-            variant={typeProducts === "allProducts" ? "contained" : "outlined"}
-            color="secondary"
-            sx={buttonStyles}
-          >
-            Всі товари
-          </Button>
-          <Button
-            color="secondary"
-            onClick={handleFilterProducts}
-            variant={
-              typeProducts === "filteredProducts" ? "contained" : "outlined"
-            }
-            sx={buttonStyles}
-          >
-            Фільтри
-          </Button>
-        </Box>
-        <FilterSelect filter={filter} setFilter={setFilter} />
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex", gap: "0.3rem" }}>
+            <Button
+              onClick={handleAllProducts}
+              variant={
+                typeProducts === "allProducts" ? "contained" : "outlined"
+              }
+              color="secondary"
+              sx={buttonStyles}
+            >
+              Всі товари
+            </Button>
+            <Button
+              color="secondary"
+              onClick={handleFilterProducts}
+              variant={
+                typeProducts === "filteredProducts" ? "contained" : "outlined"
+              }
+              sx={buttonStyles}
+            >
+              Фільтри
+            </Button>
+          </Box>
+          <FilterSelect filter={filter} setFilter={setFilter} />
         </Box>
         <Typography pt={"1.25rem"}>
           {typeProducts === "allProducts"
@@ -127,16 +162,38 @@ const CatalogPage: React.FC = () => {
           знайдено товарів
         </Typography>
         <Grid2 pt={"1rem"} pb={"2.875rem"} container spacing={"1.25rem"}>
-          {(typeProducts === "allProducts" ? products : filteredProducts)?.map(
-            (product) => (
+          {isLoading ? (
+            <Box
+              sx={{
+                width: "100%",
+                paddingTop: "100px",
+                paddingBottom: "100px",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Loader />
+            </Box>
+          ) : (
+            displayProducts[currentPage - 1]?.map((product) => (
               <Grid2 key={product._id} size={{ xs: 12, sm: 6, md: 4 }}>
-                <ProductCard {...product} />
+                <Link
+                  to={`/product/${product._id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <ProductCard {...product} />
+                </Link>
               </Grid2>
-            )
+            ))
           )}
         </Grid2>
         <Box sx={{ textAlign: "center" }}>
-          <Button sx={buttonStyles} color="secondary" variant="outlined">
+          <Button
+            sx={buttonStyles}
+            color="secondary"
+            variant="outlined"
+            onClick={handleAddProducts}
+          >
             Показати ще
           </Button>
         </Box>
@@ -145,9 +202,9 @@ const CatalogPage: React.FC = () => {
             "& .MuiPagination-ul": { justifyContent: "center" },
             marginTop: "2.875rem",
           }}
-          count={Math.ceil(products.length / 9)} // Загальна кількість сторінок
-          page={4} // Поточна сторінка
-          // onChange={onChange} // Функція для зміни сторінки
+          count={displayProducts.length}
+          page={currentPage}
+          onChange={handleChangePage}
           variant="outlined"
           shape="rounded"
           renderItem={(item) => (
@@ -159,7 +216,8 @@ const CatalogPage: React.FC = () => {
                 fontSize: "1.125rem",
                 width: "2.5rem",
                 height: "2.5rem",
-                borderColor: item.page === 4 ? "brown" : "transparent",
+                borderColor:
+                  item.page === currentPage ? "brown" : "transparent",
                 borderRadius: "8px",
               }}
             />
