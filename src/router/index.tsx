@@ -9,6 +9,7 @@ import CatalogPage from "../pages/CatalogPage/CatalogPage";
 import AuthLayout from "../layouts/AuthLayout";
 import MainLayout from "../layouts/MainLayout";
 import ProductsPage from "../pages/ProductsPage";
+import VerifyEmailPage from "../pages/VerifyEmailPage";
 
 const RootRouter: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const RootRouter: React.FC = () => {
       </Route>
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
+        <Route path="/verifyEmail/:id" element={<VerifyEmailPage />} />
         <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/product/:id" element={<ProductsPage />} />
       </Route>

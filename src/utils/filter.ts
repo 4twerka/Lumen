@@ -17,6 +17,26 @@ export const getPriceRange = (
   });
 };
 
+export const getSizeRange = (array: string[]): {min: number; max: number}[] => {
+  return array.map((item) => {
+    const match: RegExpMatchArray | null = item.match(/\((.*?)\)/);
+    const matchResult = match ? match[1] : '';
+    const words = matchResult.split(" ");
+    
+    if (words.includes("до")) {
+      return { min: 0, max: parseInt(words[1].trim(), 10) };
+    }
+    if (words.includes("понад")) {
+      return { min: parseInt(words[1].trim(), 10), max: Infinity };
+    }
+    const [minStr, maxStr] = words[0].split("-");
+    return {
+      min: parseInt(minStr.trim(), 10),
+      max: parseInt(maxStr.trim(), 10),
+    };
+  })
+}
+
 export const filterOptions = {
   price: ["До 200 грн", "200-500 грн", "500-1000 грн", "Понад 1000 грн"],
   types: [

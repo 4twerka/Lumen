@@ -1,26 +1,23 @@
-interface ProductDescribe {
-    aroma: string,
-    burning_time: string,
-    short_describe: string,
-    type: string,
-    size: string,
-    color: string,
-    assignment: string,
-    material: string,
-    form: string,
-    features: string,
-}
-
 export interface Product {
-    image: string[];
     _id: string;
-    comments: string[];
-    collections: string;
-    describe: ProductDescribe;
     title: string;
     price: number;
+    image: string[];
+    type_candle: string;
+    size: number;
+    aroma: string;
+    appointment: string;
+    burning_time: string;
+    short_describe: string;
+    color: string;
+    material: string;
+    shape: string;
+    features: string;
+    gift_packaging: boolean;
+    comments: string[];
     stock: number;
     rate_avg_product: number;
+    createdAt: string;
     __v: number;
 }
 

@@ -73,12 +73,12 @@ function FormLogin() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const authToken = await dispatch(loginUser(data)).unwrap();
+      const accessToken = await dispatch(loginUser(data)).unwrap();
 
       if (checkBoxRef.current?.checked) {
-        localStorage.setItem("authToken", JSON.stringify(authToken));
+        localStorage.setItem("accessToken", JSON.stringify(accessToken));
       } else {
-        sessionStorage.setItem("authToken", JSON.stringify(authToken));
+        sessionStorage.setItem("accessToken", JSON.stringify(accessToken));
       }
       navigate("/");
 

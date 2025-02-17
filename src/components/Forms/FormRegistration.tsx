@@ -100,9 +100,9 @@ function FormRegistration() {
         ).unwrap();
         setRegisterMessage(resultAction);
         // if (checkBoxRef.current?.checked && data) {
-        //   localStorage.setItem("authToken", "token");
+        //   localStorage.setItem("accessToken", "token");
         // } else {
-        //   sessionStorage.setItem("authToken", "token");
+        //   sessionStorage.setItem("accessToken", "token");
         // }
         // setTimeout(() => {
         //   navigate("/login");
@@ -253,6 +253,7 @@ function FormRegistration() {
         </FormButtonSocial>
       </Box>
       <FormControlLabel
+        sx={{ alignItems: "baseline" }}
         control={
           <Checkbox
             inputRef={checkBoxAgreementRef}
