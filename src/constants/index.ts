@@ -1,0 +1,1 @@
+export const API = "https://online-store-prev-prod.onrender.com";

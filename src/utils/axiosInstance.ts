@@ -30,11 +30,11 @@ axiosInstance.interceptors.response.use(
     if (error.response.statusCode == 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        await axios.get(`${baseURL}/api/auth/refresh`, {
+        const response = await axios.post(`${baseURL}/api/auth/refresh`, {}, {
           withCredentials: true,
         });
-        // localStorage.setItem("accessToken", response.data);
-        return axiosInstance.request(originalRequest)
+        localStorage.setItem("accessToken", response.data.token);
+        return axiosInstance.request(originalRequest);
       } catch (error) {
         console.log(error, "Не авторизований!");
       }

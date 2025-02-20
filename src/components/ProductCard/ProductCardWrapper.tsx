@@ -6,6 +6,8 @@ interface ProductCardWrapperProps {
   image: string[];
 }
 
+const SUPABASE_PRODUCT_URL_PART = 'https://deikuymdnacgwysnrebc.supabase.co/storage/v1/object/public/product-images/'
+
 const ProductCardWrapper: React.FC<ProductCardWrapperProps> = ({
   children,
   image,
@@ -24,7 +26,7 @@ const ProductCardWrapper: React.FC<ProductCardWrapperProps> = ({
         justifyContent: "flex-end",
         alignItems: "center",
         padding: "1rem",
-        background: `linear-gradient(0deg, rgba(0, 0, 0, 0.80) 5.56%, rgba(13, 17, 32, 0.64) 23.69%, rgba(25, 33, 61, 0.00) 100%), url(${image[0]})`,
+        background: `linear-gradient(0deg, rgba(0, 0, 0, 0.80) 5.56%, rgba(13, 17, 32, 0.64) 23.69%, rgba(25, 33, 61, 0.00) 100%), url(${SUPABASE_PRODUCT_URL_PART}${image[0]})`,
         backgroundColor: "lightgray",
         backgroundPosition: "center",
         backgroundSize: "cover",

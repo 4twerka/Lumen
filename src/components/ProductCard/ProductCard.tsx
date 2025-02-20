@@ -18,13 +18,13 @@ import { Product } from "../../types";
 // }
 
 
-const ProductCard: React.FC<Product> = ({title, describe, price, image}) => {
+const ProductCard: React.FC<Product> = ({title, short_describe, price, image}) => {
   return (
     <ProductCardWrapper image={image}>
       <ProductCardSale>30</ProductCardSale>
       <ProductCardTitle>{title}</ProductCardTitle>
       <ProductCardDesc>
-        {describe?.short_describe}
+        {short_describe}
       </ProductCardDesc>
       <ProductCardPrice>{price}</ProductCardPrice>
     </ProductCardWrapper>

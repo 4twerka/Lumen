@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
-import axiosInstance from '../../utils/axiosInstance';
-
-const API = 'https://online-store-v28d.onrender.com'
+// import axiosInstance from '../../utils/axiosInstance';
+import { API } from '../../constants';
 
 interface UserRegister {
     email: string;

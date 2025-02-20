@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
+  fetchFilteredDateProducts,
   fetchFilteredPriceProducts,
   fetchProducts,
 } from "../../store/slices/productSlice";
@@ -96,6 +97,9 @@ const CatalogPage: React.FC = () => {
       setSearchParams({ sort: filter });
       if (filter === "asc" || filter === "desc") {
         dispatch(fetchFilteredPriceProducts(filter));
+      }
+      if (filter === 'new') {
+        dispatch(fetchFilteredDateProducts('desc'));
       }
     } else {
       dispatch(fetchProducts());
