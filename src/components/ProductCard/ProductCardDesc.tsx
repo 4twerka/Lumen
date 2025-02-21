@@ -10,7 +10,7 @@ const ProductCardDesc: React.FC<ProductCardDescProps> = ({ children }) => {
     <Typography
       sx={{
         minHeight: "42px",
-        fontSize: "0.875rem",
+        fontSize: { xs: "0.75rem", md: "0.875rem" },
         fontWeight: 400,
         lineHeight: "21px",
         color: "#FFFFFF",

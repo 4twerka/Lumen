@@ -10,8 +10,8 @@ const ProductCardTitle: React.FC<ProductCardTitleProps> = ({ children }) => {
     <Typography
       sx={{
         color: "#FDF5ED",
-        fontSize: "1.5rem",
-        fontWeight: 600,
+        fontSize: { xs: "1rem", md: "1.5rem" },
+        fontWeight: { xs: 500, md: 600 },
         lineHeight: "36px",
         textAlign: "center",
         textDecoration: 'none'

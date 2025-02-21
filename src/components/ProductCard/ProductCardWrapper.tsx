@@ -17,11 +17,11 @@ const ProductCardWrapper: React.FC<ProductCardWrapperProps> = ({
       sx={{
         width: "100%",
         maxWidth: "400px",
-        height: "395px",
+        height: {xs: "250px", md: "395px"},
         borderRadius: "0.75rem",
         position: "relative",
         display: "flex",
-        gap: "0.25rem",
+        gap: { xs: 0, md: "0.25rem" },
         flexDirection: "column",
         justifyContent: "flex-end",
         alignItems: "center",

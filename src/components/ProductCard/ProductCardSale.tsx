@@ -12,6 +12,7 @@ const ProductCardSale: React.FC<ProductCardSaleProps> = ({children}) => {
           width: '58px',
           height: '35px',  
           position: "absolute",
+          fontSize: { xs: '0.875rem', md: '1rem'},
           top: '0.75rem',
           right: '1rem',
           display: "flex",
