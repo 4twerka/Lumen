@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react'
 import { jwtDecode } from "jwt-decode";
-import { Header } from '../components/header/Header';
-import { Footer } from '../components/footer/Footer';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { setUserId } from '../store/slices/userSlice';
 
@@ -29,8 +27,6 @@ const HomePage: React.FC = () => {
     
   return (
     <div>
-      <Header />
-      <Footer />
     </div>
   )
 }

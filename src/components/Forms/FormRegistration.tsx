@@ -23,7 +23,7 @@ import FormErrorsDisplay from "./FormErrorsDisplay";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { clearErrors, registerUser } from "../../store/slices/userSlice";
 import { useNavigate } from "react-router";
-import Loader from "../Loader/Loader";
+import ButtonLoader from "../ButtonLoader/ButtonLoader";
 
 const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,}$/;
 
@@ -100,9 +100,9 @@ function FormRegistration() {
         ).unwrap();
         setRegisterMessage(resultAction);
         // if (checkBoxRef.current?.checked && data) {
-        //   localStorage.setItem("authToken", "token");
+        //   localStorage.setItem("accessToken", "token");
         // } else {
-        //   sessionStorage.setItem("authToken", "token");
+        //   sessionStorage.setItem("accessToken", "token");
         // }
         // setTimeout(() => {
         //   navigate("/login");
@@ -235,7 +235,7 @@ function FormRegistration() {
         </Box>
         <FormButtonSubmit disabled={!isValid || !isCheckedAgreement || isLoading}>
           {isLoading ? (
-            <Loader size="11px" />
+            <ButtonLoader size="11px" />
           ) : (
             "Увійти"
           )}
@@ -253,6 +253,7 @@ function FormRegistration() {
         </FormButtonSocial>
       </Box>
       <FormControlLabel
+        sx={{ alignItems: "baseline" }}
         control={
           <Checkbox
             inputRef={checkBoxAgreementRef}

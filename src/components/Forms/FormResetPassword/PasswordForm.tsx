@@ -9,7 +9,7 @@ import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { useAppSelector, useQueryParam } from "../../../hooks";
 import FormWrapper from "./FormWrapper";
-import Loader from "../../Loader/Loader";
+import ButtonLoader from "../../ButtonLoader/ButtonLoader";
 
 const schemaPassword = yup
   .object({
@@ -70,7 +70,7 @@ const PasswordForm: React.FC = () => {
             }
           />
           <FormButtonSubmit disabled={isLoading}>
-            {isLoading ? <Loader size="11px" /> : "Підтвердити"}
+            {isLoading ? <ButtonLoader size="11px" /> : "Підтвердити"}
           </FormButtonSubmit>
         </Box>
       </Box>

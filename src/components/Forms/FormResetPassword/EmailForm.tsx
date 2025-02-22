@@ -8,7 +8,7 @@ import * as yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { accoutRecoveryUser, clearErrors } from "../../../store/slices/userSlice";
 import FormWrapper from "./FormWrapper";
-import Loader from "../../Loader/Loader";
+import ButtonLoader from "../../ButtonLoader/ButtonLoader";
 
 const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,}$/;
 
@@ -86,7 +86,7 @@ const EmailForm: React.FC = () => {
             serverError={serverErrors}
           />
           <FormButtonSubmit disabled={isLoading}>
-            {isLoading ? <Loader size="11px" /> : "Підтвердити"}
+            {isLoading ? <ButtonLoader size="11px" /> : "Підтвердити"}
           </FormButtonSubmit>
         </Box>
       </Box>

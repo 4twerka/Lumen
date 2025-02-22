@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
-
-const API = 'https://online-store-v28d.onrender.com'
+// import axiosInstance from '../../utils/axiosInstance';
+import { API } from '../../constants';
 
 interface UserRegister {
     email: string;
@@ -60,6 +60,21 @@ export const loginUser = createAsyncThunk<string, UserRegister, {rejectValue: st
           }
     }
 )
+// export const verifyEmail = createAsyncThunk<string, { email: string }, {rejectValue: string}>(
+//     'user/verifyEmail',
+//     async (id, {rejectWithValue}) => {
+//         try {
+//             const response = await axiosInstance.post(`${API}/api/auth/accountRecovery`, id);
+//             localStorage.setItem('a')
+//         } catch (error: unknown) {
+//             if (axios.isAxiosError(error) && error.response) { 
+//               return rejectWithValue(error.response.data || "Server Error!");
+//             }
+//             return rejectWithValue("Unexpected error occurred!");
+//           }
+//     }
+// )
+
 export const accoutRecoveryUser = createAsyncThunk<string, { email: string }, {rejectValue: string}>(
     'user/accoutRecoveryUser',
     async (userData, {rejectWithValue}) => {

@@ -22,7 +22,7 @@ import FormErrorsDisplay from "./FormErrorsDisplay";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { clearErrors, loginUser } from "../../store/slices/userSlice";
 import { useNavigate } from "react-router";
-import Loader from "../Loader/Loader";
+import ButtonLoader from "../ButtonLoader/ButtonLoader";
 
 const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,}$/;
 
@@ -73,12 +73,12 @@ function FormLogin() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const authToken = await dispatch(loginUser(data)).unwrap();
+      const accessToken = await dispatch(loginUser(data)).unwrap();
 
       if (checkBoxRef.current?.checked) {
-        localStorage.setItem("authToken", JSON.stringify(authToken));
+        localStorage.setItem("accessToken", JSON.stringify(accessToken));
       } else {
-        sessionStorage.setItem("authToken", JSON.stringify(authToken));
+        sessionStorage.setItem("accessToken", JSON.stringify(accessToken));
       }
       navigate("/");
 
@@ -175,7 +175,7 @@ function FormLogin() {
         </Box>
         <FormButtonSubmit disabled={!isValid || !isCheckedAgreement || isLoading}>
           {isLoading ? (
-            <Loader size="11px" />
+            <ButtonLoader size="11px" />
           ) : (
             'Увійти'
           )}
