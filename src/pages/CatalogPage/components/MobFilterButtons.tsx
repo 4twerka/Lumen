@@ -10,17 +10,13 @@ interface MobFilterButtonsProps {
   isFiltersEmpty: boolean;
   filteredProducts: Product[];
   filter: "asc" | "desc" | "rating" | "new";
-  setFilter: React.Dispatch<
-    React.SetStateAction<"asc" | "desc" | "rating" | "new">
-  >;
-  setIsMobileFilters: (value: boolean) => void;
+  setIsMobileFilters: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const MobFilterButtons: React.FC<MobFilterButtonsProps> = ({
   isFiltersEmpty,
   filteredProducts,
   filter,
-  setFilter,
   setIsMobileFilters,
 }) => {
   const getFilterName = (value: "asc" | "desc" | "rating" | "new"): string => {
@@ -38,6 +34,7 @@ const MobFilterButtons: React.FC<MobFilterButtonsProps> = ({
     }
   };
   const filterName = getFilterName(filter);
+
   return (
     <Box
       sx={{
@@ -56,7 +53,7 @@ const MobFilterButtons: React.FC<MobFilterButtonsProps> = ({
             isFiltersEmpty ? "Не обраний" : `${filteredProducts.length} товарів`
           }
           filtersCount={0}
-          onClick={() => setIsMobileFilters(prev => !prev)}
+          onClick={() => setIsMobileFilters((prev) => !prev)}
         />
         <FilterButtonMob
           icon={<SortIcon />}

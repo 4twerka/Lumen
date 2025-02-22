@@ -34,7 +34,7 @@ const CatalogPage: React.FC = () => {
   const products = useAppSelector((state) => state.products.products);
   const isLoading = useAppSelector((state) => state.products.isLoading);
   const dispatch = useAppDispatch();
-  const [isMobileFilters, setIsMobileFilters] = useState(false)
+  const [isMobileFilters, setIsMobileFilters] = useState<boolean>(false)
   const [filtersState, setFiltersState] = useState<FiltersState>({
     types: [],
     price: [],
@@ -149,7 +149,6 @@ const CatalogPage: React.FC = () => {
           typeProducts={typeProducts}
         />
         <MobFilterButtons
-          setFilter={setFilter}
           filter={filter}
           filteredProducts={filteredProducts}
           isFiltersEmpty={isFiltersEmpty}
