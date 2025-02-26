@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 
 interface FilterButtonMobProps {
@@ -7,68 +7,74 @@ interface FilterButtonMobProps {
   secondaryText: string;
   filtersCount?: number;
   onClick?: () => void;
+  children?: React.ReactNode;
 }
+
+const style = {
+  button: {
+    padding: "0.5rem 0.75rem",
+    position: "relative",
+  },
+  primaryText: {
+    fontSize: "0.75rem",
+    fontWeight: 400,
+    margin: 0,
+    textTransform: "none",
+    lineHeight: "13px",
+    color: "#111111",
+    textAlign: "start",
+    display: "flex",
+    gap: "0.3rem",
+    alignItems: "center",
+  },
+  filtersCount: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "15px",
+    height: "15px",
+    backgroundColor: "#73270D",
+    borderRadius: "50%",
+    color: "#FDF5ED",
+    fontSize: "0.75rem",
+  },
+  secondaryText: {
+    fontSize: "0.625rem",
+    fontWeight: 400,
+    color: "#A3A3A3",
+    margin: 0,
+    textTransform: "none",
+    lineHeight: "12px",
+    textAlign: "start",
+  },
+};
 
 const FilterButtonMob: React.FC<FilterButtonMobProps> = ({
   icon,
   primaryText,
   secondaryText,
   filtersCount,
-  onClick
+  onClick,
+  children,
 }) => {
   return (
     <Button
-      sx={{ padding: "0.5rem 0.75rem" }}
+      sx={style.button}
       variant="outlined"
       startIcon={icon}
       onClick={onClick}
     >
+      {children}
       <Box>
-        <p
-          style={{
-            fontSize: "0.75rem",
-            fontWeight: 400,
-            margin: 0,
-            textTransform: "none",
-            lineHeight: "13px",
-            color: "#111111",
-            textAlign: "start",
-            display: "flex",
-            gap: "0.3rem",
-            alignItems: "center",
-          }}
-        >
+        <Typography sx={style.primaryText}>
           {primaryText}
           {(filtersCount ?? 0) > 0 && (
-            <span
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "15px",
-                height: "15px",
-                backgroundColor: "#73270D",
-                borderRadius: "50%",
-                color: "#FDF5ED",
-              }}
-            >
+            <Typography component={"span"} sx={style.filtersCount}>
               {filtersCount}
-            </span>
+            </Typography>
           )}
-        </p>
-        <p
-          style={{
-            fontSize: "0.625rem",
-            fontWeight: 400,
-            color: "#A3A3A3",
-            margin: 0,
-            textTransform: "none",
-            lineHeight: "12px",
-            textAlign: "start",
-          }}
-        >
-          {secondaryText}
-        </p>
+        </Typography>
+        <Typography sx={style.secondaryText}>{secondaryText}</Typography>
       </Box>
     </Button>
   );
