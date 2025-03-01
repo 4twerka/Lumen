@@ -13,6 +13,7 @@ import FilterChooseItem from "./FilterChooseItem";
 import FilterChooseItemsWrapper from "./FilterChooseItemsWrapper";
 import FilterSelectMob from "./FilterSelectMob";
 import { getFilterName } from "../../../utils/getFilterName";
+import { useNavigate } from "react-router";
 
 interface MobFilterButtonsProps {
   isFiltersEmpty: boolean;
@@ -48,7 +49,7 @@ const MobFilterButtons: React.FC<MobFilterButtonsProps> = ({
   };
 
   const [isSortMenu, setIsSortMenu] = useState(false)
-
+  const navigate = useNavigate();
   return (
     <>
       {isMobileFilters ? (
@@ -97,7 +98,7 @@ const MobFilterButtons: React.FC<MobFilterButtonsProps> = ({
             position: "relative",
           }}
         >
-          <IconButton>
+          <IconButton onClick={isSortMenu ? () => setIsSortMenu(false) : () => navigate(-1)}>
             <ArrowLeftIcon />
           </IconButton>
           <Box sx={{ display: "flex", gap: "4px" }}>
