@@ -33,3 +33,16 @@ export interface FiltersState {
     features: string[];
     giftWrapping: boolean,
   }
+
+  export const initialFiltersState : FiltersState = {
+    types: [],
+    price: [],
+    size: [],
+    aroma: [],
+    assignment: [],
+    color: [],
+    material: [],
+    form: [],
+    features: [],
+    giftWrapping: false,
+  }

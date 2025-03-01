@@ -15,13 +15,14 @@ import {
 } from "../../store/slices/productSlice";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import CatalogFilters from "./components/CatalogFilters";
-import { FiltersState, Product } from "../../types";
+import { FiltersState, initialFiltersState, Product } from "../../types";
 import { Link, useSearchParams } from "react-router";
 import Loader from "../../components/Loader/Loader";
 import { getFilteredProducts } from "../../utils/filteredPoducts";
 import { getPaginatedProducts } from "../../utils/getPaginatedArray";
 import MobFilterButtons from "./components/MobFilterButtons";
 import FilterButtons from "./components/FilterButtons";
+import CatalogFiltersMob from "./components/CatalogFiltersMob";
 
 const buttonStyles = {
   fontWeight: 600,
@@ -34,19 +35,9 @@ const CatalogPage: React.FC = () => {
   const products = useAppSelector((state) => state.products.products);
   const isLoading = useAppSelector((state) => state.products.isLoading);
   const dispatch = useAppDispatch();
-  const [isMobileFilters, setIsMobileFilters] = useState<boolean>(false)
-  const [filtersState, setFiltersState] = useState<FiltersState>({
-    types: [],
-    price: [],
-    size: [],
-    aroma: [],
-    assignment: [],
-    color: [],
-    material: [],
-    form: [],
-    features: [],
-    giftWrapping: false,
-  });
+  const [isMobileFilters, setIsMobileFilters] = useState<boolean>(false);
+  const [filtersState, setFiltersState] =
+    useState<FiltersState>(initialFiltersState);
 
   const [typeProducts, setTypeProducts] = useState<
     "allProducts" | "filteredProducts"
@@ -122,8 +113,21 @@ const CatalogPage: React.FC = () => {
   const isFiltersEmpty = Object.values(filtersState).every((value) =>
     Array.isArray(value) ? value.length === 0 : !value
   );
-  console.log(isMobileFilters);
-  
+  useEffect(() => {
+    if (window.innerWidth < 900) {
+      setTypeProducts("filteredProducts");
+    }
+    const handleResize = () => {
+      if (window.innerWidth < 900) {
+        setTypeProducts("filteredProducts");
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <Box
       sx={{
@@ -153,48 +157,66 @@ const CatalogPage: React.FC = () => {
           filteredProducts={filteredProducts}
           isFiltersEmpty={isFiltersEmpty}
           setIsMobileFilters={setIsMobileFilters}
+          isMobileFilters={isMobileFilters}
+          filtersState={filtersState}
+          setFiltersState={setFiltersState}
+          setFilter={setFilter}
         />
-        <Typography pt={"1.25rem"} sx={{display: {xs: 'none', md: 'block'}}}>
+        <Typography
+          pt={"1.25rem"}
+          sx={{ display: { xs: "none", md: "block" } }}
+        >
           {typeProducts === "allProducts"
             ? products.length
             : filteredProducts.length}{" "}
           знайдено товарів
         </Typography>
-        <Box pt={"1rem"} pb={"2.875rem"} position={'relative'}>
-          { isMobileFilters && (
-          <Box sx={{position: 'absolute', top: 0, left: 0, width: '100%', zIndex: 10, backgroundColor: '#FCFCFC'}}>
-            <CatalogFilters
-            filtersState={filtersState}
-            setFiltersState={setFiltersState}
-        />
-          </Box>
-          )}
-        <Grid2 container spacing={"1.25rem"}>
-          {isLoading ? (
+        <Box pt={"1rem"} pb={"2.875rem"} position={"relative"}>
+          {isMobileFilters && (
             <Box
               sx={{
+                position: "absolute",
+                top: 0,
+                left: 0,
                 width: "100%",
-                paddingTop: "100px",
-                paddingBottom: "100px",
-                display: "flex",
-                justifyContent: "center",
+                zIndex: 10,
+                backgroundColor: "#FCFCFC",
               }}
             >
-              <Loader />
+              <CatalogFiltersMob
+                filtersState={filtersState}
+                setFiltersState={setFiltersState}
+                filteredProducts={filteredProducts}
+                setIsMobileFilters={setIsMobileFilters}
+              />
             </Box>
-          ) : (
-            displayProducts[currentPage - 1]?.map((product) => (
-              <Grid2 key={product._id} size={{ xs: 6, sm: 6, md: 4 }}>
-                <Link
-                  to={`/product/${product._id}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <ProductCard {...product} />
-                </Link>
-              </Grid2>
-            ))
           )}
-        </Grid2>
+          <Grid2 container spacing={"1.25rem"}>
+            {isLoading ? (
+              <Box
+                sx={{
+                  width: "100%",
+                  paddingTop: "100px",
+                  paddingBottom: "100px",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Loader />
+              </Box>
+            ) : (
+              displayProducts[currentPage - 1]?.map((product) => (
+                <Grid2 key={product._id} size={{ xs: 6, sm: 6, md: 4 }}>
+                  <Link
+                    to={`/product/${product._id}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <ProductCard {...product} />
+                  </Link>
+                </Grid2>
+              ))
+            )}
+          </Grid2>
         </Box>
         <Box sx={{ textAlign: "center" }}>
           <Button
