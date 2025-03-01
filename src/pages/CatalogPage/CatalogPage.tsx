@@ -23,6 +23,7 @@ import { getPaginatedProducts } from "../../utils/getPaginatedArray";
 import MobFilterButtons from "./components/MobFilterButtons";
 import FilterButtons from "./components/FilterButtons";
 import CatalogFiltersMob from "./components/CatalogFiltersMob";
+import ProductCardMobile from "../../components/ProductCardMobile/ProductCardMobile";
 
 const buttonStyles = {
   fontWeight: 600,
@@ -210,8 +211,14 @@ const CatalogPage: React.FC = () => {
                   <Link
                     to={`/product/${product._id}`}
                     style={{ textDecoration: "none" }}
+                    onClick={(event: React.MouseEvent<HTMLAnchorElement>) => {
+                      if (event.target instanceof HTMLInputElement && event.target.type === 'radio') {
+                        event.preventDefault()
+                      }
+
+                    }}
                   >
-                    <ProductCard {...product} />
+                    <ProductCardMobile {...product} />
                   </Link>
                 </Grid2>
               ))
