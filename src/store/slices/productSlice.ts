@@ -52,6 +52,18 @@ export const fetchFilteredDateProducts = createAsyncThunk<Array<Product>, string
           }
     }
 )
+export const createProduct = createAsyncThunk<Product, FormData, {rejectValue: string}>(
+    'products/createProduct',
+    async (product:FormData,{rejectWithValue}) => {
+        try {
+            const response = await axios.post(`${API}/api/products`, product);
+            return response.data as Product;
+        } catch (error: unknown) {
+            console.error('Error creating product:', error)
+            return rejectWithValue("Unexpected error occurred!");
+          }
+    }
+)
 
 
 const productSlice = createSlice({
@@ -92,6 +104,17 @@ const productSlice = createSlice({
         })
         .addCase(fetchFilteredDateProducts.pending, (state) => {
             state.isLoading = true;
+        })
+        .addCase(createProduct.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(createProduct.rejected, (state, action) => {
+            state.error = action.payload || "Something went wrong";
+            state.isLoading = false;
+        })
+        .addCase(createProduct.fulfilled, (state, action) => {
+            state.products.push(action.payload);
+            state.isLoading = false;
         })
   }
 })

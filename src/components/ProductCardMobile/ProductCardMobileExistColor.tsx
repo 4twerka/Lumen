@@ -1,7 +1,7 @@
 import { Box, Radio, Typography } from "@mui/material";
 import React, { useState } from "react";
 
-const colors = ["blue", "orange", "red"];
+const colors = ["biege", "orange", "red"];
 
 interface ProductCardMobileExistColorProps {
     id: string,

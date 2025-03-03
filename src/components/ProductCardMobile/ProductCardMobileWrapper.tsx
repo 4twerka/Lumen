@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react'
 
 const ProductCardMobileWrapper:React.FC<{children: ReactNode}> = ({children}) => {
   return (
-    <Box sx={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+    <Box sx={{display: 'flex', flexDirection: 'column', gap: '0.5rem', position: 'relative'}}>
       {children}
     </Box>
   )

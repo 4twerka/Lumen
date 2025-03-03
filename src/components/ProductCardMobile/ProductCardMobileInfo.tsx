@@ -22,17 +22,13 @@ const ProductCardMobileInfo: React.FC<ProductCardMobileInfoProps> = ({
     >
       <Box>
         <IconButton
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
+          onClick={() => {
             console.log("added to shopping cart");
           }}
         >
           <ShoppingCartOutlinedIcon color="primary" />
         </IconButton>
-        <IconButton onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
+        <IconButton onClick={() => {
             console.log("added to favorites");
           }}>
           <FavoriteBorderIcon color="primary" />
@@ -53,7 +49,7 @@ const ProductCardMobileInfo: React.FC<ProductCardMobileInfoProps> = ({
             fontWeight: 400,
           }}
         >
-          {discountPrice}₴
+          {discountPrice.toFixed(2)}₴
         </Typography>
         <Typography
           sx={{ color: "#111111", fontSize: "1rem", fontWeight: 500 }}

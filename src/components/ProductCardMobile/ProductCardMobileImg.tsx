@@ -1,10 +1,12 @@
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import React from "react";
+import { Link } from "react-router";
 
 interface ProductCardMobileImgProps {
   image: string[];
   title: string;
   short_describe: string;
+  _id: string;
 }
 
 const SUPABASE_PRODUCT_URL_PART =
@@ -14,10 +16,12 @@ const ProductCardMobileImg: React.FC<ProductCardMobileImgProps> = ({
   image,
   title,
   short_describe,
+  _id
 }) => {
   return (
-    <Box
-      sx={{
+    <Link
+      to={`/product/${_id}`}
+      style={{
         background: `linear-gradient(0deg, rgba(13, 17, 32, 0.64) 8%, rgba(25, 33, 61, 0.00) 54.5%), 
         url(${SUPABASE_PRODUCT_URL_PART}${image[0]}) lightgray 50% / cover no-repeat`,
         width: "100%",
@@ -27,6 +31,7 @@ const ProductCardMobileImg: React.FC<ProductCardMobileImgProps> = ({
         flexDirection: "column",
         justifyContent: "flex-end",
         padding: "0.5rem",
+        textDecoration: 'none'
       }}
     >
       <Typography
@@ -52,7 +57,7 @@ const ProductCardMobileImg: React.FC<ProductCardMobileImgProps> = ({
       >
         {short_describe}
       </Typography>
-    </Box>
+    </Link>
   );
 };
 

@@ -208,18 +208,7 @@ const CatalogPage: React.FC = () => {
             ) : (
               displayProducts[currentPage - 1]?.map((product) => (
                 <Grid2 key={product._id} size={{ xs: 6, sm: 6, md: 4 }}>
-                  <Link
-                    to={`/product/${product._id}`}
-                    style={{ textDecoration: "none" }}
-                    onClick={(event: React.MouseEvent<HTMLAnchorElement>) => {
-                      if (event.target instanceof HTMLInputElement && event.target.type === 'radio') {
-                        event.preventDefault()
-                      }
-
-                    }}
-                  >
                     <ProductCardMobile {...product} />
-                  </Link>
                 </Grid2>
               ))
             )}
