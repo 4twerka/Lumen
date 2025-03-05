@@ -1,6 +1,5 @@
 import { Box, IconButton, Typography } from "@mui/material";
 import React from "react";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 interface ProductCardMobileInfoProps {
@@ -20,25 +19,10 @@ const ProductCardMobileInfo: React.FC<ProductCardMobileInfoProps> = ({
         alignItems: "center",
       }}
     >
-      <Box>
-        <IconButton
-          onClick={() => {
-            console.log("added to shopping cart");
-          }}
-        >
-          <ShoppingCartOutlinedIcon color="primary" />
-        </IconButton>
-        <IconButton onClick={() => {
-            console.log("added to favorites");
-          }}>
-          <FavoriteBorderIcon color="primary" />
-        </IconButton>
-      </Box>
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
-          alignItems: 'end',
         }}
       >
         <Typography
@@ -57,6 +41,13 @@ const ProductCardMobileInfo: React.FC<ProductCardMobileInfoProps> = ({
           {price}₴
         </Typography>
       </Box>
+      <IconButton
+        onClick={() => {
+          console.log("added to shopping cart");
+        }}
+      >
+        <ShoppingCartOutlinedIcon color="primary" />
+      </IconButton>
     </Box>
   );
 };

@@ -3,7 +3,7 @@ import { Product } from '../../types'
 import ProductCardMobileWrapper from './ProductCardMobileWrapper'
 import ProductCardMobileImg from './ProductCardMobileImg'
 import ProductCardMobileSale from './ProductCardMobileSale'
-// import ProductCardMobileExistColor from './ProductCardMobileExistColor'
+import ProductCardMobileExist from './ProductCardMobileExist'
 import ProductCardMobileInfo from './ProductCardMobileInfo'
 
 const ProductCardMobile:React.FC<Product> = ({title, short_describe, price, image, _id})=> {
@@ -11,7 +11,7 @@ const ProductCardMobile:React.FC<Product> = ({title, short_describe, price, imag
     <ProductCardMobileWrapper>
         <ProductCardMobileImg _id={_id} image={image} title={title} short_describe={short_describe} />
         <ProductCardMobileSale>30</ProductCardMobileSale>
-        {/* <ProductCardMobileExistColor id={_id} /> */}
+        <ProductCardMobileExist />
         <ProductCardMobileInfo price={price} />
     </ProductCardMobileWrapper>
   )
