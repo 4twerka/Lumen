@@ -13,10 +13,10 @@ import {
   fetchFilteredPriceProducts,
   fetchProducts,
 } from "../../store/slices/productSlice";
-import ProductCard from "../../components/ProductCard/ProductCard";
+// import ProductCard from "../../components/ProductCard/ProductCard";
 import CatalogFilters from "./components/CatalogFilters";
 import { FiltersState, initialFiltersState, Product } from "../../types";
-import { Link, useSearchParams } from "react-router";
+import { useSearchParams } from "react-router";
 import Loader from "../../components/Loader/Loader";
 import { getFilteredProducts } from "../../utils/filteredPoducts";
 import { getPaginatedProducts } from "../../utils/getPaginatedArray";

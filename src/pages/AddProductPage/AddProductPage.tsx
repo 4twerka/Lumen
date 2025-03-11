@@ -50,7 +50,6 @@ const AddProductPage: React.FC = () => {
     handleSubmit,
     formState: { errors },
     control,
-    reset,
   } = useForm<AddProductPageProps>({
     defaultValues: initialProductValues,
   });
@@ -71,9 +70,7 @@ const AddProductPage: React.FC = () => {
   });
   formData.forEach(item => console.log(item))
     dispatch(createProduct(formData));
-    // console.log('formdata',formData);
 
-    // reset();
   };
 
   return (
