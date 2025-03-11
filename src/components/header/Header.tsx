@@ -86,6 +86,7 @@ const Header: React.FC = () => {
         <nav className={styles.navigation}>
           {nav.map((navItem) => (
             <Button
+              key={navItem.name}
               sx={{ fontSize: "0.875rem", fontWeight: 400, lineHeight: "20px", textTransform: 'initial' }}
               color="inherit"
               href={navItem.path}

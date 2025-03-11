@@ -2,12 +2,13 @@
 .header {
     width: 100%;
     background-color: #F1F1F4;
-    padding: 46px 80px;
+
 }
 
 .header-wrapper {
     max-width: 1280px;
     margin: 0 auto;
+    padding: 46px 80px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -50,6 +51,9 @@
 @media (max-width: 900px) {
     .header {
         padding: 16px;
+    }
+    .header-wrapper {
+        padding: 0;
     }
     .logo {
         width: 64px;
