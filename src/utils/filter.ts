@@ -84,4 +84,5 @@ export const filterOptions = {
     "Для подарунка",
     "Для особливих моментів",
   ],
+  giftWrapping: false
 };
