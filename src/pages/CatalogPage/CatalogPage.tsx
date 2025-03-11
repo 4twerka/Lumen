@@ -13,16 +13,17 @@ import {
   fetchFilteredPriceProducts,
   fetchProducts,
 } from "../../store/slices/productSlice";
-import ProductCard from "../../components/ProductCard/ProductCard";
+// import ProductCard from "../../components/ProductCard/ProductCard";
 import CatalogFilters from "./components/CatalogFilters";
 import { FiltersState, initialFiltersState, Product } from "../../types";
-import { Link, useSearchParams } from "react-router";
+import { useSearchParams } from "react-router";
 import Loader from "../../components/Loader/Loader";
 import { getFilteredProducts } from "../../utils/filteredPoducts";
 import { getPaginatedProducts } from "../../utils/getPaginatedArray";
 import MobFilterButtons from "./components/MobFilterButtons";
 import FilterButtons from "./components/FilterButtons";
 import CatalogFiltersMob from "./components/CatalogFiltersMob";
+import ProductCardMobile from "../../components/ProductCardMobile/ProductCardMobile";
 
 const buttonStyles = {
   fontWeight: 600,
@@ -207,12 +208,7 @@ const CatalogPage: React.FC = () => {
             ) : (
               displayProducts[currentPage - 1]?.map((product) => (
                 <Grid2 key={product._id} size={{ xs: 6, sm: 6, md: 4 }}>
-                  <Link
-                    to={`/product/${product._id}`}
-                    style={{ textDecoration: "none" }}
-                  >
-                    <ProductCard {...product} />
-                  </Link>
+                    <ProductCardMobile {...product} />
                 </Grid2>
               ))
             )}
