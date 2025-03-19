@@ -12,7 +12,7 @@ const ProductCardMobile:React.FC<Product> = ({title, short_describe, price, imag
         <ProductCardMobileImg _id={_id} image={image} title={title} short_describe={short_describe} />
         <ProductCardMobileSale>30</ProductCardMobileSale>
         <ProductCardMobileExist />
-        <ProductCardMobileInfo price={price} />
+        <ProductCardMobileInfo price={price} id={_id} />
     </ProductCardMobileWrapper>
   )
 }

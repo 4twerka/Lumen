@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router";
+import { SUPABASE_PRODUCT_URL_PART } from "../../constants";
 
 interface ProductCardMobileImgProps {
   image: string[];
@@ -8,9 +9,6 @@ interface ProductCardMobileImgProps {
   short_describe: string;
   _id: string;
 }
-
-const SUPABASE_PRODUCT_URL_PART =
-  "https://deikuymdnacgwysnrebc.supabase.co/storage/v1/object/public/product-images/";
 
 const ProductCardMobileImg: React.FC<ProductCardMobileImgProps> = ({
   image,

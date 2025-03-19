@@ -1,16 +1,25 @@
 import { Box, IconButton, Typography } from "@mui/material";
 import React from "react";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { addCart } from "../../store/slices/productSlice";
 
 interface ProductCardMobileInfoProps {
   price: number;
+  id: string;
 }
 
 const ProductCardMobileInfo: React.FC<ProductCardMobileInfoProps> = ({
   price,
+  id,
 }) => {
   const discount = 30;
   const discountPrice = price - price * (discount / 100);
+  const dispatch = useAppDispatch();
+  const carts = useAppSelector((state) => state.products.carts);
+  const isInCart = carts.some((item) => item.productId === id);
+
+  const addToCart = () => dispatch(addCart(id));
   return (
     <Box
       sx={{
@@ -42,11 +51,16 @@ const ProductCardMobileInfo: React.FC<ProductCardMobileInfoProps> = ({
         </Typography>
       </Box>
       <IconButton
-        onClick={() => {
-          console.log("added to shopping cart");
+        onClick={addToCart}
+        sx={{
+          backgroundColor: isInCart ? "#73270D" : "inherit",
+          color: isInCart ? "#FDF5ED" : "#73270D",
+          "&:hover": {
+            backgroundColor: isInCart ? "#5a1f0a" : "#f5f5f5",
+          },
         }}
       >
-        <ShoppingCartOutlinedIcon color="primary" />
+        <ShoppingCartOutlinedIcon />
       </IconButton>
     </Box>
   );
