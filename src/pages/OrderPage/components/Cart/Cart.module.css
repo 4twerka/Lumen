@@ -1,0 +1,93 @@
+.orderWrapper {
+    padding: 3rem 0 3rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    border-radius: 8px;
+    background-color: #F1F1F4;
+}
+
+.titleWrapper {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #A3A3A3;
+    margin-right: 3rem;
+}
+
+.title {
+    position: relative;
+    color: #111111;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+    width: fit-content;
+}
+
+.count {
+    position: absolute;
+    right: -25px;
+    top: -50%;
+    background-color: #0E402D;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: #FDF5ED;
+    font-size: inherit;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ordersWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-height: 350px;
+    overflow-y: auto;
+    margin-right: 1rem;
+}
+
+.summaryPriceWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summaryPriceTitle {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #2E2E2E;
+    margin: 0;
+}
+
+.summaryPrice {
+    margin: 0;
+    font-size: 1.5rem;
+    line-height: 36px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding-right: 3rem;
+}
+
+/* Змінюємо ширину або висоту (для горизонтального скролу) */
+.ordersWrapper::-webkit-scrollbar {
+    width: 4px;
+    height: 4px; 
+  }
+  
+  /* Стилізація фону скролбара */
+  .ordersWrapper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 100px;
+  }
+  
+  /* Стилізація бігунка (самого повзунка) */
+  .ordersWrapper::-webkit-scrollbar-thumb {
+    background: #2E2E2E;
+    border-radius: 10px;
+  }
+  
+  /* При наведенні на бігунок */
+  .ordersWrapper::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }

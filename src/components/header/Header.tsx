@@ -114,7 +114,7 @@ const Header: React.FC = () => {
             >
               <UserIcon />
             </IconButton>
-            <IconButton sx={{ height: "40px" }}>
+            <IconButton onClick={() => navigate('/order')} sx={{ height: "40px" }}>
               <ShoppingIcon />
             </IconButton>
           </Box>

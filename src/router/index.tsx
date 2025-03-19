@@ -11,6 +11,9 @@ import MainLayout from "../layouts/MainLayout";
 import ProductsPage from "../pages/ProductsPage";
 import VerifyEmailPage from "../pages/VerifyEmailPage";
 import AddProductPage from "../pages/AddProductPage/AddProductPage";
+import OrderPage from "../pages/OrderPage/OrderPage";
+import ThanksOrderPage from "../pages/ThanksOrderPage/ThanksOrderPage";
+import CardPaymentPage from "../pages/CardPaymentPage/CardPaymentPage";
 
 const RootRouter: React.FC = () => {
   return (
@@ -27,6 +30,9 @@ const RootRouter: React.FC = () => {
         <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/product/:id" element={<ProductsPage />} />
         <Route path="/add-product" element={<AddProductPage />} />
+        <Route path="/order" element={<OrderPage />} />
+        <Route path="/thanks-order" element={<ThanksOrderPage />} />
+        <Route path="/card-payment" element={<CardPaymentPage />} />
       </Route>
     </Routes>
   );

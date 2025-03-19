@@ -1,0 +1,44 @@
+<svg width="13" height="2" viewBox="0 0 13 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="13" height="2" fill="#1E1E1E"/>
+<g id="Order">
+<path d="M-4359 -506C-4359 -507.105 -4358.1 -508 -4357 -508H7390C7391.1 -508 7392 -507.105 7392 -506V1728C7392 1729.1 7391.1 1730 7390 1730H-4357C-4358.1 1730 -4359 1729.1 -4359 1728V-506Z" fill="#444444"/>
+<path d="M-4357 -507H7390V-509H-4357V-507ZM7391 -506V1728H7393V-506H7391ZM7390 1729H-4357V1731H7390V1729ZM-4358 1728V-506H-4360V1728H-4358ZM-4357 1729C-4357.55 1729 -4358 1728.55 -4358 1728H-4360C-4360 1729.66 -4358.66 1731 -4357 1731V1729ZM7391 1728C7391 1728.55 7390.55 1729 7390 1729V1731C7391.66 1731 7393 1729.66 7393 1728H7391ZM7390 -507C7390.55 -507 7391 -506.552 7391 -506H7393C7393 -507.657 7391.66 -509 7390 -509V-507ZM-4357 -509C-4358.66 -509 -4360 -507.657 -4360 -506H-4358C-4358 -506.552 -4357.55 -507 -4357 -507V-509Z" fill="white" fill-opacity="0.1"/>
+<g id="Order_2">
+<rect width="1440" height="2042" transform="translate(-1165 -408)" fill="#FCFCFC"/>
+<g id="Main Content">
+<g id="Order summary">
+<rect x="-324" y="-180" width="525" height="569" rx="8" fill="#F1F1F4"/>
+<g id="Items" clip-path="url(#clip0_637_7040)">
+<g id="Item">
+<g id="Summary card contaienr">
+<mask id="path-4-inside-1_637_7040" fill="white">
+<path d="M-276 -65H153V37H-276V-65Z"/>
+</mask>
+<path d="M153 36H-276V38H153V36Z" fill="#A3A3A3" mask="url(#path-4-inside-1_637_7040)"/>
+<g id="Summary card">
+<g id="Summary text cintainer">
+<g id="Description">
+<g id="Quantity controller">
+<g id="Button Counter">
+<path d="M-6 -7C-6 -9.20914 -4.20914 -11 -2 -11H14C16.2091 -11 18 -9.20914 18 -7V9C18 11.2091 16.2091 13 14 13H-2C-4.20914 13 -6 11.2091 -6 9V-7Z" fill="#FCFCFC"/>
+<g id="Icon/Minus">
+<path id="Vector" d="M12 1H6.5H1" stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_637_7040">
+<rect width="429" height="346" fill="white" transform="translate(-276 -65)"/>
+</clipPath>
+</defs>
+</svg>
