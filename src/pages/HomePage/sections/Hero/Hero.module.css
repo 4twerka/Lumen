@@ -1,0 +1,150 @@
+.heroWrapper {
+    padding-right: 0;
+    background-color: #fcfcfc;
+    overflow-x: hidden;
+}
+
+.heroInner {
+    display: flex;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.leftBlock {
+    flex-grow: 1;
+}
+
+.heroImg {
+    flex-grow: 1;
+    z-index: 10;
+    max-width: 100%;
+    object-fit: cover;
+    padding-bottom: 80px;
+}
+
+.leftBlockImgs {
+    padding-top: 64px;
+    padding-bottom: 64px;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.leftBlockText {
+    padding-bottom: 1.5rem;
+    width: calc(2 * (100% - 2 * 1.5rem) / 3 + 1.5rem);
+    margin: 0;
+}
+
+.button {
+    width: 50% !important;
+}
+
+.textBackground {
+    font-family: "Kurale", serif;
+    color: #FDF5ED;
+    font-size: 220px;
+    font-weight: 400;
+    position: absolute;
+    bottom: -80px;
+    margin: 0;
+    width: max-content;
+
+    opacity: 0;
+    transform: translateX(70%);
+    /* transition: transform 2s ease-out, opacity 1s ease-out; */
+    animation: runningText 10s linear infinite;
+}
+
+@keyframes runningText {
+    0% {
+      transform: translateX(70%);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-100%);
+      opacity: 1;
+    }
+  }
+
+/* .textBackground.show {
+    opacity: 1;
+    transform: translateX(0);
+} */
+
+.heroInnerMobile {
+    display: none;
+}
+
+.leftBlockMobile {
+    flex: 3;
+}
+
+.leftBlockTextMobile {
+    padding-bottom: 8px;
+    margin: 0;
+}
+
+.heroImgMobile {
+    width: 100%;
+}
+
+.imgsWrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+@media (max-width: 900px) {
+    .heroInner {
+        display: none;
+    }
+
+    .heroInnerMobile {
+        display: block;
+        /* position: relative; */
+    }
+    .topInfoWrapper {
+        display: flex;
+        gap: 8px;
+        position: relative;
+        z-index: 10;
+    }
+    .heroWrapper {
+        padding: 48px 16px;
+    }
+    .heroImgMobile {
+        border-radius: 4px;
+    }
+    .images {
+        width: 100%;
+    }
+    .leftBlockText {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 20px;
+        width: 90%;
+    }
+    .leftBlockTextMobWrapper {
+        width: 100%;
+        padding-top: 8px;
+        
+        position: relative;
+    }
+    .leftBlockTextMob {
+        min-height: 72px;
+        padding-left: 68px;
+        padding-bottom: 32px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .textBackground {
+        font-size: 110px;
+        font-weight: 400;
+        bottom: 78px;
+        left: 16px;
+        transform: translateX(40%);
+    }
+}

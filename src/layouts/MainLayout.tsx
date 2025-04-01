@@ -8,7 +8,12 @@ const MainLayout: React.FC = () => {
   return (
     <>
       <Header />
-      <Box sx={{maxWidth: '1280px', margin: '0 auto'}} component={'main'}><Outlet /></Box>
+      <Box 
+        // sx={{maxWidth: '1280px', margin: '0 auto'}} 
+        component={'main'}
+        >
+          <Outlet />
+        </Box>
       <Footer />
     </>
   );

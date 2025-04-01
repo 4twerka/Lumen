@@ -1,0 +1,125 @@
+.artContainer {
+    padding: 80px 189px;
+    display: flex;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 64px;
+}
+
+
+.artInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+}
+
+.artContainer .artInfo:nth-child(1),
+.artContainer .artInfo:nth-child(3) {
+   flex: 1.5;
+}
+
+.artCandleWrapper {
+    flex: 1;
+    align-self: center;
+    text-align: center;
+}
+
+.artCandle {
+    max-width: 282px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.artContainer::before {
+    content: '';
+    position: absolute;
+    background-image: url('../../../../assets/ArtDecor.svg');
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 650px;
+    height: 570px;
+    z-index: -1;
+}
+
+.subTitleWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.subTitle {
+   white-space: nowrap;
+}
+
+.subTitleLine {
+    width: 100%;
+
+}
+
+.subTitleInfoRight {
+    text-align: right;
+}
+
+.artDesc {
+    padding-top: 0;
+}
+
+@media (max-width: 900px) {
+    .artCandleWrapper {
+        position: absolute;
+        right: -32px;
+        top: 50%;
+        transform: translateY(-40%);
+        width: 161px;
+        height: 230px;
+        z-index: -1;
+    }
+    .artContainer::before {
+        content: '';
+        position: absolute;
+        background-image: url('../../../../assets/ArtDecor.svg');
+        top: 50%;
+        right: -126px;
+        transform: translate(0, -35%);
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 340px;
+        height: 330px;
+        z-index: -1;
+    }
+    .artContainer {
+        padding: 48px 16px;
+        display: flex;
+        gap: 32px;
+        flex-direction: column;
+        margin-top: 0;
+    }
+    .subTitleLine {
+        display: none;
+    }
+    .artInfo {
+        gap: 32px;
+    }
+    .subTitleInfoRight {
+        text-align: left;
+    }
+    .subTitleInfo p {
+        text-align: left;
+    }
+    .artInfo > .mobRight {
+        max-width: 80%;
+        padding-left: 20%;
+    }
+    .artInfo > .mobLeft {
+        text-align: left;
+        max-width: 60%;
+    }
+    .artTitle {
+        max-width: 80%;
+    }
+}

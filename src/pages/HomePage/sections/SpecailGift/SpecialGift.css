@@ -1,0 +1,14 @@
+.collectionSpecialGift {
+    flex-direction: row-reverse;
+    padding-left: 80px;
+    padding-right: 0;
+    margin-top: 64px;
+}
+
+@media (max-width: 900px) {
+    .collectionSpecialGift {
+        flex-direction: column-reverse;
+        padding-left: 10px;
+        margin-top: 0;
+    }
+}

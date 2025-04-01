@@ -1,0 +1,56 @@
+.inspiration {
+    padding-bottom: 160px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 64px;
+}
+
+.inspirationImg {
+    width: 100%;
+    display: block;
+}
+.inspirationImgMob {
+    width: 100%;
+    display: none;
+}
+
+.textBackground {
+    font-family: "Kurale", serif;
+    color: #FDF5ED;
+    font-size: 220px;
+    font-weight: 400;
+    position: absolute;
+    bottom: -80px;
+    overflow: hidden;
+    margin: 0;
+    width: max-content;
+
+    opacity: 0;
+    transform: translateX(70%);
+    transition: transform 2s ease-out, opacity 1s ease-out;
+}
+
+.textBackground.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+@media (max-width: 900px) {
+    .inspiration {
+        padding: 48px 0 126px 0;
+        margin-top: 0;
+    }
+    .inspirationImg {
+        display: none;
+    }
+    .inspirationImgMob {
+        display: block;
+    }
+    .textBackground {
+        font-size: 110px;
+        font-weight: 400;
+        bottom: 0;
+        left: 16px;
+        transform: translateX(50%);
+    }
+}

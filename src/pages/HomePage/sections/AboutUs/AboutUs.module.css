@@ -1,0 +1,65 @@
+.aboutUs {
+    padding-left: 0;
+    display: flex;
+    gap: 24px;
+    margin-top: 64px;
+}
+.aboutUsImage {
+    width: 50%;
+    object-fit: cover;
+}
+
+.aboutUsAdventages {
+    display: grid;
+    gap: 24px;
+    align-content: space-between;
+    grid-template-rows: repeat(3, auto);
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.smallImgs {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+}
+
+.tenThousand {
+    grid-column: 1/3;
+}
+.fiveYears {
+    grid-column: 1/3;
+}
+
+@media (max-width: 900px) {
+    .aboutUs {
+        padding-right: 0;
+        flex-direction: column;
+        margin-top: 0;
+    }
+    .aboutUsImage {
+        width: 100%;
+    }
+    .aboutUsAdventages {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(5, auto);
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    .tenThousand {
+        grid-column: 1 / -1;
+    }
+    .fiveYears {
+        grid-column: 1 / -1;
+    }
+    .aboutUsAdventages > img:nth-of-type(1) {
+        grid-row: 3/5;
+        grid-column: 2/3;
+    }
+    .twentyFourGramm {
+        grid-row: 3/4;
+    }
+    .twentyFourHours {
+        grid-row: 4/5;
+    }
+
+    /* grid-column: 1 / -1; */
+}

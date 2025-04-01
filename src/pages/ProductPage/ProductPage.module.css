@@ -1,0 +1,17 @@
+.productContainer {
+    padding-top: 64px;
+    padding-bottom: 64px;
+}
+
+.productInfo {
+    display: flex;
+    gap: 24px;
+}
+
+.imageWrapper {
+    flex: 1;
+}
+
+.infoWrapper {
+    flex: 2;
+}

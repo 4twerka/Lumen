@@ -1,0 +1,29 @@
+.advantageItem {
+    height: 500px;
+}
+.customSwiper {
+    padding-bottom: 55px;
+    position: relative;
+}
+
+.customSwiper .swiper-scrollbar {
+    height: 1px;
+    background-color: #2E2E2E;
+    bottom: 22px;
+}
+
+.customSwiper .swiper-scrollbar .swiper-scrollbar-drag {
+   height: 3px;
+   background-color: #73270D;
+}
+
+.customSwiper .swiper-pagination {
+    color: #A3A3A3;
+    font-size: 0.75rem;
+    font-weight: 400;
+    text-align: right;
+    position: absolute;
+    bottom: 0;
+    
+}
+

@@ -1,0 +1,58 @@
+.join {
+    padding-top: 160px;
+    padding-bottom: 160px;
+    margin-top: 64px;
+    margin-bottom: 64px;
+}
+
+.textWrapper {
+    max-width: 740px;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    background-image: url('../../../../assets/joinpng.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding: 0 70px;
+}
+
+.text {
+    font-family: "Kurale", serif;
+    font-size: 48px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.logo {
+    width: 162px;
+    height: 48px;
+}
+
+.socials {
+    padding-top: 24px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+@media (max-width: 900px) {
+    .join {
+        padding-top: 48px;
+        padding-bottom: 80px;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    .text {
+        font-size: 34px;
+        width: 240px;
+        margin: 0 auto;
+    }
+    .logo {
+        width: 115px;
+        height: 36px;
+        margin-top: 12px;
+    }
+    .textWrapper {
+        max-width: 100%;
+    }
+}
