@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Hero.module.css";
 import FormButtonSubmit from "../../../../components/Forms/FormButtonSubmit";
-import useIntersectionObserver from "../../../../utils/useIntersectionObserver";
+// import useIntersectionObserver from "../../../../utils/useIntersectionObserver";
 
 const Hero: React.FC = () => {
   // const { ref: textRefDesktop, isVisible: isVisibleDesktop } = useIntersectionObserver();

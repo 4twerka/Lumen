@@ -3,7 +3,7 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./ProductSwiper.module.css";
 
-const ProductSwiper = () => {
+const ProductSwiper:React.FC = () => {
   return (
     <Swiper
       navigation={true}

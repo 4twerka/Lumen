@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Hero from './sections/Hero/Hero'
 import OurAdvantages from './sections/OurAdvantages/OurAdvantages'
 import Art from './sections/Art/Art'
@@ -10,11 +10,10 @@ import TopSales from './sections/TopSales/TopSales'
 import Questions from './sections/Questions/Questions'
 import Inspiration from './sections/Inspiration/Inspiration'
 import Join from './sections/Join/Join'
-import styles from './HomePage.module.css';
 // import { useAppDispatch, useAppSelector } from '../../hooks'
 // import { fetchProducts } from '../../store/slices/productSlice'
 
-const HomePage = () => {
+const HomePage:React.FC = () => {
   // const products = useAppSelector((state) => state.products.products);
   // const dispatch = useAppDispatch();
   // useEffect(() => {

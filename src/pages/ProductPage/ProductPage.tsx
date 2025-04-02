@@ -3,8 +3,6 @@ import styles from "./ProductPage.module.css";
 import { useParams } from "react-router";
 import { Breadcrumbs, Link, Typography } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import ProductSwiper from "./components/ProductSwiper/ProductSwiper";
 
 const ProductPage: React.FC = () => {
