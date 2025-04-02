@@ -1,0 +1,61 @@
+.reviewCardWrapper {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background-color: #FCFCFC;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.reviewerInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+}
+
+.reviewDate {
+    margin: 0;
+    color: #A3A3A3;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.25rem;
+}
+
+.reviewName {
+    margin: 0;
+    color: #111111;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.reviewText {
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.875rem;
+}
+
+@media (max-width: 900px) {
+    .reviewCardWrapper {
+        padding: 16px;
+       min-width: 253px;
+       height: 190px;
+    }
+    .reviewText {
+        -webkit-line-clamp: 4;
+        font-size: 0.625rem;
+        line-height: 0.875rem;
+    }
+    .reviewName {
+        font-size: 0.75rem;
+        font-weight: 400;
+    }
+    .reviewDate {
+        font-size: 0.625rem;
+    }
+
+}

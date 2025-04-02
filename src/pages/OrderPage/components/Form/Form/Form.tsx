@@ -21,6 +21,7 @@ const initialValues = {
   lastname: "",
   telephone: "",
   email: "",
+  deliveryEmail: "",
   deliveryMethod: "pickup",
   deliveryCity: "",
   deliveryDepartment: "",

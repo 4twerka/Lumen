@@ -3,12 +3,12 @@ import { Route, Routes } from "react-router";
 import LoginPage from "../pages/LoginPage";
 import RegistrationPage from "../pages/RegistrationPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
-import HomePage from "../pages/HomePage";
+import HomePage from "../pages/HomePage/HomePage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import CatalogPage from "../pages/CatalogPage/CatalogPage";
 import AuthLayout from "../layouts/AuthLayout";
 import MainLayout from "../layouts/MainLayout";
-import ProductsPage from "../pages/ProductsPage";
+import ProductPage from "../pages/ProductPage/ProductPage";
 import VerifyEmailPage from "../pages/VerifyEmailPage";
 import AddProductPage from "../pages/AddProductPage/AddProductPage";
 import OrderPage from "../pages/OrderPage/OrderPage";
@@ -28,7 +28,7 @@ const RootRouter: React.FC = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/verifyEmail/:id" element={<VerifyEmailPage />} />
         <Route path="/catalog" element={<CatalogPage />} />
-        <Route path="/product/:id" element={<ProductsPage />} />
+        <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/add-product" element={<AddProductPage />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/thanks-order" element={<ThanksOrderPage />} />

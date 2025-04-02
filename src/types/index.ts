@@ -55,6 +55,7 @@ export interface order {
   firstName: string;
   telephone: string;
   email: string;
+  deliveryEmail: string;
   lastname: string;
   deliveryMethod: string;
   deliveryCity: string;

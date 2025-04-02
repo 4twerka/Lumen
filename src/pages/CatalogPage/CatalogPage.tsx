@@ -131,7 +131,10 @@ const CatalogPage: React.FC = () => {
 
   return (
     <Box
+      
       sx={{
+        maxWidth: "1440px",
+        margin: '0 auto',
         display: { xs: "block", md: "flex" },
         width: "100%",
         padding: { xs: "16px 16px", md: "48px 80px" },

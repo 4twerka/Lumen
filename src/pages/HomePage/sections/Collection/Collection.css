@@ -1,0 +1,45 @@
+.collectinWrapper {
+    display: flex;
+    gap: 24px;
+    position: relative;
+    justify-content: flex-end;
+    padding-left: 0;
+    margin-top: 64px;
+}
+
+.collectionCarusel {
+    width: 75%;
+}
+
+.collectionInfo {
+    width: 25%;
+    padding-bottom: 55px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.collectionInfo .collection-desc {
+    padding-top: 1rem;
+}
+
+@media (max-width: 900px) {
+    .collectinWrapper {
+        display: flex;
+        gap: 24px;
+        flex-direction: column-reverse;
+        padding-left: 1rem;
+        margin-top: 0;
+    }
+    .collectionCarusel {
+        width: 100%;
+    }
+    .collectionInfo {
+        width: 100%;
+        padding-bottom: 0;
+    }
+    
+    .collectionInfo p {
+        padding: 0;
+    }
+}

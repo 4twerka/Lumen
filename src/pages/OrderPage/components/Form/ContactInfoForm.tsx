@@ -1,9 +1,10 @@
-import { Box, TextField } from '@mui/material'
+import { Box, InputAdornment, TextField, Typography } from '@mui/material'
 import React from 'react'
 import FormTitle from './FormTitle'
 import { Control, Controller, FieldErrors } from 'react-hook-form'
 import ErrorMessage from '../../../../components/ErrorMessage/ErrorMessage'
 import { order } from '../../../../types' 
+import LetterIcon from "../../../../assets/Letter.svg?react";
 
 interface ContactInfoFormProps {
     control: Control<order>;
@@ -14,8 +15,8 @@ const ContactInfoForm:React.FC<ContactInfoFormProps> = ({control, errors}) => {
   return (
     <Box>
         <FormTitle>1. Контактна інформація</FormTitle>
-        {/* <Controller
-          name="name"
+        <Controller
+          name="deliveryEmail"
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
@@ -25,7 +26,7 @@ const ContactInfoForm:React.FC<ContactInfoFormProps> = ({control, errors}) => {
                 marginTop: "1rem",
                 width: "100%",
                 borderRadius: "8px",
-                "& .MuiInputBase-root": { padding: "36px 24px" },
+                "& .MuiInputBase-root": { padding: "24px 24px" },
               }}
               placeholder="john@email.com"
               slotProps={{
@@ -54,7 +55,7 @@ const ContactInfoForm:React.FC<ContactInfoFormProps> = ({control, errors}) => {
               }}
             />
           )}
-        /> */}
+        />
         <Box
           sx={{
             width: "100%",
