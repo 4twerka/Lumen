@@ -1,0 +1,40 @@
+.cartQuantity {
+    border-radius: 8px;
+    border: 1px solid #73270D;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 12px 16px;
+}
+.icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FCFCFC;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.orderQuantityCount {
+    font-size: 1rem;
+    font-weight: 400;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.add {
+    background-color: #73270D;
+}
+
+@media (max-width: 900px) {
+    .cartQuantity {
+        border: none;
+        height: 24px;
+        gap: 0.25rem;
+        padding: 0;
+    }
+}

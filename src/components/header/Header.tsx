@@ -49,7 +49,7 @@ const Header: React.FC = () => {
           >
             <MenuIcon />
           </IconButton>
-          <LogoIcon className={styles.logo} />
+          <LogoIcon onClick={() => handleNavigate('/')} className={styles.logo} />
         </Box>
         <Menu
           id="menu-appbar"

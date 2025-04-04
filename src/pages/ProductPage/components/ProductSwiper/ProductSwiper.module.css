@@ -1,0 +1,51 @@
+.productSwiperWrapper {
+    position: relative;
+}
+
+.swiperImg {
+    aspect-ratio: 1 / 1; /* Співвідношення 1:1 */
+    object-fit: cover; /* Опціонально: щоб зображення гарно обрізалось */
+    margin-bottom: 16px;
+    border-radius: 4px;
+}
+
+.swiperImg .productImg {
+    width: 100%;
+}
+/* .swiperSmallImgs {
+
+} */
+.swiperSmallImgs .swiperSlideWrapper {
+   width: fit-content;
+}
+
+.swiperSmallImgs .swiperSlideSmallImg {
+   width: 113px;
+   height: 113px;
+   aspect-ratio: 1/1;
+   object-fit: cover;
+   border-radius: 4px;
+}
+
+.productSwiperWrapper .customButton {
+    position: absolute;
+    top: calc(50% - 135px/2);
+    transform: translateY(-50%);
+    background: rgba(163, 163, 163, 0.30);
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 10;
+    transition: 0.3s;
+  }
+
+  .customButton svg {
+    fill: #2E2E2E;
+  }
+  
+  .prev {
+    left: 10px;
+  }
+  
+  .next {
+    right: 10px;
+  }

@@ -1,5 +1,6 @@
 .heroWrapper {
     padding-right: 0;
+    padding-bottom: 0;
     background-color: #fcfcfc;
     overflow-x: hidden;
 }
@@ -46,14 +47,25 @@
     font-size: 220px;
     font-weight: 400;
     position: absolute;
-    bottom: -80px;
+    bottom: -63px;
     margin: 0;
     width: max-content;
 
-    opacity: 0;
     transform: translateX(70%);
-    /* transition: transform 2s ease-out, opacity 1s ease-out; */
-    animation: runningText 10s linear infinite;
+    text-shadow: 0 0 5px #FFB6C1, 0 0 5px #FFB6C1, 0 0 5px #FFB6C1;
+    animation: glow-text 1.5s infinite alternate, runningText 10s linear infinite;
+}
+
+@keyframes glow-text {
+    0% {
+        text-shadow: 0 0 5px #FFB6C1, 0 0 10px #FFB6C1, 0 0 20px #FFB6C1;
+    }
+    50% {
+        text-shadow: 0 0 10px #FFB6C1, 0 0 20px #FFB6C1, 0 0 35px #FFB6C1;
+    }
+    100% {
+        text-shadow: 0 0 5px #FFB6C1, 0 0 10px #FFB6C1, 0 0 20px #FFB6C1;
+    }
 }
 
 @keyframes runningText {

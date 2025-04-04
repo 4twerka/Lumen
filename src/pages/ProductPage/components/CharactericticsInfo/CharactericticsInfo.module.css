@@ -1,0 +1,23 @@
+.characteristicsInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+.characteristicsTitle {
+    font-weight: 700;
+}
+
+.characteristicsDesc {
+    font-weight: 400;
+}
+
+@media (max-width: 900px) {
+    .characteristicsInfo {
+        gap: 0.25rem;
+        font-size: 0.75rem;
+        line-height: 1.25rem;
+    }
+}

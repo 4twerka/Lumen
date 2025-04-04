@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./Inspiration.module.css";
-import useIntersectionObserver from "../../../../utils/useIntersectionObserver";
+// import useIntersectionObserver from "../../../../utils/useIntersectionObserver";
 
 const Inspiration: React.FC = () => {
 
-  const {ref: textRef, isVisible} = useIntersectionObserver();
+//   const {ref: textRef, isVisible} = useIntersectionObserver();
 
   return (
     <section className={`${styles.inspiration} container`}>
@@ -18,7 +18,8 @@ const Inspiration: React.FC = () => {
         src="./src/assets/inspirationMob.jpg"
         alt="inpiration"
       />
-      <p ref={textRef} className={`${styles.textBackground} ${isVisible ? styles.show : ""}`}>Запали натхнення</p>
+      <p className={styles.textBackground}>Запали натхнення</p>
+      {/* <p ref={textRef} className={`${styles.textBackground} ${isVisible ? styles.show : ""}`}>Запали натхнення</p> */}
     </section>
   );
 };

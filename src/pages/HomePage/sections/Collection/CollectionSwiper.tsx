@@ -18,7 +18,7 @@ const CollectionSwiper: React.FC<CollectionSwiperProps> = ({
   name
 }) => {
   return (
-    <div className="swiper-wrapper">
+    <div className="collection-swiper-wrapper">
       <Swiper
         className="collection-swiper"
         spaceBetween={24}

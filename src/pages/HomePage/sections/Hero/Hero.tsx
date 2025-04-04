@@ -1,12 +1,13 @@
 import React from "react";
 import styles from "./Hero.module.css";
 import FormButtonSubmit from "../../../../components/Forms/FormButtonSubmit";
+import { useNavigate } from "react-router";
 // import useIntersectionObserver from "../../../../utils/useIntersectionObserver";
 
 const Hero: React.FC = () => {
   // const { ref: textRefDesktop, isVisible: isVisibleDesktop } = useIntersectionObserver();
   // const { ref: textRefMobile, isVisible: isVisibleMobile } = useIntersectionObserver();
-
+  const navigate = useNavigate();
   return (
     <section className={`${styles.heroWrapper} container`}>
       {/* Десктопна версія */}
@@ -22,7 +23,7 @@ const Hero: React.FC = () => {
             турботу та щирість. Lumen — це ваш вибір, якщо ви цінуєте якість,
             стиль і атмосферу.]
           </p>
-          <FormButtonSubmit className={styles.button}>
+          <FormButtonSubmit onClick={() => navigate('/catalog')} className={styles.button}>
             Переглянути каталог
           </FormButtonSubmit>
         </div>
