@@ -43,7 +43,7 @@ const QuestionAcordion: React.FC<QuestionAcordionProps> = ({
       >
         <Typography
           component="span"
-          sx={{ color: "#A3A3A3", fontWeight: 500, paddingRight: "0.5rem" }}
+          sx={{ color: "#A3A3A3", fontSize: { xs: "0.75rem", md: "1rem" }, fontWeight: 500, paddingRight: "0.5rem" }}
         >
           {number}
         </Typography>

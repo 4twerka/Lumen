@@ -5,18 +5,20 @@ import { API } from "../../constants";
 
 interface UserState {
   products: Array<Product>;
+  product: Product | null;
   error: string | null;
   isLoading: boolean;
   carts: { productId: string; quantity: number }[];
-//   order: createOrderResponse
+  //   order: createOrderResponse
 }
 
 const initialState: UserState = {
   products: [],
+  product: null,
   error: null,
   isLoading: false,
   carts: JSON.parse(localStorage.getItem("carts") || "[]"),
-//   order: {}
+  //   order: {}
 };
 
 export const fetchProducts = createAsyncThunk<
@@ -27,6 +29,20 @@ export const fetchProducts = createAsyncThunk<
   try {
     const response = await axios.get(`${API}/api/products`);
     return response.data as Array<Product>;
+  } catch (error: unknown) {
+    console.error("Error fetching products:", error);
+    return rejectWithValue("Unexpected error occurred!");
+  }
+});
+
+export const fetchProductById = createAsyncThunk<
+  Product,
+  string,
+  { rejectValue: string }
+>("products/fetchProductById", async (id, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`${API}/api/products/${id}`);
+    return response.data as Product;
   } catch (error: unknown) {
     console.error("Error fetching products:", error);
     return rejectWithValue("Unexpected error occurred!");
@@ -76,7 +92,7 @@ export const createProduct = createAsyncThunk<
 });
 
 export const createOrder = createAsyncThunk<
-createOrderResponse,
+  createOrderResponse,
   object,
   { rejectValue: string }
 >("products/createOrder", async (product: object, { rejectWithValue }) => {
@@ -94,7 +110,9 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     addCart: (state, { payload }) => {
-      const existingItem = state.carts.find((item) => item.productId === payload);
+      const existingItem = state.carts.find(
+        (item) => item.productId === payload
+      );
 
       if (existingItem) {
         existingItem.quantity += 1;
@@ -105,7 +123,9 @@ const productSlice = createSlice({
       localStorage.setItem("carts", JSON.stringify(state.carts));
     },
     decreaseCart: (state, { payload }) => {
-      const existingItem = state.carts.find((item) => item.productId === payload);
+      const existingItem = state.carts.find(
+        (item) => item.productId === payload
+      );
 
       if (existingItem) {
         if (existingItem?.quantity > 1) {
@@ -123,9 +143,9 @@ const productSlice = createSlice({
       localStorage.setItem("carts", JSON.stringify(state.carts));
     },
     clearCart: (state) => {
-        state.carts = [];
-        localStorage.setItem("carts", JSON.stringify(state.carts));
-    }
+      state.carts = [];
+      localStorage.setItem("carts", JSON.stringify(state.carts));
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -138,6 +158,19 @@ const productSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchProducts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchProductById.fulfilled, (state, action) => {
+        state.product = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchProductById.rejected, (state, action) => {
+        state.product = null;
+        state.error = action.payload || "Something went wrong";
+        state.isLoading = false;
+      })
+      .addCase(fetchProductById.pending, (state) => {
+        state.product = null;
         state.isLoading = true;
       })
       .addCase(fetchFilteredPriceProducts.fulfilled, (state, action) => {
@@ -173,20 +206,21 @@ const productSlice = createSlice({
         state.products.push(action.payload);
         state.isLoading = false;
       })
-    //   .addCase(createOrder.fulfilled, (state, {payload}) => {
-    //     // state.order = payload;
-    //     state.isLoading = false;
-    //   })
+      //   .addCase(createOrder.fulfilled, (state, {payload}) => {
+      //     // state.order = payload;
+      //     state.isLoading = false;
+      //   })
       .addCase(createOrder.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createOrder.rejected, (state, {payload}) => {
+      .addCase(createOrder.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload || "Something went wrong";
-      })
+      });
   },
 });
 
-export const { addCart, decreaseCart, deleteCart, clearCart } = productSlice.actions;
+export const { addCart, decreaseCart, deleteCart, clearCart } =
+  productSlice.actions;
 
 export default productSlice.reducer;

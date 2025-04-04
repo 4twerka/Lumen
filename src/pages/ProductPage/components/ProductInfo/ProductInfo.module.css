@@ -1,0 +1,147 @@
+* {
+    margin: 0;
+}
+
+.productTitle {
+    font-family: "Kurale", serif;
+    font-size: 2rem;
+    color: #111111;
+    line-height: 3rem;
+    font-weight: 400;
+}
+
+.availability {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    color: #0E402D;
+    font-weight: 400;
+}
+
+.price {
+    font-family: "Kurale", serif;
+    font-size: 2rem;
+    color: #111111;
+    line-height: 3rem;
+    font-weight: 400;
+}
+
+.desc {
+    color: #111111;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 400;
+    padding-top: 1.5rem;
+    padding-bottom: 3rem;
+}
+
+.subTitle {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.color {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.characteristicsTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 2.25rem;
+    padding-bottom: 1rem;
+    padding-top: 3rem;
+}
+
+.characteristicsInfoWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.accordionsWrapper {
+    padding-top: 1rem;
+}
+
+.btnWrapper {
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 1rem;
+}
+
+.priceAvailabilityWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.quantityColorWrapperMob {
+    display: none;
+}
+
+.btnMobWrapper {
+    display: none;
+}
+
+.btnMobWrapper > .btn {
+    width: fit-content !important;
+    height: 50px !important;
+}
+
+@media (max-width: 900px) {
+    .productTitle {
+        display: none;
+    }
+    .priceAvailabilityWrapper {
+        padding-top: 1rem;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .price {
+        font-family: "Inter", serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    .availability {
+        font-size: 0.75rem;
+        line-height: 1.25rem;
+        font-weight: 700;
+    }
+    .quantityColorWrapperMob {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+    }
+    .btnWrapper {
+        display: none;
+    }
+    .subTitleDesctop {
+        display: none;
+    }
+
+    .btnMobWrapper {
+        display: block;
+        padding-top: 1.5rem;
+    }
+    .desc {
+        color: #111111;
+        font-size: 0.75rem;
+        line-height: 1.25rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    .characteristicsTitle {
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: normal;
+        padding-bottom: 1rem;
+        padding-top: 0;
+    }
+    .characteristicsInfoWrapper {
+        gap: 0.25rem;
+    }
+
+}
+

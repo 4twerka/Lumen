@@ -8,7 +8,7 @@ import { collectionProducts } from "../../collectionProducts";
 
 const TopSales: React.FC = () => {
   return (
-    <section className={`${styles.topSales} container decor`}>
+    <section className={`${styles.topSales} container topSalesContainer decor`}>
       <div className={styles.topSalesTitle}>
         <HomeTitle>Топ-продажів</HomeTitle>
         <HomeDesc className={styles.topSaleDesc}>
