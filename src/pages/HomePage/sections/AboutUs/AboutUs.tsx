@@ -8,7 +8,7 @@ const AboutUs: React.FC = () => {
     <section className={`${styles.aboutUs} container`}>
       <img
         className={styles.aboutUsImage}
-        src="./src/assets/AboutUsImg.jpg"
+        src="./AboutUsImg.jpg"
         alt="about us image"
       />
       <div className={styles.aboutUsAdventages}>
@@ -21,7 +21,7 @@ const AboutUs: React.FC = () => {
         </div>
         <img
           className={styles.smallImgs}
-          src="./src/assets/aboutUs/aboutUs1.jpg"
+          src="./aboutUs/aboutUs1.jpg"
           alt="candles"
         />
         <div className={styles.fiveYears}>
@@ -40,12 +40,12 @@ const AboutUs: React.FC = () => {
         </div>
         <img
           className={styles.smallImgs}
-          src="./src/assets/aboutUs/aboutUs2.jpg"
+          src="./aboutUs/aboutUs2.jpg"
           alt="candles"
         />
         <img
           className={styles.smallImgs}
-          src="./src/assets/aboutUs/aboutUs3.jpg"
+          src="./aboutUs/aboutUs3.jpg"
           alt="candles"
         />
         <div className={styles.twentyFourHours}>

@@ -10,12 +10,12 @@ const Inspiration: React.FC = () => {
     <section className={`${styles.inspiration} container`}>
       <img
         className={styles.inspirationImg}
-        src="./src/assets/inspiration.jpg"
+        src="./inspiration.jpg"
         alt="inpiration"
       />
       <img
         className={styles.inspirationImgMob}
-        src="./src/assets/inspirationMob.jpg"
+        src="./inspirationMob.jpg"
         alt="inpiration"
       />
       <p className={styles.textBackground}>Запали натхнення</p>
