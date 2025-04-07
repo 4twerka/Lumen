@@ -26,7 +26,7 @@ const ContactInfoForm:React.FC<ContactInfoFormProps> = ({control, errors}) => {
                 marginTop: "1rem",
                 width: "100%",
                 borderRadius: "8px",
-                "& .MuiInputBase-root": { padding: "24px 24px" },
+                "& .MuiInputBase-root": { padding: {xs: "16px", md:"24px"} },
               }}
               placeholder="john@email.com"
               slotProps={{
@@ -60,9 +60,9 @@ const ContactInfoForm:React.FC<ContactInfoFormProps> = ({control, errors}) => {
           sx={{
             width: "100%",
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: {xs: "1fr", md:"1fr 1fr"},
             gridTemplateRows: "1fr 1fr",
-            gap: "1rem",
+            gap: {xs: "0.5rem", md:"1rem"},
             paddingTop: "1rem",
           }}
         >

@@ -32,17 +32,7 @@ const OrderPage: React.FC = () => {
     return total;
   }, 0);
   return (
-    <Box
-      sx={{
-        maxWidth: "1440px",
-        margin: "0 auto",
-        display: "flex",
-        width: "100%",
-        padding: { xs: "16px 16px", md: "80px 80px" },
-        gap: "1.25rem",
-        backgroundColor: "#FCFCFC",
-      }}
-    >
+    <div className={`${styles.order} container`}>
       <div className={styles.formWrapper}>
         <Form />
       </div>
@@ -52,7 +42,7 @@ const OrderPage: React.FC = () => {
           filteredCartProducts={filteredCartProducts}
         />
       </div>
-    </Box>
+    </div>
   );
 };
 

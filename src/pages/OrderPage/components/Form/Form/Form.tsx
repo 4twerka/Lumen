@@ -80,14 +80,14 @@ const Form: React.FC = () => {
       <PaymentMethodForm control={control} />
       <Box
         sx={{
-          width: "50%",
+          width: {xs: "100%", md:"50%"},
           display: "flex",
           flexDirection: "column",
           gap: "1.5rem",
         }}
       >
         <CommentForm control={control} />
-        <FormButtonSubmit sx={{ marginTop: "1.5rem" }}>
+        <FormButtonSubmit sx={{ marginTop: "1.5rem", textTransform: 'none' }}>
           Перейти до оплати
         </FormButtonSubmit>
       </Box>
