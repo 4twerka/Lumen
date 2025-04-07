@@ -5,8 +5,10 @@ import HomeDesc from "../../components/HomeDesc/HomeDesc";
 import CollectionSwiper from "../Collection/CollectionSwiper";
 import FormButtonSubmit from "../../../../components/Forms/FormButtonSubmit";
 import { collectionProducts } from "../../collectionProducts";
+import { useNavigate } from "react-router";
 
 const TopSales: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <section className={`${styles.topSales} container topSalesContainer decor`}>
       <div className={styles.topSalesTitle}>
@@ -18,7 +20,7 @@ const TopSales: React.FC = () => {
       </div>
       <CollectionSwiper name="top-sales" products={collectionProducts} />
       <div className={styles.buttonWrapper}>
-        <FormButtonSubmit className={styles.button}>
+        <FormButtonSubmit className={styles.button} onClick={() => navigate('/catalog')}>
           Переглянути каталог
         </FormButtonSubmit>
       </div>
