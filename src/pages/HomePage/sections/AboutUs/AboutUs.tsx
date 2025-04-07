@@ -5,7 +5,7 @@ import HomeDesc from "../../components/HomeDesc/HomeDesc";
 
 const AboutUs: React.FC = () => {
   return (
-    <section className={`${styles.aboutUs} container`}>
+    <section id="about-us" className={`${styles.aboutUs} container`}>
       <img
         className={styles.aboutUsImage}
         src="./AboutUsImg.jpg"

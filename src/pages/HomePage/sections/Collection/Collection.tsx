@@ -7,7 +7,7 @@ import { collectionProducts } from "../../collectionProducts";
 
 const Collection: React.FC = () => {
   return (
-    <section className="collectinWrapper container decorMob">
+    <section id="sezon-collection" className="collectinWrapper container decorMob">
       <div className="collectionCarusel">
         <CollectionSwiper name="sezon-collection" products={collectionProducts} />
       </div>

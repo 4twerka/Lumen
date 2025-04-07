@@ -66,7 +66,7 @@ const Hero: React.FC = () => {
             Запали затишок
           </p> */}
         <p className={`${styles.textBackground}`}>Запали затишок</p>
-        <FormButtonSubmit>Переглянути каталог</FormButtonSubmit>
+        <FormButtonSubmit onClick={() => navigate('/catalog')}>Переглянути каталог</FormButtonSubmit>
       </div>
     </section>
   );

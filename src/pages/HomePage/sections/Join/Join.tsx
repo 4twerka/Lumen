@@ -8,7 +8,7 @@ import { IconButton } from "@mui/material";
 
 const Join: React.FC = () => {
   return (
-    <section className={`${styles.join} container`}>
+    <section id="contacts" className={`${styles.join} container`}>
       <div className={styles.textWrapper}>
         <p className={styles.text}>
           Приєднуйся до <LogoIcon className={styles.logo} />

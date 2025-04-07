@@ -52,20 +52,7 @@
     width: max-content;
 
     transform: translateX(70%);
-    text-shadow: 0 0 5px #FFB6C1, 0 0 5px #FFB6C1, 0 0 5px #FFB6C1;
-    animation: glow-text 1.5s infinite alternate, runningText 10s linear infinite;
-}
-
-@keyframes glow-text {
-    0% {
-        text-shadow: 0 0 5px #FFB6C1, 0 0 10px #FFB6C1, 0 0 20px #FFB6C1;
-    }
-    50% {
-        text-shadow: 0 0 10px #FFB6C1, 0 0 20px #FFB6C1, 0 0 35px #FFB6C1;
-    }
-    100% {
-        text-shadow: 0 0 5px #FFB6C1, 0 0 10px #FFB6C1, 0 0 20px #FFB6C1;
-    }
+    animation: runningText 15s linear infinite;
 }
 
 @keyframes runningText {
@@ -78,11 +65,6 @@
       opacity: 1;
     }
   }
-
-/* .textBackground.show {
-    opacity: 1;
-    transform: translateX(0);
-} */
 
 .heroInnerMobile {
     display: none;

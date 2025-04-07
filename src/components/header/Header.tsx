@@ -13,14 +13,13 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 const nav = [
   { name: "Каталог", path: "/catalog" },
-  { name: "Сезонна колекція", path: "#" },
-  { name: "Про нас", path: "#" },
-  { name: "Співпраця", path: "#" },
-  { name: "Інфо", path: "#" },
+  { name: "Сезонна колекція", path: "#sezon-collection" },
+  { name: "Про нас", path: "#about-us" },
+  { name: "Контакти", path: "#contacts" },
 ];
 
 const Header: React.FC = () => {
@@ -36,9 +35,26 @@ const Header: React.FC = () => {
     setAnchorElNav(null);
   };
 
+  const location = useLocation();
+
   const handleNavigate = (path: string) => {
-    navigate(path)
+    const isHashLink = path.startsWith('#');
+    const currentPath = location.pathname;
+    if (isHashLink) {
+      const fullPath = '/' + path;
+  
+      if (currentPath !== '/') {
+        navigate(fullPath);
+      } else {
+        window.location.hash = path;
+      }
+    } else {
+      navigate(path);
+    }
+  
+    handleCloseNavMenu();
   }
+  
   return (
     <header className={styles.header}>
       <div className={styles["header-wrapper"]}>
@@ -89,7 +105,7 @@ const Header: React.FC = () => {
               key={navItem.name}
               sx={{ fontSize: "0.875rem", fontWeight: 400, lineHeight: "20px", textTransform: 'initial' }}
               color="inherit"
-              href={navItem.path}
+              onClick={() => handleNavigate(navItem.path) }
             >
               {navItem.name}
             </Button>
@@ -100,6 +116,8 @@ const Header: React.FC = () => {
             display: "flex",
             gap: { xs: "0.25rem", md: "1rem" },
             alignItems: "center",
+            flex: 1,
+            justifyContent: "flex-end"
           }}
         >
           <label className={styles["input-wrapper"]}>
