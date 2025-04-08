@@ -73,21 +73,45 @@
 .ordersWrapper::-webkit-scrollbar {
     width: 4px;
     height: 4px; 
-  }
+}
   
   /* Стилізація фону скролбара */
-  .ordersWrapper::-webkit-scrollbar-track {
+.ordersWrapper::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 100px;
-  }
+}
   
   /* Стилізація бігунка (самого повзунка) */
-  .ordersWrapper::-webkit-scrollbar-thumb {
+.ordersWrapper::-webkit-scrollbar-thumb {
     background: #2E2E2E;
     border-radius: 10px;
-  }
+}
   
   /* При наведенні на бігунок */
-  .ordersWrapper::-webkit-scrollbar-thumb:hover {
+.ordersWrapper::-webkit-scrollbar-thumb:hover {
     background: #555;
-  }
+}
+
+@media (max-width: 900px) {
+    .orderWrapper {
+        padding: 2rem 0 1rem 1rem;
+    }
+    .count {
+        font-size: 0.625rem;
+        font-weight: 400;
+        width: 16px;
+        height: 16px;
+    }
+    .titleWrapper {
+        margin-right: 1rem;
+    }
+    .ordersWrapper {
+        max-height: none;
+    }
+    .summaryPrice {
+        padding-right: 1rem;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+}
+

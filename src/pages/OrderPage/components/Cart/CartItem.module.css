@@ -23,6 +23,7 @@
 .orderTitle {
     margin: 0;
     line-height: 19px;
+    font-weight: 500;
 }
 
 .orderInfoBottom {
@@ -66,4 +67,18 @@
 
 .cencelBtn {
     cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    .orderItemWrapper {
+        margin-right: 0;
+    }
+    .orderInfoBottom {
+        gap: 0;
+        justify-content: space-between;
+    }
+    .orderPrice {
+        font-size: 0.75rem;
+        font-weight: 400;
+    }
 }
