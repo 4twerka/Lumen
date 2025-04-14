@@ -7,19 +7,25 @@ import { addCart } from "../../store/slices/productSlice";
 interface ProductCardMobileInfoProps {
   price: number;
   id: string;
+  stock: number;
 }
 
 const ProductCardMobileInfo: React.FC<ProductCardMobileInfoProps> = ({
   price,
   id,
+  stock
 }) => {
-  const discount = 30;
-  const discountPrice = price - price * (discount / 100);
+  // const discount = 30;
+  // const discountPrice = price - price * (discount / 100);
   const dispatch = useAppDispatch();
   const carts = useAppSelector((state) => state.products.carts);
   const isInCart = carts.some((item) => item.productId === id);
 
-  const addToCart = () => dispatch(addCart(id));
+  const addToCart = () => {
+    if (stock > 0) {
+      dispatch(addCart(id));
+    }
+  }
   return (
     <Box
       sx={{
@@ -34,7 +40,7 @@ const ProductCardMobileInfo: React.FC<ProductCardMobileInfoProps> = ({
           flexDirection: "column",
         }}
       >
-        <Typography
+        {/* <Typography
           sx={{
             color: "#A3A3A3",
             textDecoration: "line-through",
@@ -42,8 +48,8 @@ const ProductCardMobileInfo: React.FC<ProductCardMobileInfoProps> = ({
             fontWeight: 400,
           }}
         >
-          {discountPrice.toFixed(2)}₴
-        </Typography>
+          {price.toFixed(2)}₴
+        </Typography> */}
         <Typography
           sx={{ color: "#111111", fontSize: "1rem", fontWeight: 500 }}
         >

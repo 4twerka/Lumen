@@ -77,3 +77,10 @@ export interface createOrderResponse {
     amountOrder: number;
   };
 }
+
+export interface userInfo {
+  email: string,
+  firstName: string,
+  lastName: string,
+  phoneNumber: string,
+}

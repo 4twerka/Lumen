@@ -9,9 +9,19 @@ import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRound
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import styles from "./ProductSwiper.module.css";
 import { IconButton } from "@mui/material";
+import { SUPABASE_PRODUCT_URL_PART } from "../../../../constants";
 
-export default function App() {
+interface ProductSwiperProps {
+  productsImgs: string[];
+}
+
+export default function ProductSwiper({productsImgs}: ProductSwiperProps) {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
+  console.log('productsImgs',productsImgs);
+  
+  if (!productsImgs.length) {
+    return <div className={styles.productSwiperWrapper}>No images available</div>;
+  }
 
   return (
     <div className={styles.productSwiperWrapper}>
@@ -25,24 +35,15 @@ export default function App() {
         modules={[FreeMode, Navigation, Thumbs]}
         className={styles.swiperImg}
       >
-        <SwiperSlide>
+        {productsImgs.map((imgPath) => (
+          <SwiperSlide key={imgPath}>
           <img
             className={styles.productImg}
-            src="https://swiperjs.com/demos/images/nature-1.jpg"
+            src={`${SUPABASE_PRODUCT_URL_PART}${imgPath}`}
+            alt="candle"
           />
         </SwiperSlide>
-        <SwiperSlide>
-          <img
-            className={styles.productImg}
-            src="https://swiperjs.com/demos/images/nature-2.jpg"
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img
-            className={styles.productImg}
-            src="https://swiperjs.com/demos/images/nature-3.jpg"
-          />
-        </SwiperSlide>
+        ))}
       </Swiper>
       <IconButton
         className={`custom-prev ${styles.customButton} ${styles.prev}`}
@@ -64,27 +65,19 @@ export default function App() {
         modules={[FreeMode, Navigation, Thumbs]}
         className={styles.swiperSmallImgs}
       >
-        <SwiperSlide
+        {productsImgs.map((imgPath) => (
+          <SwiperSlide
+          key={imgPath}
           className={styles.swiperSlideWrapper}
           style={{ width: "fit-content" }}
         >
           <img
             className={styles.swiperSlideSmallImg}
-            src="https://swiperjs.com/demos/images/nature-1.jpg"
+            src={`${SUPABASE_PRODUCT_URL_PART}${imgPath}`}
+            alt="candle"
           />
         </SwiperSlide>
-        <SwiperSlide className={styles.swiperSlideWrapper}>
-          <img
-            className={styles.swiperSlideSmallImg}
-            src="https://swiperjs.com/demos/images/nature-2.jpg"
-          />
-        </SwiperSlide>
-        <SwiperSlide className={styles.swiperSlideWrapper}>
-          <img
-            className={styles.swiperSlideSmallImg}
-            src="https://swiperjs.com/demos/images/nature-3.jpg"
-          />
-        </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );
