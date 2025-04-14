@@ -1,12 +1,13 @@
 import { Box } from "@mui/material";
 import React from "react";
+import { SUPABASE_PRODUCT_URL_PART } from "../../constants";
 
 interface ProductCardWrapperProps {
   children: React.ReactNode;
   image: string[];
 }
 
-const SUPABASE_PRODUCT_URL_PART = 'https://deikuymdnacgwysnrebc.supabase.co/storage/v1/object/public/product-images/'
+// const SUPABASE_PRODUCT_URL_PART = 'https://deikuymdnacgwysnrebc.supabase.co/storage/v1/object/public/product-images/'
 
 const ProductCardWrapper: React.FC<ProductCardWrapperProps> = ({
   children,

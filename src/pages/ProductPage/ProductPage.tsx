@@ -6,7 +6,7 @@ import ProductInfo from "./components/ProductInfo/ProductInfo";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { fetchProductById } from "../../store/slices/productSlice";
 import BreadcrumbsProductPage from "./components/BreadcrumbsProductPage/BreadcrumbsProductPage";
-// import Loader from "../../components/Loader/Loader";
+import Loader from "../../components/Loader/Loader";
 
 const ProductPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -20,31 +20,31 @@ const ProductPage: React.FC = () => {
   console.log("product", product);
   console.log("isLoading", isLoading);
 
-  // if (isLoading) {
-  //   return (
-  //     <div style={{height: 'calc(100vh - 88px)', width: '100vw', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-  //       <Loader />
-  //     </div>
-  //   )
-  // }
+  if (isLoading) {
+    return (
+      <div style={{height: 'calc(100vh - 88px)', width: '100vw', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <Loader />
+      </div>
+    )
+  }
 
   return (
     <div className={`${styles.productContainer} container`}>
-      <BreadcrumbsProductPage title={"Свічка Warm Essence"} />
+      {product && <BreadcrumbsProductPage title={product?.title} />}
       {/* десктопна версія */}
       <div className={styles.productInfo}>
         <div className={styles.imageWrapper}>
-          <ProductSwiper />
+          <ProductSwiper productsImgs={product?.image ?? []} />
         </div>
         <div className={styles.infoWrapper}>
-          <ProductInfo />
+          {product && <ProductInfo product={product} />}
         </div>
       </div>
       {/* мобільна версія */}
       <div className={styles.productInfoMob}>
-        <h2 className={styles.productInfoMobTitle}>Свічка Warm Essence</h2>
-        <ProductSwiper />
-        <ProductInfo />
+        <h2 className={styles.productInfoMobTitle}>{product?.title}</h2>
+        <ProductSwiper productsImgs={product?.image ?? []} />
+        {product && <ProductInfo product={product} />}
       </div>
     </div>
   );

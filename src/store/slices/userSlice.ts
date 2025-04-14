@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
-// import axiosInstance from '../../utils/axiosInstance';
+import axiosInstance from '../../utils/axiosInstance';
 import { API } from '../../constants';
+import { userInfo } from '../../types';
 
 interface UserRegister {
     email: string;
@@ -21,15 +22,17 @@ interface UserState {
   error: string | null;
   status: string;
   isLoading: boolean;
+  user: object | null;
 }
 
 const initialState: UserState = {
     userId: null,
-    token: '',
+    token: localStorage.getItem('accessToken') ?? sessionStorage.getItem('accessToken') ?? '',
     users: [],
     error: null,
     status: '',
     isLoading: false,
+    user: {}
 }
 
 export const registerUser = createAsyncThunk<string, UserRegister, {rejectValue: string}>(
@@ -40,7 +43,7 @@ export const registerUser = createAsyncThunk<string, UserRegister, {rejectValue:
             return response.data as string;
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response) { 
-              return rejectWithValue(error.response.data || "Server Error!");
+              return rejectWithValue(error.response.data.message || "Server Error!");
             }
             return rejectWithValue("Unexpected error occurred!");
           }
@@ -54,7 +57,7 @@ export const loginUser = createAsyncThunk<string, UserRegister, {rejectValue: st
             return response.data as string;
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response) { 
-              return rejectWithValue(error.response.data || "Server Error!");
+              return rejectWithValue(error.response.data.message || "Server Error!");
             }
             return rejectWithValue("Unexpected error occurred!");
           }
@@ -79,8 +82,22 @@ export const accoutRecoveryUser = createAsyncThunk<string, { email: string }, {r
     'user/accoutRecoveryUser',
     async (userData, {rejectWithValue}) => {
         try {
-            const response = await axios.post(`${API}/api/auth/accountRecovery`, userData);
-            return response.data as string;
+            const response = await axios.post(`${API}/api/auth/passwordRecovery`, userData);
+            return response.data.message as string;
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error) && error.response) { 
+              return rejectWithValue(error.response.data || "Server Error!");
+            }
+            return rejectWithValue("Unexpected error occurred!");
+          }
+    }
+)
+export const getUserInfo = createAsyncThunk<userInfo, {rejectValue: string}>(
+    'user/accoutRecoveryUser',
+    async (_, {rejectWithValue}) => {
+        try {
+            const response = await axiosInstance.get(`${API}/user-self-access/profile`);
+            return response.data as userInfo;
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response) { 
               return rejectWithValue(error.response.data || "Server Error!");

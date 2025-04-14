@@ -14,6 +14,7 @@ import AddProductPage from "../pages/AddProductPage/AddProductPage";
 import OrderPage from "../pages/OrderPage/OrderPage";
 import ThanksOrderPage from "../pages/ThanksOrderPage/ThanksOrderPage";
 import CardPaymentPage from "../pages/CardPaymentPage/CardPaymentPage";
+import OwnProfilePage from "../pages/OwnProfilePage/OwnProfilePage";
 
 const RootRouter: React.FC = () => {
   return (
@@ -33,6 +34,7 @@ const RootRouter: React.FC = () => {
         <Route path="/order" element={<OrderPage />} />
         <Route path="/thanks-order" element={<ThanksOrderPage />} />
         <Route path="/card-payment" element={<CardPaymentPage />} />
+        <Route path="/own-profile" element={<OwnProfilePage />} />
       </Route>
     </Routes>
   );

@@ -5,40 +5,51 @@ import CharactericticsInfo from "../CharactericticsInfo/CharactericticsInfo";
 import QuestionAcordion from "../../../HomePage/sections/Questions/QuestionAcordion";
 import CartQuantity from "../CartQuantity/CartQuantity";
 import ProductInfoButton from "./ProductInfoButton";
+import { Product } from "../../../../types";
+import { useAppSelector } from "../../../../hooks";
+import { productColor } from "../../../../utils/productColor";
 
-const ProductInfo: React.FC = () => {
-  const isInCart = false;
+interface ProductInfoProps {
+   product: Product;
+}
 
+const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
+  const carts = useAppSelector((state) => state.products.carts);
+  const isInCart = carts.some((item) => item.productId === product._id);
+  const cartProduct = carts.find((item) => item.productId === product._id);
+    console.log(productColor[product.color.toLowerCase()]);
+    
   return (
     <>
-      <h2 className={styles.productTitle}>Свічка Warm Essence</h2>
+      <h2 className={styles.productTitle}>{product.title}</h2>
       <div className={styles.priceAvailabilityWrapper}>
-        <p className={styles.availability}>в наявності</p>
-        <p className={styles.price}>950₴</p>
+        <p className={styles.availability}>{product.stock > 0 ? "в наявності" : "немає в наявності"}</p>
+        <p className={styles.price}>{product.price}₴</p>
       </div>
       <div className={styles.quantityColorWrapperMob}>
-        <CartQuantity quantity={2} />
+        {cartProduct && <CartQuantity id={product._id} quantity={cartProduct?.quantity} />}
         <p className={`${styles.subTitle} ${styles.color}`}>
-          Колір <ColorRound color="#2E2E2E" />
+          Колір <ColorRound color={productColor[product.color.toLowerCase()]} />
         </p>
       </div>
+      <p className={`${styles.aromaSizeMob} ${styles.aromaSizeMobPadding}`}>Аромат: {product.aroma}</p>
+      <p className={styles.aromaSizeMob}>Розмір: {product.size} см</p>
       <div className={styles.btnMobWrapper}>
-        <ProductInfoButton isInCart={isInCart} />
+        <ProductInfoButton stock={product.stock} id={product._id} isInCart={isInCart} />
       </div>
       <p className={styles.desc}>
-        Чашка гарячого чаю у ваших руках, улюблена книга на колінах, а поруч —
-        рівне, тепле полум'я свічки. Тепла нота ванілі і меду нагадає про
-        домашню випічку в неділю вранці, коли весь дім наповнювався солодким
-        запахом і очікуванням.{" "}
+        {product.short_describe}
       </p>
       <p
         className={`${styles.subTitle} ${styles.color} ${styles.subTitleDesctop}`}
       >
-        Колір <ColorRound color="#2E2E2E" />
+        Колір <ColorRound color={productColor[product.color.toLowerCase()]} />
       </p>
+      <p className={`${styles.aromaSize} ${styles.aromaSizePadding}`}>Аромат: {product.aroma}</p>
+      <p className={styles.aromaSize}>Розмір: {product.size} см</p>
       <div className={styles.btnWrapper}>
-        <CartQuantity quantity={2} />
-        <ProductInfoButton isInCart={isInCart} />
+        {cartProduct && <CartQuantity id={product._id} quantity={cartProduct?.quantity} />}
+        <ProductInfoButton stock={product.stock} id={product._id} isInCart={isInCart} />
       </div>
       <h3 className={styles.characteristicsTitle}>Характеристики</h3>
       <div className={styles.characteristicsInfoWrapper}>
@@ -58,8 +69,7 @@ const ProductInfo: React.FC = () => {
       <div className={styles.accordionsWrapper}>
         <QuestionAcordion
           number="01/"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          malesuada lacus ex, sit amet blandit leo lobortis eget."
+          text={product.burning_time}
           title="Час горіння"
         />
         <QuestionAcordion
