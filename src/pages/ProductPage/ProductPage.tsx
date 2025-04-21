@@ -17,8 +17,6 @@ const ProductPage: React.FC = () => {
       dispatch(fetchProductById(id));
     }
   }, [dispatch, id]);
-  console.log("product", product);
-  console.log("isLoading", isLoading);
 
   if (isLoading) {
     return (

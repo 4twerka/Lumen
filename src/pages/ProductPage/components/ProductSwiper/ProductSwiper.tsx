@@ -17,7 +17,6 @@ interface ProductSwiperProps {
 
 export default function ProductSwiper({productsImgs}: ProductSwiperProps) {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
-  console.log('productsImgs',productsImgs);
   
   if (!productsImgs.length) {
     return <div className={styles.productSwiperWrapper}>No images available</div>;

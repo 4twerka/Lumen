@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Grid2,
-  Pagination,
-  PaginationItem,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid2, Typography } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
@@ -24,6 +17,7 @@ import MobFilterButtons from "./components/MobFilterButtons";
 import FilterButtons from "./components/FilterButtons";
 import CatalogFiltersMob from "./components/CatalogFiltersMob";
 import ProductCardMobile from "../../components/ProductCardMobile/ProductCardMobile";
+import PagePagination from "../../components/PagePagination/PagePagination";
 
 const buttonStyles = {
   fontWeight: 600,
@@ -131,10 +125,9 @@ const CatalogPage: React.FC = () => {
 
   return (
     <Box
-      
       sx={{
         maxWidth: "1440px",
-        margin: '0 auto',
+        margin: "0 auto",
         display: { xs: "block", md: "flex" },
         width: "100%",
         padding: { xs: "16px 16px", md: "48px 80px" },
@@ -211,7 +204,7 @@ const CatalogPage: React.FC = () => {
             ) : (
               displayProducts[currentPage - 1]?.map((product) => (
                 <Grid2 key={product._id} size={{ xs: 6, sm: 6, md: 4 }}>
-                    <ProductCardMobile {...product} />
+                  <ProductCardMobile {...product} />
                 </Grid2>
               ))
             )}
@@ -227,31 +220,10 @@ const CatalogPage: React.FC = () => {
             Показати ще
           </Button>
         </Box>
-        <Pagination
-          sx={{
-            "& .MuiPagination-ul": { justifyContent: "center" },
-            marginTop: "2.875rem",
-          }}
-          count={displayProducts.length}
-          page={currentPage}
-          onChange={handleChangePage}
-          variant="outlined"
-          shape="rounded"
-          renderItem={(item) => (
-            <PaginationItem
-              {...item}
-              sx={{
-                "& .MuiSvgIcon-root": { width: "1.5rem", height: "1.5rem" },
-                "&.Mui-selected": { backgroundColor: "transparent" },
-                fontSize: "1.125rem",
-                width: "2.5rem",
-                height: "2.5rem",
-                borderColor:
-                  item.page === currentPage ? "brown" : "transparent",
-                borderRadius: "8px",
-              }}
-            />
-          )}
+        <PagePagination
+          currentPage={currentPage}
+          handleChangePage={handleChangePage}
+          paginatedArr={displayProducts}
         />
       </Box>
     </Box>

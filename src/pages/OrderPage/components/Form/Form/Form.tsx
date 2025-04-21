@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import FormButtonSubmit from "../../../../../components/Forms/FormButtonSubmit";
 import PostForm from "../PostForm";
@@ -10,11 +10,10 @@ import PaymentMethodForm from "../PaymentMethodForm";
 import { Box } from "@mui/material";
 import CommentForm from "../CommentForm";
 import { useAppDispatch, useAppSelector } from "../../../../../hooks";
-import {
-  clearCart,
-  createOrder,
-} from "../../../../../store/slices/productSlice";
+import { clearCart } from "../../../../../store/slices/productSlice";
 import { useNavigate } from "react-router";
+import { createOrder } from "../../../../../store/slices/orderSlice";
+import { getUserInfo } from "../../../../../store/slices/userSlice";
 
 const initialValues = {
   firstName: "",
@@ -46,16 +45,22 @@ const Form: React.FC = () => {
   //
   const onSubmit = async (data: order) => {
     const fetchOrder = {
-      deliveryCompanyId: data.deliveryCity
-        ? `${data.deliveryCity}, ${data.deliveryDepartment}`
-        : null,
+      // deliveryCompanyId: data.deliveryCity
+      //   ? `${data.deliveryCity}, ${data.deliveryDepartment}`
+      //   : null,
+      deliveryCompanyId: "6806895684b0dc0099aaf3ff",
       firstName: data.firstName,
       lastName: data.lastname,
-      telephone: data.telephone,
+      phoneNumber: data.telephone,
       email: data.email,
+      paymentMethod: data.payment,
+      products: cartProducts,
     };
-
-    console.log({ ...fetchOrder, products: cartProducts });
+    if (cartProducts.length < 1) {
+      alert("Ваш кошик порожній. Додайте товари перед оформленням замовлення.");
+      return;
+    }
+    dispatch(createOrder({ ...fetchOrder, products: cartProducts }));
 
     try {
       await dispatch(createOrder(fetchOrder));
@@ -70,6 +75,24 @@ const Form: React.FC = () => {
 
   const [isNovaPost, setIsNovaPost] = useState<"pickup" | "novaPost">("pickup");
 
+  const userInfo = useAppSelector((state) => state.user.user);
+  useEffect(() => {
+    dispatch(getUserInfo());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (userInfo) {
+      reset({
+        ...initialValues,
+        firstName: userInfo.firstName || "",
+        lastname: userInfo.lastName || "",
+        telephone: userInfo.phoneNumber || "",
+        email: userInfo.email || "",
+        deliveryEmail: userInfo.email || "",
+      });
+    }
+  }, [userInfo, reset]);
+
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <ContactInfoForm control={control} errors={errors} />
@@ -80,14 +103,14 @@ const Form: React.FC = () => {
       <PaymentMethodForm control={control} />
       <Box
         sx={{
-          width: {xs: "100%", md:"50%"},
+          width: { xs: "100%", md: "50%" },
           display: "flex",
           flexDirection: "column",
           gap: "1.5rem",
         }}
       >
         <CommentForm control={control} />
-        <FormButtonSubmit sx={{ marginTop: "1.5rem", textTransform: 'none' }}>
+        <FormButtonSubmit sx={{ marginTop: "1.5rem", textTransform: "none" }}>
           Перейти до оплати
         </FormButtonSubmit>
       </Box>

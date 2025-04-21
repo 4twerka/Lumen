@@ -22,7 +22,7 @@ interface UserState {
   error: string | null;
   status: string;
   isLoading: boolean;
-  user: object | null;
+  user: userInfo | null;
 }
 
 const initialState: UserState = {
@@ -32,7 +32,7 @@ const initialState: UserState = {
     error: null,
     status: '',
     isLoading: false,
-    user: {}
+    user: null
 }
 
 export const registerUser = createAsyncThunk<string, UserRegister, {rejectValue: string}>(
@@ -54,7 +54,23 @@ export const loginUser = createAsyncThunk<string, UserRegister, {rejectValue: st
     async (userData, {rejectWithValue}) => {
         try {
             const response = await axios.post(`${API}/api/auth/signIn`, userData);
-            return response.data as string;
+            return response.data.token;
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error) && error.response) { 
+              return rejectWithValue(error.response.data.message || "Server Error!");
+            }
+            return rejectWithValue("Unexpected error occurred!");
+          }
+    }
+)
+export const logOutUser = createAsyncThunk<string, void, {rejectValue: string}>(
+    'user/loginOutUser',
+    async (_, {rejectWithValue}) => {
+        try {
+            const response = await axiosInstance.post(`/api/auth/logout`, {});
+            localStorage.removeItem('accessToken');
+            sessionStorage.removeItem('accessToken');
+            return response.data;
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response) { 
               return rejectWithValue(error.response.data.message || "Server Error!");
@@ -92,15 +108,29 @@ export const accoutRecoveryUser = createAsyncThunk<string, { email: string }, {r
           }
     }
 )
-export const getUserInfo = createAsyncThunk<userInfo, {rejectValue: string}>(
-    'user/accoutRecoveryUser',
+export const getUserInfo = createAsyncThunk<userInfo, void, {rejectValue: string}>(
+    'user/getUserInfo',
     async (_, {rejectWithValue}) => {
         try {
-            const response = await axiosInstance.get(`${API}/user-self-access/profile`);
+            const response = await axiosInstance.get(`/api/user-self-access/profile`);
             return response.data as userInfo;
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response) { 
-              return rejectWithValue(error.response.data || "Server Error!");
+              return rejectWithValue(error.response.data.title as string || "Server Error!");
+            }
+            return rejectWithValue("Unexpected error occurred!");
+          }
+    }
+)
+export const updateUserInfo = createAsyncThunk<userInfo, userInfo, {rejectValue: string}>(
+    'user/updateUserInfo',
+    async (userData, {rejectWithValue}) => {
+        try {
+            const response = await axiosInstance.patch(`/api/user-self-access/profile`, userData);
+            return response.data as userInfo;
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error) && error.response) { 
+              return rejectWithValue(error.response.data.title as string || "Server Error!");
             }
             return rejectWithValue("Unexpected error occurred!");
           }
@@ -119,7 +149,7 @@ const userSlice = createSlice({
     },
     setUserId: (state, action: PayloadAction<string | null>) => {
         state.userId = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -157,6 +187,40 @@ const userSlice = createSlice({
         .addCase(accoutRecoveryUser.rejected, (state, action) => {
             state.error = action.payload || "Something went wrong";
             state.isLoading = false;
+        })
+        .addCase(getUserInfo.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(getUserInfo.fulfilled, (state, action) => {
+            state.user = action.payload;
+            state.isLoading = false;
+        })
+        .addCase(getUserInfo.rejected, (state, action) => {
+            state.error = action.payload || "Something went wrong";
+            state.isLoading = false;
+        })
+        .addCase(updateUserInfo.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(updateUserInfo.fulfilled, (state, action) => {
+            state.user = action.payload;
+            state.isLoading = false;
+        })
+        .addCase(updateUserInfo.rejected, (state, action) => {
+            state.error = action.payload || "Something went wrong";
+            state.isLoading = false;
+        })
+        .addCase(logOutUser.fulfilled, (state) => {
+            state.token = '';
+            state.error = null;
+            state.isLoading = false;
+        })
+        .addCase(logOutUser.rejected, (state, action) => {
+            state.error = action.payload || "Something went wrong";
+            state.isLoading = false;
+        })
+        .addCase(logOutUser.pending, (state) => {
+            state.isLoading = true;
         })
   }
 })

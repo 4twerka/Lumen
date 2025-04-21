@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { createOrderResponse, Product } from "../../types";
+import { Product } from "../../types";
 import { API } from "../../constants";
 
 interface UserState {
@@ -91,19 +91,19 @@ export const createProduct = createAsyncThunk<
   }
 });
 
-export const createOrder = createAsyncThunk<
-  createOrderResponse,
-  object,
-  { rejectValue: string }
->("products/createOrder", async (product: object, { rejectWithValue }) => {
-  try {
-    const response = await axios.post(`${API}/api/orders/create`, product);
-    return response.data as createOrderResponse;
-  } catch (error: unknown) {
-    console.error("Error creating order:", error);
-    return rejectWithValue("Unexpected error occurred!");
-  }
-});
+// export const createOrder = createAsyncThunk<
+//   createOrderResponse,
+//   object,
+//   { rejectValue: string }
+// >("products/createOrder", async (product: object, { rejectWithValue }) => {
+//   try {
+//     const response = await axios.post(`${API}/api/orders/create`, product);
+//     return response.data as createOrderResponse;
+//   } catch (error: unknown) {
+//     console.error("Error creating order:", error);
+//     return rejectWithValue("Unexpected error occurred!");
+//   }
+// });
 
 const productSlice = createSlice({
   name: "user",
@@ -210,13 +210,13 @@ const productSlice = createSlice({
       //     // state.order = payload;
       //     state.isLoading = false;
       //   })
-      .addCase(createOrder.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(createOrder.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = payload || "Something went wrong";
-      });
+      // .addCase(createOrder.pending, (state) => {
+      //   state.isLoading = true;
+      // })
+      // .addCase(createOrder.rejected, (state, { payload }) => {
+      //   state.isLoading = false;
+      //   state.error = payload || "Something went wrong";
+      // });
   },
 });
 

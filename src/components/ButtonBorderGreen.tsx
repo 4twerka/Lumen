@@ -12,7 +12,7 @@ const ButtonBorderGreen:React.FC<ButtonProps> = ({children, sx, ...props}) => {
             py: "0.75rem",
             border: "1px solid #0E402D",
             borderRadius: "8px",
-            textTransform: 'capitalize',
+            textTransform: 'none',
             fontWeight: 600,
             color: "#2E2E2E",
             ...sx

@@ -14,7 +14,11 @@ import AddProductPage from "../pages/AddProductPage/AddProductPage";
 import OrderPage from "../pages/OrderPage/OrderPage";
 import ThanksOrderPage from "../pages/ThanksOrderPage/ThanksOrderPage";
 import CardPaymentPage from "../pages/CardPaymentPage/CardPaymentPage";
-import OwnProfilePage from "../pages/OwnProfilePage/OwnProfilePage";
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import Orders from "../pages/ProfilePage/Orders";
+import MyData from "../pages/ProfilePage/MyData";
+// import ProfilePageMyData from "../pages/ProfilePage/ProfilePageMyData";
+// import ProfilePageMyOrders from "../pages/ProfilePage/ProfilePageMyOrders";
 
 const RootRouter: React.FC = () => {
   return (
@@ -34,7 +38,12 @@ const RootRouter: React.FC = () => {
         <Route path="/order" element={<OrderPage />} />
         <Route path="/thanks-order" element={<ThanksOrderPage />} />
         <Route path="/card-payment" element={<CardPaymentPage />} />
-        <Route path="/own-profile" element={<OwnProfilePage />} />
+        <Route path="/profile" element={<ProfilePage />} >
+            <Route path="my-orders" element={<Orders />} />
+            <Route path="my-data" element={<MyData />} />
+        </Route>
+        {/* <Route path="/profile/my-data" element={<ProfilePageMyData />} />
+        <Route path="/profile/my-orders" element={<ProfilePageMyOrders />} /> */}
       </Route>
     </Routes>
   );

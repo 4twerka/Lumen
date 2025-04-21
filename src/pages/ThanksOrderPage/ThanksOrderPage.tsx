@@ -8,6 +8,7 @@ const ThanksOrderPage: React.FC = () => {
     const navigate = useNavigate();
   return (
     <Box
+      className={'container'}
       sx={{
         width: "100%",
         padding: { xs: "16px 16px", md: "80px 80px" },

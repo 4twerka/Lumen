@@ -1,0 +1,39 @@
+.ordersWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+}
+.loaderWrapper {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.noOrdersWrapper {
+    padding-top: 40px;
+    padding-bottom: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+.noOrdersText {
+    text-align: center;
+    color: #111111;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+@media (max-width: 900px) {
+    .ordersWrapper {
+        gap: 16px;
+    }
+    .btnNoOrders {
+        width: 100%;
+    }
+    .noOrdersWrapper {
+        padding-bottom: 40px;
+    }
+}
