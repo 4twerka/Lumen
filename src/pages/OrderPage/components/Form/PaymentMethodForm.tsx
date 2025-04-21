@@ -39,7 +39,7 @@ const PaymentMethodForm:React.FC<PaymentMethodFormProps> = ({control}) => {
               />
               <FormControlLabel
                 sx={{ "& .MuiFormControlLabel-label": { flexGrow: 1 } }}
-                value="card"
+                value="online payment"
                 label={
                   <RenderRadioLabel
                     {...{

@@ -14,6 +14,8 @@ import {
   Typography,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router";
+import { useAppSelector } from "../../hooks";
+import ProfileMenu from "./components/ProfileMenu/ProfileMenu";
 
 const nav = [
   { name: "Каталог", path: "/catalog" },
@@ -26,7 +28,10 @@ const Header: React.FC = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
+  const [anchorProfileEl, setAnchorProfileEl] =
+    React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
+  const token = useAppSelector((state) => state.user.token);
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -35,15 +40,24 @@ const Header: React.FC = () => {
     setAnchorElNav(null);
   };
 
+  const handleOpenProfile = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorProfileEl(event.currentTarget);
+  };
+  const handleCloseProfile = () => {
+    setAnchorProfileEl(null);
+  };
+
+  const openProfile = Boolean(anchorProfileEl);
+
   const location = useLocation();
 
   const handleNavigate = (path: string) => {
-    const isHashLink = path.startsWith('#');
+    const isHashLink = path.startsWith("#");
     const currentPath = location.pathname;
     if (isHashLink) {
-      const fullPath = '/' + path;
-  
-      if (currentPath !== '/') {
+      const fullPath = "/" + path;
+
+      if (currentPath !== "/") {
         navigate(fullPath);
       } else {
         window.location.hash = path;
@@ -51,10 +65,10 @@ const Header: React.FC = () => {
     } else {
       navigate(path);
     }
-  
+
     handleCloseNavMenu();
-  }
-  
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles["header-wrapper"]}>
@@ -65,7 +79,10 @@ const Header: React.FC = () => {
           >
             <MenuIcon />
           </IconButton>
-          <LogoIcon onClick={() => handleNavigate('/')} className={styles.logo} />
+          <LogoIcon
+            onClick={() => handleNavigate("/")}
+            className={styles.logo}
+          />
         </Box>
         <Menu
           id="menu-appbar"
@@ -88,9 +105,9 @@ const Header: React.FC = () => {
               href={navItem.path}
               key={navItem.name}
               onClick={() => {
-                handleCloseNavMenu()
-                handleNavigate(navItem.path)
-            }}
+                handleCloseNavMenu();
+                handleNavigate(navItem.path);
+              }}
             >
               <Typography sx={{ textAlign: "center" }}>
                 {navItem.name}
@@ -103,9 +120,14 @@ const Header: React.FC = () => {
           {nav.map((navItem) => (
             <Button
               key={navItem.name}
-              sx={{ fontSize: "0.875rem", fontWeight: 400, lineHeight: "20px", textTransform: 'initial' }}
+              sx={{
+                fontSize: "0.875rem",
+                fontWeight: 400,
+                lineHeight: "20px",
+                textTransform: "initial",
+              }}
               color="inherit"
-              onClick={() => handleNavigate(navItem.path) }
+              onClick={() => handleNavigate(navItem.path)}
             >
               {navItem.name}
             </Button>
@@ -117,7 +139,7 @@ const Header: React.FC = () => {
             gap: { xs: "0.25rem", md: "1rem" },
             alignItems: "center",
             flex: 1,
-            justifyContent: "flex-end"
+            justifyContent: "flex-end",
           }}
         >
           <label className={styles["input-wrapper"]}>
@@ -128,11 +150,22 @@ const Header: React.FC = () => {
           </label>
           <Box sx={{ display: "flex", gap: "2rem" }}>
             <IconButton
+              id="profile-btn"
+              onClick={handleOpenProfile}
               sx={{ display: { xs: "none", md: "block" }, height: "40px" }}
             >
               <UserIcon />
             </IconButton>
-            <IconButton onClick={() => navigate('/order')} sx={{ height: "40px" }}>
+            <ProfileMenu
+              anchorProfileEl={anchorProfileEl}
+              isAuth={!!token}
+              openProfile={openProfile}
+              handleCloseProfile={handleCloseProfile}
+            />
+            <IconButton
+              onClick={() => navigate("/order")}
+              sx={{ height: "40px" }}
+            >
               <ShoppingIcon />
             </IconButton>
           </Box>

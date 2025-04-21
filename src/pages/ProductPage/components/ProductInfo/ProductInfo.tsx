@@ -17,7 +17,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const carts = useAppSelector((state) => state.products.carts);
   const isInCart = carts.some((item) => item.productId === product._id);
   const cartProduct = carts.find((item) => item.productId === product._id);
-    console.log(productColor[product.color.toLowerCase()]);
     
   return (
     <>

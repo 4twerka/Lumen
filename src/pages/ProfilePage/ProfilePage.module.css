@@ -1,0 +1,11 @@
+.profilePageWrapper {
+    padding-top: 64px;
+    padding-bottom: 64px;
+}
+
+@media (max-width: 900px) {
+    .profilePageWrapper {
+        padding-top: 32px;
+        padding-bottom: 32px;
+    }
+}

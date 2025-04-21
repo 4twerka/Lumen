@@ -1,0 +1,23 @@
+.orderStatusWrapper {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.done {
+    background-color: rgba(119, 219, 123, 0.27);
+    color: #0E402D;
+}
+
+.taken {
+    background-color: #FDF5ED;
+    color: #111111;
+}
+
+.status {
+    font-size: 1rem;
+    font-weight: 500;
+    color: inherit;
+}

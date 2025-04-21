@@ -1,0 +1,90 @@
+.orderWrapper {
+    padding: 1.5rem;
+    border: 1px solid #A3A3A3;
+    border-radius: 8px;
+}
+.orderTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.order {
+    color: #111111;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 2.25rem;
+}
+.detailsWrapper {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 1.2fr 1.5fr;
+    row-gap: 24px;
+    column-gap: 40px;
+}
+.details {
+    font-size: 0.875rem;
+    color: #A3A3A3;
+    font-weight: 400;
+}
+.detailsWeight {
+    font-size: 1rem;
+    line-height: 24px;
+    font-weight: 400;
+    color: #111111;
+}
+.method {
+    grid-column: 2/4;
+}
+.swiperWrapper {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    padding-top: 32px;
+}
+.priceWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 15%;
+}
+.price {
+    padding-right: 1rem;
+    text-align: right;
+}
+.orderMobile {
+    display: none;
+}
+.infoWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding: 1rem 0;
+    cursor: pointer;
+}
+.detailsWrapperMobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+@media (max-width: 900px) {
+    .orderDesctop {
+        display: none;
+    }
+    .orderMobile {
+        display: block;
+    }
+    .order {
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: normal;
+    }
+    .details {
+        font-size: 0.75rem;
+    }
+    .detailsWeight {
+        font-size: 0.75rem;
+        line-height: normal;
+    }
+}

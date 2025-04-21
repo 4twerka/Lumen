@@ -79,8 +79,9 @@ export interface createOrderResponse {
 }
 
 export interface userInfo {
-  email: string,
-  firstName: string,
-  lastName: string,
-  phoneNumber: string,
+  email?: string,
+  password?: string,
+  firstName?: string,
+  lastName?: string,
+  phoneNumber?: string,
 }

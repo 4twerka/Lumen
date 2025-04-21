@@ -1,7 +1,6 @@
-import { Product } from "../types";
 
-function getPaginatedProducts(arr: Product[], pagination: number):Product[][] {
-    const result:Product[][] = [];
+function getPaginatedProducts<T>(arr: T[], pagination: number):T[][] {
+    const result:T[][] = [];
     for (let i = 0; i < arr.length; i=i + pagination) {
         const part = arr.slice(i, i+pagination);
         result.push(part);        

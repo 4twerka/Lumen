@@ -76,9 +76,9 @@ function FormLogin() {
       const accessToken = await dispatch(loginUser(data)).unwrap();
 
       if (checkBoxRef.current?.checked) {
-        localStorage.setItem("accessToken", JSON.stringify(accessToken));
+        localStorage.setItem("accessToken", accessToken);
       } else {
-        sessionStorage.setItem("accessToken", JSON.stringify(accessToken));
+        sessionStorage.setItem("accessToken", accessToken);
       }
       navigate("/");
 

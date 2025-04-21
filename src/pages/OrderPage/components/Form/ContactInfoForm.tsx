@@ -5,6 +5,9 @@ import { Control, Controller, FieldErrors } from 'react-hook-form'
 import ErrorMessage from '../../../../components/ErrorMessage/ErrorMessage'
 import { order } from '../../../../types' 
 import LetterIcon from "../../../../assets/Letter.svg?react";
+import { useAppDispatch } from '../../../../hooks'
+import { logOutUser } from '../../../../store/slices/userSlice'
+import { useNavigate } from 'react-router'
 
 interface ContactInfoFormProps {
     control: Control<order>;
@@ -12,6 +15,12 @@ interface ContactInfoFormProps {
 }
 
 const ContactInfoForm:React.FC<ContactInfoFormProps> = ({control, errors}) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logOutUser());
+    navigate('/')
+  }
   return (
     <Box>
         <FormTitle>1. Контактна інформація</FormTitle>
@@ -31,6 +40,7 @@ const ContactInfoForm:React.FC<ContactInfoFormProps> = ({control, errors}) => {
               placeholder="john@email.com"
               slotProps={{
                 input: {
+                  readOnly: true,
                   startAdornment: (
                     <InputAdornment position="start">
                       <LetterIcon />
@@ -39,6 +49,7 @@ const ContactInfoForm:React.FC<ContactInfoFormProps> = ({control, errors}) => {
                   endAdornment: (
                     <InputAdornment position="end">
                       <Typography
+                        onClick={handleLogout}
                         sx={{
                           fontSize: "1rem",
                           fontWeight: 600,
@@ -71,7 +82,7 @@ const ContactInfoForm:React.FC<ContactInfoFormProps> = ({control, errors}) => {
             control={control}
             rules={{
               required: "Введіть ім'я",
-              minLength: { value: 2, message: "Мінімум 2 символи" },
+              minLength: { value: 5, message: "Мінімум 5 символи" },
             }}
             render={({ field }) => (
               <div>
@@ -83,7 +94,10 @@ const ContactInfoForm:React.FC<ContactInfoFormProps> = ({control, errors}) => {
           <Controller
             name="lastname"
             control={control}
-            rules={{ required: "Введіть прізвище" }}
+            rules={{ 
+              required: "Введіть прізвище",
+              minLength: { value: 5, message: "Мінімум 5 символи" },
+            }}
             render={({ field }) => (
               <div>
                 <TextField
@@ -98,7 +112,13 @@ const ContactInfoForm:React.FC<ContactInfoFormProps> = ({control, errors}) => {
           <Controller
             name="telephone"
             control={control}
-            rules={{ required: "Введіть номер телефону" }}
+            rules={{ 
+              required: "Введіть номер телефону", 
+              pattern: {
+                value: /^\+?380\d{9}$/,
+                message: "Введіть номер у форматі 380XXXXXXXXX",
+              },
+            }}
             render={({ field }) => (
               <div>
                 <TextField
