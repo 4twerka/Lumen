@@ -59,7 +59,7 @@ export const fetchOrders = createAsyncThunk<
   { rejectValue: string }
 >("order/fetchOrders", async (_, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.get(`/api/orders`);
+    const response = await axiosInstance.get(`/api/user-self-access/orders`);
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {

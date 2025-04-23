@@ -53,7 +53,7 @@ export const loginUser = createAsyncThunk<string, UserRegister, {rejectValue: st
     'user/loginUser',
     async (userData, {rejectWithValue}) => {
         try {
-            const response = await axios.post(`${API}/api/auth/signIn`, userData);
+            const response = await axios.post(`${API}/api/auth/signIn`, userData, { withCredentials:true });
             return response.data.token;
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response) { 
