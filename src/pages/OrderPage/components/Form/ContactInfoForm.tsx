@@ -1,22 +1,23 @@
-import { Box, InputAdornment, TextField, Typography } from '@mui/material'
+import { Box, Button, InputAdornment, TextField } from '@mui/material'
 import React from 'react'
 import FormTitle from './FormTitle'
 import { Control, Controller, FieldErrors } from 'react-hook-form'
 import ErrorMessage from '../../../../components/ErrorMessage/ErrorMessage'
-import { order } from '../../../../types' 
+import { CreateOrder } from '../../../../types' 
 import LetterIcon from "../../../../assets/Letter.svg?react";
-import { useAppDispatch } from '../../../../hooks'
+import { useAppDispatch, useAppSelector } from '../../../../hooks'
 import { logOutUser } from '../../../../store/slices/userSlice'
 import { useNavigate } from 'react-router'
 
 interface ContactInfoFormProps {
-    control: Control<order>;
-      errors: FieldErrors<order>;
+    control: Control<CreateOrder>;
+      errors: FieldErrors<CreateOrder>;
 }
 
 const ContactInfoForm:React.FC<ContactInfoFormProps> = ({control, errors}) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const token = useAppSelector((state) => state.user.token)
   const handleLogout = () => {
     dispatch(logOutUser());
     navigate('/')
@@ -25,9 +26,9 @@ const ContactInfoForm:React.FC<ContactInfoFormProps> = ({control, errors}) => {
     <Box>
         <FormTitle>1. Контактна інформація</FormTitle>
         <Controller
-          name="deliveryEmail"
+          name="userEmail"
           control={control}
-          rules={{ required: true }}
+          // rules={{ required: true }}
           render={({ field }) => (
             <TextField
               {...field}
@@ -48,18 +49,20 @@ const ContactInfoForm:React.FC<ContactInfoFormProps> = ({control, errors}) => {
                   ),
                   endAdornment: (
                     <InputAdornment position="end">
-                      <Typography
+                      <Button
                         onClick={handleLogout}
+                        disabled={!token}
                         sx={{
                           fontSize: "1rem",
                           fontWeight: 600,
-                          padding: "16px 18px",
+                          // padding: "16px 18px",
                           color: "#73270D",
-                          cursor: "pointer",
+                          // cursor: "pointer",
+                          textTransform: 'none'
                         }}
                       >
                         Log Out
-                      </Typography>
+                      </Button>
                     </InputAdornment>
                   ),
                 },

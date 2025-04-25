@@ -3,11 +3,11 @@ import React from 'react'
 import FormTitle from './FormTitle';
 import { Control, Controller } from 'react-hook-form';
 import RenderRadioLabel from './RenderRadioLabel/RenderRadioLabel';
-import { order } from '../../../../types';
+import { CreateOrder } from '../../../../types';
 
 interface DeliveryMethodFormProps {
-    control: Control<order>;
-    setIsNovaPost: (value: React.SetStateAction<'pickup' | 'novaPost'>) => void;
+    control: Control<CreateOrder>;
+    setIsNovaPost: (value: React.SetStateAction<'self_pickup' | 'nova_post'>) => void;
 }
 
 const DeliveryMethodForm:React.FC<DeliveryMethodFormProps> = ({control, setIsNovaPost}) => {
@@ -22,13 +22,13 @@ const DeliveryMethodForm:React.FC<DeliveryMethodFormProps> = ({control, setIsNov
             <RadioGroup
               {...field}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setIsNovaPost(e.target.value as 'pickup' | 'novaPost');
+                setIsNovaPost(e.target.value as 'self_pickup' | 'nova_post');
                 field.onChange(e.target.value);
               }}
             >
               <FormControlLabel
                 sx={{ "& .MuiFormControlLabel-label": { flexGrow: 1 } }}
-                value="novaPost"
+                value="nova_post"
                 label={
                   <RenderRadioLabel
                     {...{
@@ -42,7 +42,7 @@ const DeliveryMethodForm:React.FC<DeliveryMethodFormProps> = ({control, setIsNov
               />
               <FormControlLabel
                 sx={{ "& .MuiFormControlLabel-label": { flexGrow: 1 } }}
-                value="pickup"
+                value="self_pickup"
                 label={
                   <RenderRadioLabel
                     {...{

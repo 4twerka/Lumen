@@ -51,18 +51,18 @@ export const initialFiltersState: FiltersState = {
   giftWrapping: false,
 };
 
-export interface order {
+export interface CreateOrder {
   firstName: string;
   telephone: string;
   email: string;
-  deliveryEmail: string;
+  userEmail: string;
   lastname: string;
-  deliveryMethod: string;
+  deliveryMethod: 'self_pickup' | 'nova_post';
   deliveryCity: string;
   deliveryDepartment: string;
-  payment: string;
-  callMe: boolean;
-  comment: string;
+  payment: 'cash' | 'online payment';
+  isCallRestricted?: boolean;
+  comment?: string;
 }
 
 export interface createOrderResponse {

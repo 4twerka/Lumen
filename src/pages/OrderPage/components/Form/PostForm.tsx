@@ -10,7 +10,7 @@ import {
 import FormTitle from "./FormTitle";
 import { API_NOVA_POST, API_NOVA_POST_URL } from "../../../../constants";
 import _ from "lodash";
-import { order } from "../../../../types";
+import { CreateOrder } from "../../../../types";
 import styles from "../../../../components/ErrorMessage/ErrorMessage.module.css";
 
 interface NovaPostCity {
@@ -22,9 +22,9 @@ interface NovaPostDepartment {
 }
 
 interface PostFormProps {
-  control: Control<order>;
-  errors: FieldErrors<order>;
-  setValue: UseFormSetValue<order>;
+  control: Control<CreateOrder>;
+  errors: FieldErrors<CreateOrder>;
+  setValue: UseFormSetValue<CreateOrder>;
 }
 
 const PostForm: React.FC<PostFormProps> = ({ control, errors, setValue }) => {
