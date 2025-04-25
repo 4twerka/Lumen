@@ -31,8 +31,8 @@ const Orders: React.FC = () => {
   };
 
   const handleNavigateCatalog = () => {
-    navigate('/catalog')
-  }
+    navigate("/catalog");
+  };
 
   return (
     <>
@@ -41,27 +41,29 @@ const Orders: React.FC = () => {
         <div className={styles.loaderWrapper}>
           <Loader />
         </div>
+      ) : orders.length > 0 ? (
+        <>
+          <div className={styles.ordersWrapper}>
+            {paginatedOrders[currentPage - 1]?.map((order) => (
+              <Order key={order.id} {...order} />
+            ))}
+          </div>
+          <PagePagination
+            currentPage={currentPage}
+            handleChangePage={handleChangePage}
+            paginatedArr={paginatedOrders}
+          />
+        </>
       ) : (
-        orders.length > 0 ? (
-            <>
-            <div className={styles.ordersWrapper}>
-              {paginatedOrders[currentPage - 1]?.map((order) => (
-                <Order key={order._id} {...order} />
-              ))}
-            </div>
-            <PagePagination
-              currentPage={currentPage}
-              handleChangePage={handleChangePage}
-              paginatedArr={paginatedOrders}
-            />
-          </>
-        ) : (
-            <div className={styles.noOrdersWrapper}>
-                <p className={styles.noOrdersText}>Поки що замовлень немає</p>
-                <ButtonGreen className={styles.btnNoOrders} onClick={handleNavigateCatalog}>Оберіть щось особливе</ButtonGreen>
-            </div>
-        )
-   
+        <div className={styles.noOrdersWrapper}>
+          <p className={styles.noOrdersText}>Поки що замовлень немає</p>
+          <ButtonGreen
+            className={styles.btnNoOrders}
+            onClick={handleNavigateCatalog}
+          >
+            Оберіть щось особливе
+          </ButtonGreen>
+        </div>
       )}
     </>
   );

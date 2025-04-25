@@ -15,24 +15,36 @@ interface OrderProduct {
 
 interface OrderProps {
   amountOrder: number;
-  deliveryCompanyId: string | null;
+  delivery: {
+    method: "self_pickup" | "nova_post";
+    address: {
+      city: string;
+      department: string;
+    };
+  };
   firstName: string;
   phoneNumber: string;
-  status: string;
-  paymentMethod: string;
+  status: "processing" | "accepted" | "sent" | "received" | "canceled";
+  paymentMethod: "cash" | "online payment";
   products: OrderProduct[];
   lastName: string;
+  created: string;
+  code: string;
+  notes?: string;
 }
 
 const Order: React.FC<OrderProps> = ({
   amountOrder,
-  deliveryCompanyId,
+  delivery,
+  created,
+  code,
   firstName,
   lastName,
   phoneNumber,
   status,
   products,
   paymentMethod,
+  notes
 }) => {
   const [showInfo, setShowInfo] = useState(false);
   const handleShowInfo = () => {
@@ -50,23 +62,28 @@ const Order: React.FC<OrderProps> = ({
     .filter(
       (item): item is { productId: string; image: string } => item !== null
     );
-
+  const deliveryAdress =
+    delivery.method === "nova_post"
+      ? `Відділення Нової Пошти № ${delivery.address.department} ${delivery.address.city}`
+      : `сомовивіз з магазину ${delivery.address.department} ${delivery.address.city}`;
+  const date = new Date(created).toLocaleDateString("uk-UA");
+  const payment = paymentMethod === 'cash' ? "Картою Visa/Mastercard" : "Готівкою"
   return (
     <>
       <div className={`${styles.orderWrapper} ${styles.orderDesctop}`}>
         <div className={styles.orderTitle}>
-          <h3 className={styles.order}>Замовлення № 3573</h3>
+          <h3 className={styles.order}>Замовлення № {code}</h3>
           <OrderStatus status={status} />
         </div>
         <div className={styles.detailsWrapper}>
-          <p className={styles.details}>Створено: 07.04.2025</p>
+          <p className={styles.details}>Створено: {date}</p>
           <p className={`${styles.details} ${styles.method}`}>
             Метод оплати:{" "}
-            {paymentMethod === "card" ? "Картою Visa/Mastercard" : "Готівкою"}
+            {payment}
           </p>
           <p className={styles.details}>
             Адреса пункту отримання: <br />
-            <span className={styles.detailsWeight}>{deliveryCompanyId}</span>
+            <span className={styles.detailsWeight}>{deliveryAdress}</span>
           </p>
           <p className={styles.details}>
             Дані для отримання: <br />
@@ -79,7 +96,7 @@ const Order: React.FC<OrderProps> = ({
           <p className={styles.details}>
             Коментар до замовлення: <br />
             <span className={styles.detailsWeight}>
-              Прошу надіслати замовлення 9 квітня, дякую!
+              {notes}
             </span>
           </p>
         </div>
@@ -106,8 +123,8 @@ const Order: React.FC<OrderProps> = ({
       <div className={`${styles.orderWrapper} ${styles.orderMobile}`}>
         <div className={styles.orderTitle}>
           <div className={styles.orderTitleInner}>
-            <h3 className={styles.order}>Замовлення № 3573</h3>
-            <p className={styles.details}>Створено: 07.04.2025</p>
+            <h3 className={styles.order}>Замовлення № {code}</h3>
+            <p className={styles.details}>Створено: {date}</p>
           </div>
           <OrderStatus status={status} />
         </div>
@@ -134,14 +151,12 @@ const Order: React.FC<OrderProps> = ({
             <p className={`${styles.details} ${styles.method}`}>
               Метод оплати: <br />
               <span className={styles.detailsWeight}>
-                {paymentMethod === "card"
-                  ? "Картою Visa/Mastercard"
-                  : "Готівкою"}
+                {payment}
               </span>
             </p>
             <p className={styles.details}>
               Адреса пункту отримання: <br />
-              <span className={styles.detailsWeight}>{deliveryCompanyId}</span>
+              <span className={styles.detailsWeight}>{deliveryAdress}</span>
             </p>
             <p className={styles.details}>
               Дані для отримання: <br />
@@ -154,7 +169,7 @@ const Order: React.FC<OrderProps> = ({
             <p className={styles.details}>
               Коментар до замовлення: <br />
               <span className={styles.detailsWeight}>
-                Прошу надіслати замовлення 9 квітня, дякую!
+                {notes}
               </span>
             </p>
             <p className={styles.details}>

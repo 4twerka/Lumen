@@ -1,28 +1,41 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import axiosInstance from "../../utils/axiosInstance";
+import { API } from "../../constants";
+
+interface ProductOrder {
+  productId: string;
+  quantity: number;
+}
 
 interface CreateOrder {
-  deliveryCompanyId: string | null;
   firstName: string;
   lastName: string;
   phoneNumber: string;
   email: string;
-  paymentMethod: string;
-  products: {
-    productId: string;
-    quantity: number;
-  }[];
+  paymentMethod: 'cash' | 'online payment';
+  products: ProductOrder[];
+  delivery: {
+    method: 'self_pickup' | 'nova_post';
+    address: {
+        city: string;
+        department: string;
+    };
+};
+  notes?: string | '';
+  isCallRestricted?: boolean;
 }
 
 interface OrderResponce extends CreateOrder {
   amountOrder: number;
-  status: string;
+  status: "processing" | "accepted" | "sent" | "received" | "canceled";
   isPaid: boolean;
+  code: string;
+  created: string;
 }
 
 interface Order extends OrderResponce {
-  _id: string;
+  id: string;
   userId: string;
 }
 
@@ -44,7 +57,8 @@ export const createOrder = createAsyncThunk<
   { rejectValue: string }
 >("order/createOrder", async (userData, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`/api/orders`, userData);
+    console.log("Body sent to server:", JSON.stringify(userData, null, 2));
+    const response = await axios.post(`${API}/api/orders`, userData);
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
@@ -90,7 +104,8 @@ const userSlice = createSlice({
         state.error = action.payload || "Something went wrong";
         state.isLoading = false;
       })
-      .addCase(createOrder.pending, (state) => {
+      .addCase(createOrder.pending, (state,action) => {
+        console.log("Pending with:", action.meta.arg);
         state.isLoading = true;
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {

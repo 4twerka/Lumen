@@ -7,17 +7,17 @@ import {
 } from "@mui/material";
 import React from "react";
 import { Control, Controller } from "react-hook-form";
-import { order } from "../../../../types";
+import { CreateOrder } from "../../../../types";
 
 interface CommentFormProps {
-    control: Control<order>
+    control: Control<CreateOrder>
 }
 
 const CommentForm:React.FC<CommentFormProps> = ({ control }) => {
   return (
     <>
       <Controller
-        name="callMe"
+        name="isCallRestricted"
         control={control}
         render={({ field }) => (
           <FormControlLabel
@@ -62,7 +62,7 @@ const CommentForm:React.FC<CommentFormProps> = ({ control }) => {
                   paddingTop: "0.25rem",
                 }}
               >
-                {field.value.length || 0}/500 Символів
+                {field.value?.length || 0}/500 Символів
               </Typography>
             </>
           )}

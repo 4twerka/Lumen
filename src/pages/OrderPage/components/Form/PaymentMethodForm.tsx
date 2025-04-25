@@ -3,10 +3,10 @@ import React from 'react'
 import { Control, Controller } from 'react-hook-form';
 import RenderRadioLabel from './RenderRadioLabel/RenderRadioLabel';
 import FormTitle from './FormTitle';
-import { order } from '../../../../types';
+import { CreateOrder } from '../../../../types';
 
 interface PaymentMethodFormProps {
-    control: Control<order>
+    control: Control<CreateOrder>
 }
 
 const PaymentMethodForm:React.FC<PaymentMethodFormProps> = ({control}) => {

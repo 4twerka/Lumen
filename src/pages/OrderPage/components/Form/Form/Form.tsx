@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import FormButtonSubmit from "../../../../../components/Forms/FormButtonSubmit";
 import PostForm from "../PostForm";
-import { order } from "../../../../../types";
+import { CreateOrder } from "../../../../../types";
 import ContactInfoForm from "../ContactInfoForm";
 import DeliveryMethodForm from "../DeliveryMethodForm";
 import styles from "./Form.module.css";
@@ -15,17 +15,17 @@ import { useNavigate } from "react-router";
 import { createOrder } from "../../../../../store/slices/orderSlice";
 import { getUserInfo } from "../../../../../store/slices/userSlice";
 
-const initialValues = {
+const initialValues: CreateOrder = {
   firstName: "",
   lastname: "",
   telephone: "",
   email: "",
-  deliveryEmail: "",
-  deliveryMethod: "pickup",
+  userEmail: "",
+  deliveryMethod: "self_pickup",
   deliveryCity: "",
   deliveryDepartment: "",
   payment: "cash",
-  callMe: false,
+  isCallRestricted: false,
   comment: "",
 };
 
@@ -36,31 +36,36 @@ const Form: React.FC = () => {
     control,
     setValue,
     reset,
-  } = useForm<order>({
+  } = useForm<CreateOrder>({
     defaultValues: initialValues,
   });
   const dispatch = useAppDispatch();
   const cartProducts = useAppSelector((state) => state.products.carts);
+  const token = useAppSelector((state) => state.user.token);
+  const userInfo = useAppSelector((state) => state.user.user);
   const navigate = useNavigate();
-  //
-  const onSubmit = async (data: order) => {
+  const onSubmit = async (data: CreateOrder) => {
     const fetchOrder = {
-      // deliveryCompanyId: data.deliveryCity
-      //   ? `${data.deliveryCity}, ${data.deliveryDepartment}`
-      //   : null,
-      deliveryCompanyId: "6806895684b0dc0099aaf3ff",
       firstName: data.firstName,
       lastName: data.lastname,
       phoneNumber: data.telephone,
       email: data.email,
       paymentMethod: data.payment,
       products: cartProducts,
+      delivery: {
+        method: data.deliveryMethod,
+        address: {
+          city: data.deliveryCity,
+          department: data.deliveryDepartment
+        }
+      },
+      notes: data.comment,
+      isCallRestricted: data.isCallRestricted
     };
     if (cartProducts.length < 1) {
       alert("Ваш кошик порожній. Додайте товари перед оформленням замовлення.");
       return;
     }
-    dispatch(createOrder({ ...fetchOrder, products: cartProducts }));
 
     try {
       await dispatch(createOrder(fetchOrder));
@@ -73,12 +78,13 @@ const Form: React.FC = () => {
     }
   };
 
-  const [isNovaPost, setIsNovaPost] = useState<"pickup" | "novaPost">("pickup");
-
-  const userInfo = useAppSelector((state) => state.user.user);
+  const [isNovaPost, setIsNovaPost] = useState<"self_pickup" | "nova_post">("self_pickup");
+  
   useEffect(() => {
-    dispatch(getUserInfo());
-  }, [dispatch]);
+    if (token) {
+      dispatch(getUserInfo());
+    }
+  }, [dispatch, token]);
 
   useEffect(() => {
     if (userInfo) {
@@ -88,7 +94,7 @@ const Form: React.FC = () => {
         lastname: userInfo.lastName || "",
         telephone: userInfo.phoneNumber || "",
         email: userInfo.email || "",
-        deliveryEmail: userInfo.email || "",
+        userEmail: userInfo.email || "",
       });
     }
   }, [userInfo, reset]);
@@ -97,7 +103,7 @@ const Form: React.FC = () => {
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <ContactInfoForm control={control} errors={errors} />
       <DeliveryMethodForm control={control} setIsNovaPost={setIsNovaPost} />
-      {isNovaPost === "novaPost" && (
+      {isNovaPost === "nova_post" && (
         <PostForm control={control} errors={errors} setValue={setValue} />
       )}
       <PaymentMethodForm control={control} />
