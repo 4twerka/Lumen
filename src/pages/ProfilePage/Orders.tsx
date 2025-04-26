@@ -24,7 +24,7 @@ const Orders: React.FC = () => {
     () => getPaginatedProducts(orders, 2),
     [orders]
   );
-
+   
   const [currentPage, setCurrentPage] = useState<number>(1);
   const handleChangePage = (_: unknown, page: number) => {
     setCurrentPage(page);

@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import styles from "./Order.module.css";
 import OrderStatus from "./OrderStatus";
 import OrderSwiper from "./OrderSwiper";
-import { Button, Link } from "@mui/material";
+import { Button } from "@mui/material";
 import PlusIcon from "../../../../assets/PlusOrder.svg?react";
 import MinusIcon from "../../../../assets/MinusOrder.svg?react";
 import { useAppSelector } from "../../../../hooks";
+import OrderDrawer from "./OrderDrawer";
 
 interface OrderProduct {
   productId: string;
@@ -44,30 +45,54 @@ const Order: React.FC<OrderProps> = ({
   status,
   products,
   paymentMethod,
-  notes
+  notes,
 }) => {
-  const [showInfo, setShowInfo] = useState(false);
+  const [showInfo, setShowInfo] = useState<boolean>(false);
+  const [showDrawer, setShowDrawer] = useState<boolean>(false);
   const handleShowInfo = () => {
     setShowInfo((prev) => !prev);
   };
   const allProducts = useAppSelector((state) => state.products.products);
+
   const productsInfo = products
     .map((product) => {
       const foundProduct = allProducts.find(
         (item) => item._id === product.productId
       );
       if (!foundProduct) return null;
-      return { productId: foundProduct?._id, image: foundProduct?.image[0] };
+      return {
+        productId: foundProduct?._id,
+        image: foundProduct?.image[0],
+        title: foundProduct?.title,
+        price: foundProduct.price,
+        quantity: product.quantity,
+      };
     })
     .filter(
-      (item): item is { productId: string; image: string } => item !== null
+      (
+        item
+      ): item is {
+        productId: string;
+        image: string;
+        price: number;
+        title: string;
+        quantity: number;
+      } => item !== null
     );
   const deliveryAdress =
     delivery.method === "nova_post"
-      ? `Відділення Нової Пошти № ${delivery.address.department} ${delivery.address.city}`
+      ? `Нова Пошта ${delivery.address.department}, ${delivery.address.city}`
       : `сомовивіз з магазину ${delivery.address.department} ${delivery.address.city}`;
   const date = new Date(created).toLocaleDateString("uk-UA");
-  const payment = paymentMethod === 'cash' ? "Картою Visa/Mastercard" : "Готівкою"
+  const payment =
+    paymentMethod === "cash" ? "Картою Visa/Mastercard" : "Готівкою";
+  const handleCloseDrawer = () => {
+    setShowDrawer(false);
+  };
+  const handleOpenDrawer = () => {
+    setShowDrawer(true);
+  };
+ 
   return (
     <>
       <div className={`${styles.orderWrapper} ${styles.orderDesctop}`}>
@@ -78,8 +103,7 @@ const Order: React.FC<OrderProps> = ({
         <div className={styles.detailsWrapper}>
           <p className={styles.details}>Створено: {date}</p>
           <p className={`${styles.details} ${styles.method}`}>
-            Метод оплати:{" "}
-            {payment}
+            Метод оплати: {payment}
           </p>
           <p className={styles.details}>
             Адреса пункту отримання: <br />
@@ -95,9 +119,7 @@ const Order: React.FC<OrderProps> = ({
           </p>
           <p className={styles.details}>
             Коментар до замовлення: <br />
-            <span className={styles.detailsWeight}>
-              {notes}
-            </span>
+            <span className={styles.detailsWeight}>{notes}</span>
           </p>
         </div>
         <div className={styles.swiperWrapper}>
@@ -109,6 +131,7 @@ const Order: React.FC<OrderProps> = ({
               {amountOrder.toFixed(2)}
             </p>
             <Button
+              onClick={handleOpenDrawer}
               sx={{
                 textTransform: "none",
                 fontSize: { xs: "0.75rem", md: "1rem" },
@@ -128,19 +151,17 @@ const Order: React.FC<OrderProps> = ({
           </div>
           <OrderStatus status={status} />
         </div>
-        <Link
+        <Button
+          onClick={handleOpenDrawer}
           sx={{
-            textDecoration: "none",
-            cursor: "pointer",
+            textTransform: "none",
             fontSize: { xs: "0.75rem", md: "1rem" },
-            mt: "14px",
-            mb: "14px",
-            display: "inline-block",
             fontWeight: { xs: 400, md: 600 },
+            left: "-8px",
           }}
         >
           Детальніше
-        </Link>
+        </Button>
         <OrderSwiper productsInfo={productsInfo} />
         <div onClick={handleShowInfo} className={styles.infoWrapper}>
           <h3 className={styles.order}>Інформація</h3>
@@ -150,9 +171,7 @@ const Order: React.FC<OrderProps> = ({
           <div className={styles.detailsWrapperMobile}>
             <p className={`${styles.details} ${styles.method}`}>
               Метод оплати: <br />
-              <span className={styles.detailsWeight}>
-                {payment}
-              </span>
+              <span className={styles.detailsWeight}>{payment}</span>
             </p>
             <p className={styles.details}>
               Адреса пункту отримання: <br />
@@ -168,9 +187,7 @@ const Order: React.FC<OrderProps> = ({
             </p>
             <p className={styles.details}>
               Коментар до замовлення: <br />
-              <span className={styles.detailsWeight}>
-                {notes}
-              </span>
+              <span className={styles.detailsWeight}>{notes}</span>
             </p>
             <p className={styles.details}>
               Загальна сума: <br />
@@ -181,6 +198,12 @@ const Order: React.FC<OrderProps> = ({
           </div>
         )}
       </div>
+      <OrderDrawer
+        amountOrder={amountOrder}
+        handleCloseDrawer={handleCloseDrawer}
+        productsInfo={productsInfo}
+        showDrawer={showDrawer}
+      />
     </>
   );
 };
