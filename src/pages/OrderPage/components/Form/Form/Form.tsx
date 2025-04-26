@@ -78,7 +78,7 @@ const Form: React.FC = () => {
     }
   };
 
-  const [isNovaPost, setIsNovaPost] = useState<"self_pickup" | "nova_post">("self_pickup");
+  const [deliveryMethod, setDeliveryMethod] = useState<"self_pickup" | "nova_post">("self_pickup");
   
   useEffect(() => {
     if (token) {
@@ -102,10 +102,11 @@ const Form: React.FC = () => {
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <ContactInfoForm control={control} errors={errors} />
-      <DeliveryMethodForm control={control} setIsNovaPost={setIsNovaPost} />
-      {isNovaPost === "nova_post" && (
+      <DeliveryMethodForm control={control} setDeliveryMethod={setDeliveryMethod} />
+      {/* {deliveryMethod === "nova_post" && (
         <PostForm control={control} errors={errors} setValue={setValue} />
-      )}
+      )} */}
+      <PostForm deliveryMethod={deliveryMethod} control={control} errors={errors} setValue={setValue} />
       <PaymentMethodForm control={control} />
       <Box
         sx={{

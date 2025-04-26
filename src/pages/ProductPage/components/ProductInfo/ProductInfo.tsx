@@ -73,14 +73,12 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         />
         <QuestionAcordion
           number="02/"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          malesuada lacus ex, sit amet blandit leo lobortis eget."
+          text={product.composition}
           title="Склад"
         />
         <QuestionAcordion
           number="03/"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          malesuada lacus ex, sit amet blandit leo lobortis eget."
+          text={product.care}
           title="Догляд"
         />
       </div>

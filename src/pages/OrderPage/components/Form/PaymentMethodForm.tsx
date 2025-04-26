@@ -12,7 +12,7 @@ interface PaymentMethodFormProps {
 const PaymentMethodForm:React.FC<PaymentMethodFormProps> = ({control}) => {
   return (
     <Box>
-        <FormTitle>3. Метод оплати</FormTitle>
+        <FormTitle>4. Метод оплати</FormTitle>
       <Controller
           name="payment"
           control={control}

@@ -7,10 +7,10 @@ import { CreateOrder } from '../../../../types';
 
 interface DeliveryMethodFormProps {
     control: Control<CreateOrder>;
-    setIsNovaPost: (value: React.SetStateAction<'self_pickup' | 'nova_post'>) => void;
+    setDeliveryMethod: (value: React.SetStateAction<'self_pickup' | 'nova_post'>) => void;
 }
 
-const DeliveryMethodForm:React.FC<DeliveryMethodFormProps> = ({control, setIsNovaPost}) => {
+const DeliveryMethodForm:React.FC<DeliveryMethodFormProps> = ({control, setDeliveryMethod}) => {
   return (
     <Box>
         <FormTitle>2. Метод доставки</FormTitle>
@@ -22,7 +22,7 @@ const DeliveryMethodForm:React.FC<DeliveryMethodFormProps> = ({control, setIsNov
             <RadioGroup
               {...field}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setIsNovaPost(e.target.value as 'self_pickup' | 'nova_post');
+                setDeliveryMethod(e.target.value as 'self_pickup' | 'nova_post');
                 field.onChange(e.target.value);
               }}
             >

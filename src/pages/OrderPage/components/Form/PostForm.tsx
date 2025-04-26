@@ -21,13 +21,26 @@ interface NovaPostDepartment {
   Description: string;
 }
 
+interface Shop {
+  city: string;
+  name: string;
+}
+
 interface PostFormProps {
   control: Control<CreateOrder>;
   errors: FieldErrors<CreateOrder>;
   setValue: UseFormSetValue<CreateOrder>;
+  deliveryMethod: "self_pickup" | "nova_post";
 }
 
-const PostForm: React.FC<PostFormProps> = ({ control, errors, setValue }) => {
+const shops: Shop[] = [
+  { city: "Київ", name: "Магазин Київ 1" },
+  { city: "Київ", name: "Магазин Київ 2" },
+  { city: "Харків", name: "Магазин Харків 1" },
+  { city: "Харків", name: "Магазин Харків 2" },
+];
+
+const PostForm: React.FC<PostFormProps> = ({ control, errors, setValue, deliveryMethod }) => {
   const [cities, setCities] = useState<NovaPostCity[]>([]);
   const [deliveryDepartment, setDeliveryDepartment] = useState<
     NovaPostDepartment[]
@@ -107,6 +120,13 @@ const PostForm: React.FC<PostFormProps> = ({ control, errors, setValue }) => {
     );
   }, [searchDep, deliveryDepartment]);
 
+  const filteredShops = useMemo(() => {
+    if (!chooseCity) return [];
+    return shops
+      .filter((shop) => shop.city === chooseCity)
+      .map((shop) => shop.name);
+  }, [chooseCity]);
+
   return (
     <Box
       sx={{
@@ -114,7 +134,7 @@ const PostForm: React.FC<PostFormProps> = ({ control, errors, setValue }) => {
         height: "fit-content",
       }}
     >
-      <FormTitle>Спосіб доставки</FormTitle>
+      <FormTitle>3. Спосіб доставки</FormTitle>
       <Box pt={"1rem"}>
         <Controller
           name="deliveryCity"
@@ -142,7 +162,7 @@ const PostForm: React.FC<PostFormProps> = ({ control, errors, setValue }) => {
                 field.onChange(newValue);
                 setChooseCity(newValue);
               }}
-              options={cities?.map((city) => city.Description)}
+              options={deliveryMethod === "nova_post" ? cities?.map((city) => city.Description) : ['Київ', 'Харків']}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -177,13 +197,13 @@ const PostForm: React.FC<PostFormProps> = ({ control, errors, setValue }) => {
               onChange={(_, newValue) => {
                 field.onChange(newValue);
               }}
-              options={filteredNovaPostsDepartments?.map(
+              options={deliveryMethod === "nova_post" ? filteredNovaPostsDepartments?.map(
                 (dep) => dep.Description
-              )}
+              ) : filteredShops}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Вибір відділення"
+                  label={deliveryMethod === "nova_post" ? "Вибір відділення" : "Вибір магазину"}
                   error={!!errors.deliveryDepartment}
                   helperText={errors.deliveryDepartment?.message}
                 />

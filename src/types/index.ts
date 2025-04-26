@@ -19,6 +19,8 @@ export interface Product {
   rate_avg_product: number;
   createdAt: string;
   __v: number;
+  composition: string;
+  care: string;
 }
 
 export interface cartProduct extends Product {
