@@ -82,7 +82,7 @@ const Order: React.FC<OrderProps> = ({
   const deliveryAdress =
     delivery.method === "nova_post"
       ? `Нова Пошта ${delivery.address.department}, ${delivery.address.city}`
-      : `сомовивіз з магазину ${delivery.address.department} ${delivery.address.city}`;
+      : `сомовивіз з магазину ${delivery.address.department}, ${delivery.address.city}`;
   const date = new Date(created).toLocaleDateString("uk-UA");
   const payment =
     paymentMethod === "cash" ? "Картою Visa/Mastercard" : "Готівкою";

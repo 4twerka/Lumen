@@ -14,22 +14,26 @@ interface FilterItemProps {
   filterName: string;
   options: string[];
   selectedOptions: string[];
-  setSelectedOptions: (options: string[])  => void;
+  setSelectedOptions: (options: string[]) => void;
 }
 
-const FilterItem: React.FC<FilterItemProps> = ({ filterName, options, selectedOptions, setSelectedOptions }) => {
+const FilterItem: React.FC<FilterItemProps> = ({
+  filterName,
+  options,
+  selectedOptions,
+  setSelectedOptions,
+}) => {
   const [open, setOpen] = useState(false);
   const handleClick = () => setOpen(!open);
-    const handleToggle = (option:string) => {
-        const newSelection = selectedOptions.includes(option)
-        ? selectedOptions.filter((item) => item !== option)
+  const handleToggle = (option: string) => {
+    const newSelection = selectedOptions.includes(option)
+      ? selectedOptions.filter((item) => item !== option)
       : [...selectedOptions, option];
-      setSelectedOptions(newSelection)
-    }
+    setSelectedOptions(newSelection);
+  };
+  
   return (
-    <Box
-      sx={{ display: "flex", flexDirection: "column", width: '100%' }}
-    >
+    <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <ListItemButton
         onClick={handleClick}
         sx={{
@@ -37,29 +41,38 @@ const FilterItem: React.FC<FilterItemProps> = ({ filterName, options, selectedOp
           justifyContent: "space-between",
           alignItems: "center",
           width: "100%",
-          backgroundColor: open ? "rgba(115, 39, 13, 0.16)" : 'none',
-          color: '#111111',
-          borderRadius: '0.25rem',
+          backgroundColor: open ? "rgba(115, 39, 13, 0.16)" : "none",
+          color: "#111111",
+          borderRadius: "0.25rem",
         }}
       >
-        <ListItemText sx={{ "& .MuiTypography-root": { fontWeight: 600 } }} primary={filterName} />
+        <ListItemText
+          sx={{ "& .MuiTypography-root": { fontWeight: 600 } }}
+          primary={filterName}
+        />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open}>
-        <List sx={{ pl: 2, display: 'flex', flexDirection: 'column' }}>
-          {options.map((option) => (
-            <FormControlLabel
-              sx={{'& .MuiTypography-root': {fontSize: '14px', fontWeight: 400}}}
-              key={option}
-              control={
-                <Checkbox
-                  checked={selectedOptions?.includes(option)}
-                  onChange={() => handleToggle(option)}
-                />
-              }
-              label={option}
-            />
-          ))}
+        <List sx={{ pl: 2, display: "flex", flexDirection: "column" }}>
+          {options?.length &&
+            options.map((option) => (
+              <FormControlLabel
+                sx={{
+                  "& .MuiTypography-root": {
+                    fontSize: "14px",
+                    fontWeight: 400,
+                  },
+                }}
+                key={option}
+                control={
+                  <Checkbox
+                    checked={selectedOptions?.includes(option)}
+                    onChange={() => handleToggle(option)}
+                  />
+                }
+                label={option}
+              />
+            ))}
         </List>
       </Collapse>
     </Box>

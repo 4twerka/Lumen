@@ -57,7 +57,6 @@ export const createOrder = createAsyncThunk<
   { rejectValue: string }
 >("order/createOrder", async (userData, { rejectWithValue }) => {
   try {
-    console.log("Body sent to server:", JSON.stringify(userData, null, 2));
     const response = await axios.post(`${API}/api/orders`, userData);
     return response.data;
   } catch (error: unknown) {
@@ -104,8 +103,7 @@ const userSlice = createSlice({
         state.error = action.payload || "Something went wrong";
         state.isLoading = false;
       })
-      .addCase(createOrder.pending, (state,action) => {
-        console.log("Pending with:", action.meta.arg);
+      .addCase(createOrder.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {

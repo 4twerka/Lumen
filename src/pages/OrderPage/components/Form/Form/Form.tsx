@@ -103,9 +103,10 @@ const Form: React.FC = () => {
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <ContactInfoForm control={control} errors={errors} />
       <DeliveryMethodForm control={control} setIsNovaPost={setIsNovaPost} />
-      {isNovaPost === "nova_post" && (
+      {/* {isNovaPost === "nova_post" && (
         <PostForm control={control} errors={errors} setValue={setValue} />
-      )}
+      )} */}
+      <PostForm isNovaPost={isNovaPost} control={control} errors={errors} setValue={setValue} />
       <PaymentMethodForm control={control} />
       <Box
         sx={{
