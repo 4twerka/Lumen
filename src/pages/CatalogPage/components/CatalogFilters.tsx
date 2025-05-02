@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import FilterItem from "./FilterItem";
-import { FiltersState, Product } from "../../../types";
+import { FiltersState } from "../../../types";
 import { Checkbox, FormControlLabel, ListItemButton } from "@mui/material";
 import { filterOptions } from "../../../utils/filter";
-import { useAppSelector } from "../../../hooks";
 
 interface CatalogFiltersProps {
   setFiltersState: React.Dispatch<React.SetStateAction<FiltersState>>;
@@ -14,45 +13,45 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
   setFiltersState,
   filtersState,
 }) => {
-  const [fetchFilterOptions, setFetchFilterOptions] = useState<FiltersState>(filterOptions);
-  const products = useAppSelector((state) => state.products.products);
-  useEffect(() => {
-    const uniquesAroma = [
-      ...new Set(products.map((product: Product) => product.aroma)),
-    ];
-    const uniquesTypes = [
-      ...new Set(products.map((product: Product) => product.type_candle)),
-    ];
-    const uniquesAssignment = [
-      ...new Set(products.map((product: Product) => product.appointment)),
-    ];
-    const uniquesColor = [
-      ...new Set(products.map((product: Product) => product.color)),
-    ];
-    const uniquesMaterial = [
-      ...new Set(products.map((product: Product) => product.material)),
-    ];
-    const uniquesForm = [
-      ...new Set(products.map((product: Product) => product.shape)),
-    ];
-    const uniquesFeatures = [
-      ...new Set(products.map((product: Product) => product.features)),
-    ];
-    if (!products.length) return;
+  // const [fetchFilterOptions, setFetchFilterOptions] = useState<FiltersState>(filterOptions);
+  // const products = useAppSelector((state) => state.products.products);
+  // useEffect(() => {
+  //   const uniquesAroma = [
+  //     ...new Set(products.map((product: Product) => product.aroma)),
+  //   ];
+  //   const uniquesTypes = [
+  //     ...new Set(products.map((product: Product) => product.type_candle)),
+  //   ];
+  //   const uniquesAssignment = [
+  //     ...new Set(products.map((product: Product) => product.appointment)),
+  //   ];
+  //   const uniquesColor = [
+  //     ...new Set(products.map((product: Product) => product.color)),
+  //   ];
+  //   const uniquesMaterial = [
+  //     ...new Set(products.map((product: Product) => product.material)),
+  //   ];
+  //   const uniquesForm = [
+  //     ...new Set(products.map((product: Product) => product.shape)),
+  //   ];
+  //   const uniquesFeatures = [
+  //     ...new Set(products.map((product: Product) => product.features)),
+  //   ];
+  //   if (!products.length) return;
 
-    setFetchFilterOptions({
-      price: filterOptions.price,
-      size: filterOptions.size,
-      types: uniquesTypes,
-      aroma: uniquesAroma,
-      assignment: uniquesAssignment,
-      color: uniquesColor,
-      material: uniquesMaterial,
-      form: uniquesForm,
-      features: uniquesFeatures,
-      giftWrapping: false,
-    });
-  }, [products]);
+  //   setFetchFilterOptions({
+  //     price: filterOptions.price,
+  //     size: filterOptions.size,
+  //     types: uniquesTypes,
+  //     aroma: uniquesAroma,
+  //     assignment: uniquesAssignment,
+  //     color: uniquesColor,
+  //     material: uniquesMaterial,
+  //     form: uniquesForm,
+  //     features: uniquesFeatures,
+  //     giftWrapping: false,
+  //   });
+  // }, [products]);
   const handleFilterChange = <K extends keyof FiltersState>(
     filterName: K,
     selected: string[]
@@ -78,7 +77,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
         filterName={`Ціна${
           filtersState.price.length > 0 ? ` (${filtersState.price.length})` : ""
         }`}
-        options={fetchFilterOptions.price}
+        options={filterOptions.price}
       />
       <FilterItem
         setSelectedOptions={(selected) => handleFilterChange("types", selected)}
@@ -86,7 +85,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
         filterName={`Тип свічки${
           filtersState.types.length > 0 ? ` (${filtersState.types.length})` : ""
         }`}
-        options={fetchFilterOptions.types}
+        options={filterOptions.types}
       />
       <FilterItem
         setSelectedOptions={(selected) => handleFilterChange("size", selected)}
@@ -94,7 +93,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
         filterName={`Розмір${
           filtersState.size.length > 0 ? ` (${filtersState.size.length})` : ""
         }`}
-        options={fetchFilterOptions.size}
+        options={filterOptions.size}
       />
       <FilterItem
         setSelectedOptions={(selected) => handleFilterChange("aroma", selected)}
@@ -102,7 +101,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
         filterName={`Аромат${
           filtersState.aroma.length > 0 ? ` (${filtersState.aroma.length})` : ""
         }`}
-        options={fetchFilterOptions.aroma}
+        options={filterOptions.aroma}
       />
       <FilterItem
         setSelectedOptions={(selected) =>
@@ -114,7 +113,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
             ? ` (${filtersState.assignment.length})`
             : ""
         }`}
-        options={fetchFilterOptions.assignment}
+        options={filterOptions.assignment}
       />
       <FilterItem
         setSelectedOptions={(selected) => handleFilterChange("color", selected)}
@@ -122,7 +121,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
         filterName={`Колір${
           filtersState.color.length > 0 ? ` (${filtersState.color.length})` : ""
         }`}
-        options={fetchFilterOptions.color}
+        options={filterOptions.color}
       />
       <FilterItem
         setSelectedOptions={(selected) =>
@@ -134,7 +133,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
             ? ` (${filtersState.material.length})`
             : ""
         }`}
-        options={fetchFilterOptions.material}
+        options={filterOptions.material}
       />
       <FilterItem
         setSelectedOptions={(selected) => handleFilterChange("form", selected)}
@@ -142,7 +141,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
         filterName={`Форма${
           filtersState.form.length > 0 ? ` (${filtersState.form.length})` : ""
         }`}
-        options={fetchFilterOptions.form}
+        options={filterOptions.form}
       />
       <FilterItem
         setSelectedOptions={(selected) =>
@@ -154,7 +153,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
             ? ` (${filtersState.features.length})`
             : ""
         }`}
-        options={fetchFilterOptions.features}
+        options={filterOptions.features}
       />
       <ListItemButton
         sx={{

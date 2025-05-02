@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./Header.module.css";
 import LogoIcon from "../../assets/Logo2.svg?react";
 import SearchIcon from "../../assets/Search.svg?react";
@@ -6,6 +6,7 @@ import UserIcon from "../../assets/User.svg?react";
 import ShoppingIcon from "../../assets/Shopping.svg?react";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
+  Badge,
   Box,
   Button,
   IconButton,
@@ -14,8 +15,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router";
-import { useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import ProfileMenu from "./components/ProfileMenu/ProfileMenu";
+import { getUserInfo } from "../../store/slices/userSlice";
 
 const nav = [
   { name: "Каталог", path: "/catalog" },
@@ -31,7 +33,18 @@ const Header: React.FC = () => {
   const [anchorProfileEl, setAnchorProfileEl] =
     React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.user.token);
+  const carts = useAppSelector((state) => state.products.carts);
+  const user = useAppSelector((state) => state.user.user);
+  const userRole = user?.role;
+
+  useEffect(() => {
+    if (token) {
+      dispatch(getUserInfo());
+    }
+  }, [dispatch, token]);
+
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -161,12 +174,15 @@ const Header: React.FC = () => {
               isAuth={!!token}
               openProfile={openProfile}
               handleCloseProfile={handleCloseProfile}
+              userRole={userRole}
             />
             <IconButton
               onClick={() => navigate("/order")}
               sx={{ height: "40px" }}
             >
-              <ShoppingIcon />
+              <Badge badgeContent={carts.length} color="primary">
+                <ShoppingIcon />
+              </Badge>
             </IconButton>
           </Box>
         </Box>

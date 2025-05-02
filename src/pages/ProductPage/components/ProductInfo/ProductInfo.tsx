@@ -54,15 +54,15 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       <div className={styles.characteristicsInfoWrapper}>
         <CharactericticsInfo
           title="Верхні ноти"
-          desc="апельсинова цедра, стиглі яблука, медовий нектар"
+          desc={product.characteristics?.topNotes || ""}
         />
         <CharactericticsInfo
           title="Серцеві ноти"
-          desc="золотистий мед, ваніль, кориця"
+          desc={product.characteristics?.heartNotes || ""}
         />
         <CharactericticsInfo
           title="Базові ноти"
-          desc="мускатний горіх, амбра, деревні відтінки кедра"
+          desc={product.characteristics?.baseNotes || ""}
         />
       </div>
       <div className={styles.accordionsWrapper}>

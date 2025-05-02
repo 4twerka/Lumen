@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { Product } from "../../types";
 import { API } from "../../constants";
+import axiosInstance from "../../utils/axiosInstance";
 
 interface UserState {
   products: Array<Product>;
@@ -83,7 +84,7 @@ export const createProduct = createAsyncThunk<
   { rejectValue: string }
 >("products/createProduct", async (product: FormData, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${API}/api/products`, product);
+    const response = await axiosInstance.post(`/api/products`, product);
     return response.data as Product;
   } catch (error: unknown) {
     console.error("Error creating product:", error);
@@ -91,22 +92,22 @@ export const createProduct = createAsyncThunk<
   }
 });
 
-// export const createOrder = createAsyncThunk<
-//   createOrderResponse,
-//   object,
-//   { rejectValue: string }
-// >("products/createOrder", async (product: object, { rejectWithValue }) => {
-//   try {
-//     const response = await axios.post(`${API}/api/orders/create`, product);
-//     return response.data as createOrderResponse;
-//   } catch (error: unknown) {
-//     console.error("Error creating order:", error);
-//     return rejectWithValue("Unexpected error occurred!");
-//   }
-// });
+export const deleteProduct = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>("products/deleteProduct", async (id: string, { rejectWithValue }) => {
+  try {
+    await axiosInstance.delete(`/api/products/${id}`);
+    return id;
+  } catch (error: unknown) {
+    console.error("Error deleting product:", error);
+    return rejectWithValue("Unexpected error occurred!");
+  }
+});
 
 const productSlice = createSlice({
-  name: "user",
+  name: "product",
   initialState,
   reducers: {
     addCart: (state, { payload }) => {
@@ -206,17 +207,17 @@ const productSlice = createSlice({
         state.products.push(action.payload);
         state.isLoading = false;
       })
-      //   .addCase(createOrder.fulfilled, (state, {payload}) => {
-      //     // state.order = payload;
-      //     state.isLoading = false;
-      //   })
-      // .addCase(createOrder.pending, (state) => {
-      //   state.isLoading = true;
-      // })
-      // .addCase(createOrder.rejected, (state, { payload }) => {
-      //   state.isLoading = false;
-      //   state.error = payload || "Something went wrong";
-      // });
+      .addCase(deleteProduct.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.error = action.payload || "Something went wrong";
+        state.isLoading = false;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.products = state.products.filter((product) => product._id !== action.payload)
+        state.isLoading = false;
+      })
   },
 });
 

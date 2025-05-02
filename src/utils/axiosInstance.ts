@@ -8,9 +8,9 @@ const baseURL = API
 const axiosInstance = axios.create({
   withCredentials: true,
   baseURL, // базовий URL нашої API
-  headers: {
-    "Content-Type": "application/json",
-  },
+  // headers: {
+  //   "Content-Type": "application/json",
+  // },
 });
 
 axiosInstance.interceptors.request.use(
