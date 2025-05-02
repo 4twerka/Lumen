@@ -5,6 +5,7 @@ import CartIcon from "../../../../assets/Shopping.svg?react";
 import CartIconOutlined from "../../../../assets/ShoppingOutlined.svg?react";
 import { useAppDispatch } from "../../../../hooks";
 import { addCart } from "../../../../store/slices/productSlice";
+import { useNavigate } from "react-router";
 
 interface ProductInfoButtonProps {
   isInCart: boolean;
@@ -22,11 +23,12 @@ const ProductInfoButton: React.FC<ProductInfoButtonProps> = ({
   const handleAddToCart = () => {
     dispatch(addCart(id))
   }
+  const navigate = useNavigate();
   return (
     <>
       {isInCart ? (
         <Button
-          // onClick={onClick}
+          onClick={() => navigate('/order')}
           variant="outlined"
           sx={{
             width: { xs: "100%", md: "200px" },

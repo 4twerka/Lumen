@@ -14,6 +14,7 @@ export interface Product {
   shape: string;
   features: string;
   gift_packaging: boolean;
+  season_collection: boolean;
   comments: string[];
   stock: number;
   rate_avg_product: number;
@@ -21,6 +22,11 @@ export interface Product {
   __v: number;
   composition: string;
   care: string;
+  characteristics: {
+      topNotes: string,
+      heartNotes: string,
+      baseNotes: string,
+    }
 }
 
 export interface cartProduct extends Product {
@@ -83,7 +89,8 @@ export interface createOrderResponse {
 export interface userInfo {
   email?: string,
   password?: string,
-  firstName?: string,
-  lastName?: string,
-  phoneNumber?: string,
+  firstName: string,
+  lastName: string,
+  phoneNumber: string,
+  role?: 'admin' | 'user',
 }

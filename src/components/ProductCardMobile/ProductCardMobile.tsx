@@ -6,10 +6,10 @@ import ProductCardMobileImg from './ProductCardMobileImg'
 import ProductCardMobileExist from './ProductCardMobileExist'
 import ProductCardMobileInfo from './ProductCardMobileInfo'
 
-const ProductCardMobile:React.FC<Product> = ({title, short_describe, price, image, _id, stock})=> {
+const ProductCardMobile:React.FC<Product> = ({title, price, image, _id, stock, type_candle, material})=> {
   return (
     <ProductCardMobileWrapper>
-        <ProductCardMobileImg _id={_id} image={image} title={title} short_describe={short_describe} />
+        <ProductCardMobileImg _id={_id} image={image} title={title} type={type_candle} material={material} />
         {/* <ProductCardMobileSale>30</ProductCardMobileSale> */}
         <ProductCardMobileExist stock={stock} />
         <ProductCardMobileInfo stock={stock} price={price} id={_id} />

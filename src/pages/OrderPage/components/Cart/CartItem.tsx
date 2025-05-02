@@ -6,6 +6,7 @@ import CancelIcon from "../../../../assets/Cancel.svg?react";
 import { SUPABASE_PRODUCT_URL_PART } from "../../../../constants";
 import { useAppDispatch } from "../../../../hooks";
 import { addCart, decreaseCart, deleteCart } from "../../../../store/slices/productSlice";
+import { Link } from "react-router";
 
 interface CartItemProps {
   image: string[];
@@ -21,11 +22,13 @@ const CartItem: React.FC<CartItemProps> = ({ image, title, price, quantity, _id 
 
   return (
     <div className={styles.orderItemWrapper}>
+      <Link className={styles.orderImgWrapper} to={`/product/${_id}`}>
       <img
         className={styles.orderImg}
         src={`${SUPABASE_PRODUCT_URL_PART}${image[0]}`}
         alt={title}
       />
+      </Link>
       <div className={styles.orderInfoWrapper}>
         <p className={styles.orderTitle}>{title}</p>
         <div className={styles.orderInfoBottom}>

@@ -214,6 +214,7 @@ const userSlice = createSlice({
             state.token = '';
             state.error = null;
             state.isLoading = false;
+            state.user = null;
         })
         .addCase(logOutUser.rejected, (state, action) => {
             state.error = action.payload || "Something went wrong";

@@ -56,11 +56,11 @@ const Form: React.FC = () => {
         method: data.deliveryMethod,
         address: {
           city: data.deliveryCity,
-          department: data.deliveryDepartment
-        }
+          department: data.deliveryDepartment,
+        },
       },
       notes: data.comment,
-      isCallRestricted: data.isCallRestricted
+      isCallRestricted: data.isCallRestricted,
     };
     if (cartProducts.length < 1) {
       alert("Ваш кошик порожній. Додайте товари перед оформленням замовлення.");
@@ -78,8 +78,10 @@ const Form: React.FC = () => {
     }
   };
 
-  const [deliveryMethod, setDeliveryMethod] = useState<"self_pickup" | "nova_post">("self_pickup");
-  
+  const [deliveryMethod, setDeliveryMethod] = useState<
+    "self_pickup" | "nova_post"
+  >("self_pickup");
+
   useEffect(() => {
     if (token) {
       dispatch(getUserInfo());
@@ -102,11 +104,19 @@ const Form: React.FC = () => {
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <ContactInfoForm control={control} errors={errors} />
-      <DeliveryMethodForm control={control} setDeliveryMethod={setDeliveryMethod} />
+      <DeliveryMethodForm
+        control={control}
+        setDeliveryMethod={setDeliveryMethod}
+      />
       {/* {deliveryMethod === "nova_post" && (
         <PostForm control={control} errors={errors} setValue={setValue} />
       )} */}
-      <PostForm deliveryMethod={deliveryMethod} control={control} errors={errors} setValue={setValue} />
+      <PostForm
+        deliveryMethod={deliveryMethod}
+        control={control}
+        errors={errors}
+        setValue={setValue}
+      />
       <PaymentMethodForm control={control} />
       <Box
         sx={{
@@ -118,7 +128,7 @@ const Form: React.FC = () => {
       >
         <CommentForm control={control} />
         <FormButtonSubmit sx={{ marginTop: "1.5rem", textTransform: "none" }}>
-          Перейти до оплати
+          Оформлення замовлення
         </FormButtonSubmit>
       </Box>
     </form>

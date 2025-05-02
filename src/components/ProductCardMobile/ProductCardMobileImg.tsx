@@ -2,26 +2,30 @@ import { Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router";
 import { SUPABASE_PRODUCT_URL_PART } from "../../constants";
+import { generateSubtitle } from "../../utils/generateSubtitle";
 
 interface ProductCardMobileImgProps {
   image: string[];
   title: string;
-  short_describe: string;
   _id: string;
+  type: string;
+  material: string;
 }
 
 const ProductCardMobileImg: React.FC<ProductCardMobileImgProps> = ({
   image,
   title,
-  short_describe,
+  type,
+  material,
   _id
 }) => {
+  const subTitle = generateSubtitle(type,material)
   return (
     <Link
       to={`/product/${_id}`}
       style={{
         background: `linear-gradient(0deg, rgba(13, 17, 32, 0.64) 8%, rgba(25, 33, 61, 0.00) 54.5%), 
-        url(${SUPABASE_PRODUCT_URL_PART}${image[0]}) lightgray 50% / cover no-repeat`,
+        url('${SUPABASE_PRODUCT_URL_PART}${image[0]}') lightgray 50% / cover no-repeat`,
         width: "100%",
         height: "190px",
         borderRadius: "0.5rem",
@@ -53,7 +57,8 @@ const ProductCardMobileImg: React.FC<ProductCardMobileImgProps> = ({
           color: "#FDF5ED",
         }}
       >
-        {short_describe}
+        {/* {short_describe} */}
+        {subTitle}
       </Typography>
     </Link>
   );

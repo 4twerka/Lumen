@@ -1,8 +1,9 @@
 import { Box, IconButton, Typography } from "@mui/material";
 import React from "react";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { addCart } from "../../store/slices/productSlice";
+import { addCart, deleteProduct } from "../../store/slices/productSlice";
 
 interface ProductCardMobileInfoProps {
   price: number;
@@ -13,18 +14,23 @@ interface ProductCardMobileInfoProps {
 const ProductCardMobileInfo: React.FC<ProductCardMobileInfoProps> = ({
   price,
   id,
-  stock
+  stock,
 }) => {
   // const discount = 30;
   // const discountPrice = price - price * (discount / 100);
   const dispatch = useAppDispatch();
   const carts = useAppSelector((state) => state.products.carts);
   const isInCart = carts.some((item) => item.productId === id);
+  const user = useAppSelector((state) => state.user.user);
+  const userRole = user?.role;
 
   const addToCart = () => {
     if (stock > 0) {
       dispatch(addCart(id));
     }
+  };
+  const handleDeleteProduct = () => {
+    dispatch(deleteProduct(id))
   }
   return (
     <Box
@@ -56,18 +62,26 @@ const ProductCardMobileInfo: React.FC<ProductCardMobileInfoProps> = ({
           {price}₴
         </Typography>
       </Box>
-      <IconButton
-        onClick={addToCart}
-        sx={{
-          backgroundColor: isInCart ? "#73270D" : "inherit",
-          color: isInCart ? "#FDF5ED" : "#73270D",
-          "&:hover": {
-            backgroundColor: isInCart ? "#5a1f0a" : "#f5f5f5",
-          },
-        }}
-      >
-        <ShoppingCartOutlinedIcon />
-      </IconButton>
+      <Box>
+        {userRole === "admin" && (
+          <IconButton onClick={handleDeleteProduct}>
+            <DeleteIcon />
+          </IconButton>
+        )}
+
+        <IconButton
+          onClick={addToCart}
+          sx={{
+            backgroundColor: isInCart ? "#73270D" : "inherit",
+            color: isInCart ? "#FDF5ED" : "#73270D",
+            "&:hover": {
+              backgroundColor: isInCart ? "#5a1f0a" : "#f5f5f5",
+            },
+          }}
+        >
+          <ShoppingCartOutlinedIcon />
+        </IconButton>
+      </Box>
     </Box>
   );
 };

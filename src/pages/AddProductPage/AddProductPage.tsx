@@ -1,19 +1,19 @@
-import { Box, Checkbox, FormControlLabel } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import React from "react";
 import { filterOptions } from "../../utils/filter";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import AddProductSelect from "./AddProductSelect";
 import AddProductInput from "./AddProductInput";
 import FormButtonSubmit from "../../components/Forms/FormButtonSubmit";
-import { useAppDispatch } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { createProduct } from "../../store/slices/productSlice";
 
 interface AddProductPageProps {
   title: string;
-  price: number;
+  price: number | string;
   file: File[];
   type_candle: string;
-  size: number;
+  size: number | string;
   aroma: string;
   appointment: string;
   burning_time: string;
@@ -23,15 +23,23 @@ interface AddProductPageProps {
   shape: string;
   features: string;
   gift_packaging: boolean;
-  stock: number;
+  season_collection: boolean;
+  stock: number | string;
+  care: string;
+  composition: string;
+  characteristics: {
+    topNotes: string;
+    heartNotes: string;
+    baseNotes: string;
+  };
 }
 
 const initialProductValues = {
   title: "",
-  price: 0,
+  price: "",
   file: [],
   type_candle: "",
-  size: 0,
+  size: "",
   aroma: "",
   appointment: "",
   burning_time: "",
@@ -41,7 +49,15 @@ const initialProductValues = {
   shape: "",
   features: "",
   gift_packaging: false,
-  stock: 0,
+  season_collection: false,
+  stock: "",
+  care: "",
+  composition: "",
+  characteristics: {
+    topNotes: "",
+    heartNotes: "",
+    baseNotes: "",
+  },
 };
 
 const AddProductPage: React.FC = () => {
@@ -50,31 +66,40 @@ const AddProductPage: React.FC = () => {
     handleSubmit,
     formState: { errors },
     control,
+    reset,
   } = useForm<AddProductPageProps>({
     defaultValues: initialProductValues,
   });
+
+  const user = useAppSelector((state) => state.user.user);
+  console.log("user", user);
 
   const onSubmit: SubmitHandler<AddProductPageProps> = (data) => {
     console.log(data);
     const formData = new FormData();
 
-  Object.entries(data).forEach(([key, value]) => {
-    if (key === "file" && value instanceof FileList && value.length > 0) {
-      console.log('Файли знайдено:', value);
-      Array.from(value).forEach((file) => {
-        formData.append('file', file);
-      });
-    } else {
-      formData.append(key, value);
-    }
-  });
-  formData.forEach(item => console.log(item))
-    dispatch(createProduct(formData));
+    Object.entries(data).forEach(([key, value]) => {
+      if (key === "file") {
+        (value as File[]).forEach((file) => {
+          formData.append("file", file);
+        });
+      } else if (key === "characteristics") {
+        formData.append("characteristics", JSON.stringify(value));
+      } else {
+        formData.append(key, value as string);
+      }
+    });
 
+    formData.forEach((item) => console.log(item));
+    console.log("formData", formData);
+
+    dispatch(createProduct(formData));
+    reset();
   };
 
   return (
     <Box
+      className={"container"}
       sx={{
         display: { xs: "block", md: "flex" },
         width: "100%",
@@ -131,10 +156,17 @@ const AddProductPage: React.FC = () => {
           <Controller
             name="price"
             control={control}
-            rules={{ required: true }}
+            rules={{
+              required: true,
+              pattern: {
+                value: /^\d+(\.\d+)?$/,
+                message: "Введіть тільки додатне число",
+              },
+            }}
             render={({ field }) => (
               <AddProductInput
                 label={"Ціна"}
+                type="number"
                 field={field}
                 error={errors.price}
               />
@@ -143,11 +175,18 @@ const AddProductPage: React.FC = () => {
           <Controller
             name="size"
             control={control}
-            rules={{ required: true }}
+            rules={{
+              required: true,
+              pattern: {
+                value: /^\d+(\.\d+)?$/,
+                message: "Введіть тільки додатне число",
+              },
+            }}
             render={({ field }) => (
               <AddProductInput
                 label={"Розмір свічки(см)"}
                 field={field}
+                type="number"
                 error={errors.size}
               />
             )}
@@ -155,12 +194,79 @@ const AddProductPage: React.FC = () => {
           <Controller
             name="stock"
             control={control}
-            rules={{ required: true }}
+            rules={{
+              required: true,
+              pattern: {
+                value: /^[1-9]\d*$/,
+                message: "Введіть тільки додатне ціле число",
+              },
+            }}
             render={({ field }) => (
               <AddProductInput
                 label={"Кількість"}
                 field={field}
+                type="number"
                 error={errors.stock}
+              />
+            )}
+          />
+          <Controller
+            name="characteristics.baseNotes"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <AddProductInput
+                label={"Базові ноти"}
+                field={field}
+                error={errors.characteristics?.baseNotes}
+              />
+            )}
+          />
+          <Controller
+            name="characteristics.heartNotes"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <AddProductInput
+                label={"Серцеві ноти"}
+                field={field}
+                error={errors.characteristics?.heartNotes}
+              />
+            )}
+          />
+          <Controller
+            name="characteristics.topNotes"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <AddProductInput
+                label={"Верхні ноти"}
+                field={field}
+                error={errors.characteristics?.topNotes}
+              />
+            )}
+          />
+          <Controller
+            name="care"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <AddProductInput
+                label={"Догляд"}
+                field={field}
+                error={errors.care}
+              />
+            )}
+          />
+          <Controller
+            name="composition"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <AddProductInput
+                label={"Склад"}
+                field={field}
+                error={errors.composition}
               />
             )}
           />
@@ -271,22 +377,44 @@ const AddProductPage: React.FC = () => {
             )}
           />
           <Controller
+            name="season_collection"
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={field.value}
+                    onChange={(e) => field.onChange(e.target.checked)}
+                  />
+                }
+                label="Сезонна колекція"
+              />
+            )}
+          />
+          <Controller
             name="file"
             control={control}
-            rules={{ required: true }}
+            rules={{ required: "Виберіть файл" }}
             render={({ field }) => (
-              <input
-                type="file"
-                multiple
-                accept="*/*"
-                placeholder="Завантаження фото"
-                onChange={(e) => {
-                  if (e.target.files) {
-                    // const files = Array.from(e.target.files);
-                    field.onChange(e.target.files);
-                  }
-                }}
-              />
+              <>
+                <label htmlFor="fileInput">Завантаження фото</label>
+                <input
+                  id="fileInput"
+                  type="file"
+                  multiple
+                  accept="*/*"
+                  // placeholder="Завантаження фото"
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      const files = Array.from(e.target.files);
+                      field.onChange(files);
+                    }
+                  }}
+                />
+                {errors.file && (
+                  <Typography color="red">{errors.file.message}</Typography>
+                )}
+              </>
             )}
           />
         </Box>
