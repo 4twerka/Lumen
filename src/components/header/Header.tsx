@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./Header.module.css";
 import LogoIcon from "../../assets/Logo2.svg?react";
 import SearchIcon from "../../assets/Search.svg?react";
@@ -18,6 +18,7 @@ import { useLocation, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import ProfileMenu from "./components/ProfileMenu/ProfileMenu";
 import { getUserInfo } from "../../store/slices/userSlice";
+import SearchMenu from "./components/SearchMenu/SearchMenu";
 
 const nav = [
   { name: "Каталог", path: "/catalog" },
@@ -81,6 +82,26 @@ const Header: React.FC = () => {
 
     handleCloseNavMenu();
   };
+
+  const [search, setSearch] = useState("");
+  const [searchInFocus, setSearchInFocus] = useState(false);
+  const searchWrapperRef = useRef<HTMLLabelElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchWrapperRef.current &&
+        !searchWrapperRef.current.contains(event.target as Node)
+      ) {
+        setSearchInFocus(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className={styles.header}>
@@ -155,11 +176,26 @@ const Header: React.FC = () => {
             justifyContent: "flex-end",
           }}
         >
-          <label className={styles["input-wrapper"]}>
+          <label ref={searchWrapperRef} className={styles["input-wrapper"]}>
             <span className={styles["input-icon"]}>
               <SearchIcon />
             </span>
-            <input id="search" className={styles.input} placeholder="Search" />
+            <input
+              autoComplete="off"
+              onFocus={() => setSearchInFocus(true)}
+              onChange={(e) => setSearch(e.target.value)}
+              value={search}
+              id="search"
+              className={styles.input}
+              placeholder="Search"
+            />
+            {searchInFocus && search.length > 2 && (
+              <SearchMenu
+                setSearch={setSearch}
+                setSearchInFocus={setSearchInFocus}
+                search={search}
+              />
+            )}
           </label>
           <Box sx={{ display: "flex", gap: "2rem" }}>
             <IconButton

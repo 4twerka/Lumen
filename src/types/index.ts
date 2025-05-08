@@ -94,3 +94,18 @@ export interface userInfo {
   phoneNumber: string,
   role?: 'admin' | 'user',
 }
+
+export enum OrderStatus {
+  processing = "Обробляється",
+  accepted = "Прийнято",
+  sent = "Відправлено",
+  received = "Отримано",
+  canceled = "Відхилено",
+}
+// export const orderStatusLabels: Record<OrderStatus, string> = {
+//   [OrderStatus.Processing]: "Обробляється",
+//   [OrderStatus.Accepted]: "Прийнято",
+//   [OrderStatus.Sent]: "Відправлено",
+//   [OrderStatus.Received]: "Отримано",
+//   [OrderStatus.Canceled]: "Скасовано",
+// };

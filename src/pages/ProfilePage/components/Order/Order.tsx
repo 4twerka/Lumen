@@ -7,6 +7,7 @@ import PlusIcon from "../../../../assets/PlusOrder.svg?react";
 import MinusIcon from "../../../../assets/MinusOrder.svg?react";
 import { useAppSelector } from "../../../../hooks";
 import OrderDrawer from "./OrderDrawer";
+import { highLightMatchText } from "../../../../utils/highLightMatchText";
 
 interface OrderProduct {
   productId: string;
@@ -32,6 +33,8 @@ interface OrderProps {
   created: string;
   code: string;
   notes?: string;
+  _id: string;
+  search?: string;
 }
 
 const Order: React.FC<OrderProps> = ({
@@ -46,6 +49,8 @@ const Order: React.FC<OrderProps> = ({
   products,
   paymentMethod,
   notes,
+  _id,
+  search
 }) => {
   const [showInfo, setShowInfo] = useState<boolean>(false);
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
@@ -92,12 +97,12 @@ const Order: React.FC<OrderProps> = ({
   const handleOpenDrawer = () => {
     setShowDrawer(true);
   };
- 
+    
   return (
     <>
       <div className={`${styles.orderWrapper} ${styles.orderDesctop}`}>
         <div className={styles.orderTitle}>
-          <h3 className={styles.order}>Замовлення № {code}</h3>
+          <h3 className={styles.order}>Замовлення № {highLightMatchText(code, search || '')}</h3>
           <OrderStatus status={status} />
         </div>
         <div className={styles.detailsWrapper}>
@@ -112,9 +117,9 @@ const Order: React.FC<OrderProps> = ({
           <p className={styles.details}>
             Дані для отримання: <br />
             <span className={styles.detailsWeight}>
-              {firstName} {lastName}
+              {highLightMatchText(`${firstName} ${lastName}`, search || '')}
               <br />
-              {phoneNumber}
+              {highLightMatchText(phoneNumber, search || '')}
             </span>
           </p>
           <p className={styles.details}>
@@ -203,6 +208,7 @@ const Order: React.FC<OrderProps> = ({
         handleCloseDrawer={handleCloseDrawer}
         productsInfo={productsInfo}
         showDrawer={showDrawer}
+        id={_id}
       />
     </>
   );

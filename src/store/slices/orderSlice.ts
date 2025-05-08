@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import axiosInstance from "../../utils/axiosInstance";
 import { API } from "../../constants";
+import { OrderStatus } from "../../types";
 
 interface ProductOrder {
   productId: string;
@@ -13,16 +14,16 @@ interface CreateOrder {
   lastName: string;
   phoneNumber: string;
   email: string;
-  paymentMethod: 'cash' | 'online payment';
+  paymentMethod: "cash" | "online payment";
   products: ProductOrder[];
   delivery: {
-    method: 'self_pickup' | 'nova_post';
+    method: "self_pickup" | "nova_post";
     address: {
-        city: string;
-        department: string;
+      city: string;
+      department: string;
     };
-};
-  notes?: string | '';
+  };
+  notes?: string | "";
   isCallRestricted?: boolean;
 }
 
@@ -35,7 +36,7 @@ interface OrderResponce extends CreateOrder {
 }
 
 interface Order extends OrderResponce {
-  id: string;
+  _id: string;
   userId: string;
 }
 
@@ -83,6 +84,60 @@ export const fetchOrders = createAsyncThunk<
     return rejectWithValue("Unexpected error occurred!");
   }
 });
+export const fetchAdminsOrders = createAsyncThunk<
+  Order[],
+  void,
+  { rejectValue: string }
+>("order/fetchAdminsOrders", async (_, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.get(`/api/orders`);
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return rejectWithValue(
+        (error.response.data.title as string) || "Server Error!"
+      );
+    }
+    return rejectWithValue("Unexpected error occurred!");
+  }
+});
+export const deleteOrderById = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>("order/deleteOrderById", async (id, { rejectWithValue }) => {
+  try {
+    await axiosInstance.delete(`/api/orders/${id}`);
+    return id;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return rejectWithValue(
+        (error.response.data.title as string) || "Server Error!"
+      );
+    }
+    return rejectWithValue("Unexpected error occurred!");
+  }
+});
+export const changeOrderStatusById = createAsyncThunk<
+  string,
+  { id: string; status: OrderStatus },
+  { rejectValue: string }
+>(
+  "order/changeOrderStatusById",
+  async ({ id, status }, { rejectWithValue }) => {
+    try {
+      await axiosInstance.patch(`/api/orders/${id}/status`, { status });
+      return id;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        return rejectWithValue(
+          (error.response.data.title as string) || "Server Error!"
+        );
+      }
+      return rejectWithValue("Unexpected error occurred!");
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: "order",
@@ -116,6 +171,32 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchOrders.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAdminsOrders.fulfilled, (state, action) => {
+        state.orders = action.payload;
+        state.error = null;
+        state.isLoading = false;
+      })
+      .addCase(fetchAdminsOrders.rejected, (state, action) => {
+        state.error = action.payload || "Something went wrong";
+        state.isLoading = false;
+      })
+      .addCase(fetchAdminsOrders.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteOrderById.fulfilled, (state, action) => {
+        state.orders = state.orders.filter(
+          (order) => order._id !== action.payload
+        );
+        state.error = null;
+        state.isLoading = false;
+      })
+      .addCase(deleteOrderById.rejected, (state, action) => {
+        state.error = action.payload || "Something went wrong";
+        state.isLoading = false;
+      })
+      .addCase(deleteOrderById.pending, (state) => {
         state.isLoading = true;
       });
   },

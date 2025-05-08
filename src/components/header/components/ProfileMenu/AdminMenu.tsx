@@ -21,12 +21,16 @@ const AdminMenu: React.FC<AdminMenuProps> = ({ handleCloseProfile }) => {
     navigate("/");
   };
 
+  const handleNavigateMyOrders = () => {
+    navigate("/profile/my-orders");
+  }
+
   return (
     <>
       <MenuItem
         className={styles.authMenuItem}
         onClick={() => {
-          //   handleNavigateMyOrders();
+          handleNavigateMyOrders();
           handleCloseProfile();
         }}
       >
