@@ -1,8 +1,11 @@
-import { Box, Drawer, Typography } from "@mui/material";
+import { Box, Button, Drawer, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router";
 import { SUPABASE_PRODUCT_URL_PART } from "../../../../constants";
 import CloseIcon from "../../../../assets/Cancel.svg?react";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { deleteOrderById } from "../../../../store/slices/orderSlice";
 
 interface OrderDrawerProps {
   showDrawer: boolean;
@@ -15,6 +18,7 @@ interface OrderDrawerProps {
     quantity: number;
   }[];
   amountOrder: number;
+  id: string;
 }
 
 const OrderDrawer: React.FC<OrderDrawerProps> = ({
@@ -22,7 +26,14 @@ const OrderDrawer: React.FC<OrderDrawerProps> = ({
   handleCloseDrawer,
   productsInfo,
   amountOrder,
+  id,
 }) => {
+  const userRole = useAppSelector((state) => state.user.user?.role);
+
+  const dispatch = useAppDispatch();
+  const handleDeleteOrder = () => {
+    dispatch(deleteOrderById(id));
+  };
   return (
     <Drawer
       sx={{
@@ -70,7 +81,7 @@ const OrderDrawer: React.FC<OrderDrawerProps> = ({
         >
           {productsInfo.map((product) => (
             <Box
-              key={product.productId}  
+              key={product.productId}
               sx={{
                 paddingBottom: "24px",
                 display: "flex",
@@ -160,6 +171,24 @@ const OrderDrawer: React.FC<OrderDrawerProps> = ({
             {amountOrder} UAH
           </Typography>
         </Box>
+        {userRole === "admin" && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              pt: "1rem",
+              gap: "1rem",
+            }}
+          >
+            <Button
+              onClick={handleDeleteOrder}
+              variant="outlined"
+              startIcon={<DeleteIcon />}
+            >
+              Delete
+            </Button>
+          </Box>
+        )}
       </Box>
     </Drawer>
   );
