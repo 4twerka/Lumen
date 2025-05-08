@@ -16,6 +16,7 @@ const SearchMenu: React.FC<SearchMenuProps> = ({
   setSearch,
 }) => {
   const products = useAppSelector((state) => state.products.products);
+  const isLoading = useAppSelector((state) => state.products.isLoading);
   const filteredProducts = products.filter((product) => {
     const lowerSearch = search.toLowerCase();
     return (
@@ -42,7 +43,9 @@ const SearchMenu: React.FC<SearchMenuProps> = ({
         backgroundColor: "#ffffff",
       }}
     >
-      {filteredProducts.length > 0 ? (
+      {isLoading ? (
+        <Typography>Loading...</Typography>
+      ) : filteredProducts.length > 0 ? (
         filteredProducts.map((product) => (
           <Box key={product._id} sx={{ display: "flex", gap: "1rem" }}>
             <Link
