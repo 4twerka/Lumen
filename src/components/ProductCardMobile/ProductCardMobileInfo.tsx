@@ -1,24 +1,44 @@
-import { Box, IconButton, Typography } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { addCart, deleteProduct } from "../../store/slices/productSlice";
+import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router";
 
 interface ProductCardMobileInfoProps {
   price: number;
   id: string;
   stock: number;
+  title: string;
 }
 
 const ProductCardMobileInfo: React.FC<ProductCardMobileInfoProps> = ({
   price,
   id,
   stock,
+  title,
 }) => {
   // const discount = 30;
   // const discountPrice = price - price * (discount / 100);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
   const carts = useAppSelector((state) => state.products.carts);
   const isInCart = carts.some((item) => item.productId === id);
   const user = useAppSelector((state) => state.user.user);
@@ -30,8 +50,11 @@ const ProductCardMobileInfo: React.FC<ProductCardMobileInfoProps> = ({
     }
   };
   const handleDeleteProduct = () => {
-    dispatch(deleteProduct(id))
-  }
+    dispatch(deleteProduct(id));
+  };
+  const handleEditProduct = () => {
+    navigate(`/update-product/${id}`);
+  };
   return (
     <Box
       sx={{
@@ -64,9 +87,43 @@ const ProductCardMobileInfo: React.FC<ProductCardMobileInfoProps> = ({
       </Box>
       <Box>
         {userRole === "admin" && (
-          <IconButton onClick={handleDeleteProduct}>
-            <DeleteIcon />
-          </IconButton>
+          <>
+            <IconButton onClick={handleEditProduct}>
+              <EditIcon />
+            </IconButton>
+            <IconButton onClick={handleOpenDialog}>
+              <DeleteIcon />
+            </IconButton>
+            <Dialog
+              open={openDialog}
+              onClose={handleCloseDialog}
+              aria-labelledby="alert-dialog-title"
+            >
+              <DialogTitle sx={{ fontWeight: 400 }} id="alert-dialog-title">
+                Ви точно хочете видалити товар{" "}
+                <Box
+                  component={"span"}
+                  sx={{ fontWeight: 500, fontSize: "1.5rem" }}
+                >
+                  {title}
+                </Box>
+                ?
+              </DialogTitle>
+              <DialogActions>
+                <Button
+                  onClick={() => {
+                    handleCloseDialog();
+                    handleDeleteProduct();
+                  }}
+                >
+                  Так
+                </Button>
+                <Button onClick={handleCloseDialog} autoFocus>
+                  Ні
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>
         )}
 
         <IconButton
