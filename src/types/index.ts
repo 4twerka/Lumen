@@ -73,6 +73,32 @@ export interface CreateOrder {
   comment?: string;
 }
 
+export interface CreateProduct {
+  title: string;
+  price: number | string;
+  file: File[];
+  type_candle: string;
+  size: number | string;
+  aroma: string;
+  appointment: string;
+  burning_time: string;
+  short_describe: string;
+  color: string;
+  material: string;
+  shape: string;
+  features: string;
+  gift_packaging: boolean;
+  season_collection: boolean;
+  stock: number | string;
+  care: string;
+  composition: string;
+  characteristics: {
+    topNotes: string;
+    heartNotes: string;
+    baseNotes: string;
+  };
+}
+
 export interface createOrderResponse {
   message: string;
   order: {

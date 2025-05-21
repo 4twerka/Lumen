@@ -17,6 +17,7 @@ import CardPaymentPage from "../pages/CardPaymentPage/CardPaymentPage";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import Orders from "../pages/ProfilePage/Orders";
 import MyData from "../pages/ProfilePage/MyData";
+import UpdateProductPage from "../pages/UpdateProductPage/UpdateProductPage";
 // import ProfilePageMyData from "../pages/ProfilePage/ProfilePageMyData";
 // import ProfilePageMyOrders from "../pages/ProfilePage/ProfilePageMyOrders";
 
@@ -31,9 +32,10 @@ const RootRouter: React.FC = () => {
       </Route>
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/verifyEmail/:id" element={<VerifyEmailPage />} />
+        <Route path="/api/auth/verifyEmail/:id" element={<VerifyEmailPage />} />
         <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="/update-product/:id" element={<UpdateProductPage />} />
         <Route path="/add-product" element={<AddProductPage />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/thanks-order" element={<ThanksOrderPage />} />

@@ -92,6 +92,22 @@ export const createProduct = createAsyncThunk<
   }
 });
 
+export const updateProduct = createAsyncThunk<
+  Product,
+  { id: string; product: FormData },
+  { rejectValue: string }
+>("products/updateProduct", async ({ id, product }, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.patch(`/api/products/${id}`, product);
+    console.log('response updateProduct',response);
+    
+    return response.data as Product;
+  } catch (error: unknown) {
+    console.error("Error creating product:", error);
+    return rejectWithValue("Unexpected error occurred!");
+  }
+});
+
 export const deleteProduct = createAsyncThunk<
   string,
   string,
@@ -215,7 +231,20 @@ const productSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
-        state.products = state.products.filter((product) => product._id !== action.payload)
+        state.products = state.products.filter(
+          (product) => product._id !== action.payload
+        );
+        state.isLoading = false;
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.product = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(updateProduct.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.error = action.payload || "Something went wrong";
         state.isLoading = false;
       })
   },

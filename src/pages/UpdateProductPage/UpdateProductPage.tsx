@@ -1,13 +1,25 @@
-import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
-import React from "react";
-import { filterOptions } from "../../utils/filter";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import AddProductSelect from "./AddProductSelect";
-import AddProductInput from "./AddProductInput";
-import FormButtonSubmit from "../../components/Forms/FormButtonSubmit";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { createProduct } from "../../store/slices/productSlice";
+import {
+  fetchProductById,
+  updateProduct,
+} from "../../store/slices/productSlice";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+} from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
+import AddProductInput from "../AddProductPage/AddProductInput";
+import AddProductSelect from "../AddProductPage/AddProductSelect";
+import FormButtonSubmit from "../../components/Forms/FormButtonSubmit";
+import { filterOptions } from "../../utils/filter";
+import { SUPABASE_PRODUCT_URL_PART } from "../../constants";
 import { CreateProduct } from "../../types";
+// import UpdateInput from "./UpdateInput";
 
 const initialProductValues = {
   title: "",
@@ -35,8 +47,16 @@ const initialProductValues = {
   },
 };
 
-const AddProductPage: React.FC = () => {
+const UpdateProductPage:React.FC = () => {
+  const { id } = useParams();
   const dispatch = useAppDispatch();
+  const product = useAppSelector((state) => state.products.product);
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchProductById(id));
+    }
+  }, [dispatch, id]);
+  console.log("product", product);
   const {
     handleSubmit,
     formState: { errors },
@@ -45,15 +65,12 @@ const AddProductPage: React.FC = () => {
   } = useForm<CreateProduct>({
     defaultValues: initialProductValues,
   });
-
-  const user = useAppSelector((state) => state.user.user);
-  console.log("user", user);
-
-  const onSubmit: SubmitHandler<CreateProduct> = (data) => {
-    console.log(data);
+  const onSubmit = (data: CreateProduct) => {
     const formData = new FormData();
 
-    Object.entries(data).forEach(([key, value]) => {
+    Object.entries(initialProductValues).forEach(([key, ]) => {
+      const value = data[key as keyof CreateProduct];
+
       if (key === "file") {
         (value as File[]).forEach((file) => {
           formData.append("file", file);
@@ -61,17 +78,23 @@ const AddProductPage: React.FC = () => {
       } else if (key === "characteristics") {
         formData.append("characteristics", JSON.stringify(value));
       } else {
-        formData.append(key, value as string);
+        formData.append(key, value as string | Blob);
       }
     });
 
-    formData.forEach((item) => console.log(item));
-    console.log("formData", formData);
-
-    dispatch(createProduct(formData));
-    reset();
+    if (id && data) {
+        dispatch(updateProduct({ id: id, product: formData }));
+    }
   };
-
+  useEffect(() => {
+    if (product) {
+      reset({
+        ...initialProductValues,
+        ...product,
+      });
+    }
+  }, [product, reset]);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   return (
     <Box
       className={"container"}
@@ -102,6 +125,7 @@ const AddProductPage: React.FC = () => {
                 field={field}
                 error={errors.title}
               />
+            // <UpdateInput label={"Назва свічки"} field={field} error={errors.title} />
             )}
           />
           <Controller
@@ -366,16 +390,33 @@ const AddProductPage: React.FC = () => {
               />
             )}
           />
+          <Box sx={{ display: "flex", gap: "1rem" }}>
+            {product?.image.map((image) => (
+              <Box
+                key={image}
+                sx={{ width: "200px", height: "200px", objectFit: "cover" }}
+                src={`${SUPABASE_PRODUCT_URL_PART}${image}`}
+                component={"img"}
+              />
+            ))}
+          </Box>
           <Controller
             name="file"
             control={control}
-            rules={{ required: "Виберіть файл" }}
+            // rules={{ required: "Виберіть файл" }}
             render={({ field }) => (
               <>
-                <label htmlFor="fileInput">Завантаження фото</label>
+                <label style={{ padding: "1rem 0" }} htmlFor="fileInput">
+                  <Button component="span" variant="contained">
+                    {selectedFiles.length > 0
+                      ? "Файли вибрано"
+                      : "Завантажити файли"}
+                  </Button>
+                </label>
                 <input
                   id="fileInput"
                   type="file"
+                  hidden
                   multiple
                   accept="*/*"
                   // placeholder="Завантаження фото"
@@ -383,6 +424,7 @@ const AddProductPage: React.FC = () => {
                     if (e.target.files) {
                       const files = Array.from(e.target.files);
                       field.onChange(files);
+                      setSelectedFiles(files);
                     }
                   }}
                 />
@@ -394,10 +436,10 @@ const AddProductPage: React.FC = () => {
           />
         </Box>
 
-        <FormButtonSubmit>Створити</FormButtonSubmit>
+        <FormButtonSubmit>Оновити</FormButtonSubmit>
       </form>
     </Box>
   );
 };
 
-export default AddProductPage;
+export default UpdateProductPage;

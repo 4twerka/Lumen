@@ -119,7 +119,7 @@ export const deleteOrderById = createAsyncThunk<
   }
 });
 export const changeOrderStatusById = createAsyncThunk<
-  string,
+  { id: string; status: OrderStatus },
   { id: string; status: OrderStatus },
   { rejectValue: string }
 >(
@@ -127,7 +127,7 @@ export const changeOrderStatusById = createAsyncThunk<
   async ({ id, status }, { rejectWithValue }) => {
     try {
       await axiosInstance.patch(`/api/orders/${id}/status`, { status });
-      return id;
+      return { id, status };
     } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response) {
         return rejectWithValue(
