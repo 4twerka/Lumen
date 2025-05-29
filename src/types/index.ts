@@ -74,6 +74,7 @@ export interface CreateOrder {
 }
 
 export interface CreateProduct {
+  _id?:string;
   title: string;
   price: number | string;
   file: File[];
