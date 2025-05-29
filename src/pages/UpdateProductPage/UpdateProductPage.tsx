@@ -5,21 +5,18 @@ import {
   fetchProductById,
   updateProduct,
 } from "../../store/slices/productSlice";
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Typography,
-} from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import AddProductInput from "../AddProductPage/AddProductInput";
 import AddProductSelect from "../AddProductPage/AddProductSelect";
 import FormButtonSubmit from "../../components/Forms/FormButtonSubmit";
 import { filterOptions } from "../../utils/filter";
-import { SUPABASE_PRODUCT_URL_PART } from "../../constants";
 import { CreateProduct } from "../../types";
-// import UpdateInput from "./UpdateInput";
+import UpdateInput from "./components/UpdateInput/UpdateInput";
+import styles from "./UpdateProductPage.module.css";
+import ImagesBlock from "./components/ImagesBlock/ImagesBlock";
+import Loader from "../../components/Loader/Loader";
+import AddIcon from "../../assets/Plus.svg?react";
+import RemoveIcon from "../../assets/Minus.svg?react";
 
 const initialProductValues = {
   title: "",
@@ -45,12 +42,13 @@ const initialProductValues = {
     heartNotes: "",
     baseNotes: "",
   },
+  _id: "",
 };
 
-const UpdateProductPage:React.FC = () => {
+const UpdateProductPage: React.FC = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const product = useAppSelector((state) => state.products.product);
+  const { product, isLoading } = useAppSelector((state) => state.products);
   useEffect(() => {
     if (id) {
       dispatch(fetchProductById(id));
@@ -61,18 +59,21 @@ const UpdateProductPage:React.FC = () => {
     handleSubmit,
     formState: { errors },
     control,
+    register,
     reset,
+    getValues,
+    setValue,
   } = useForm<CreateProduct>({
     defaultValues: initialProductValues,
   });
   const onSubmit = (data: CreateProduct) => {
     const formData = new FormData();
 
-    Object.entries(initialProductValues).forEach(([key, ]) => {
+    Object.entries(initialProductValues).forEach(([key]) => {
       const value = data[key as keyof CreateProduct];
 
       if (key === "file") {
-        (value as File[]).forEach((file) => {
+        (selectedFiles as File[]).forEach((file) => {
           formData.append("file", file);
         });
       } else if (key === "characteristics") {
@@ -83,7 +84,7 @@ const UpdateProductPage:React.FC = () => {
     });
 
     if (id && data) {
-        dispatch(updateProduct({ id: id, product: formData }));
+      dispatch(updateProduct({ id: id, product: formData }));
     }
   };
   useEffect(() => {
@@ -95,6 +96,32 @@ const UpdateProductPage:React.FC = () => {
     }
   }, [product, reset]);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const incrementStock = () => {
+    const currentStock = getValues("stock");
+    setValue("stock", +currentStock + 1);
+  };
+
+  const decrementStock = () => {
+    const currentStock = getValues("stock");
+    setValue("stock", Math.max(+currentStock - 1, 0));
+  };
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          height: "calc( 100vh - 148px )",
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Loader />
+      </Box>
+    );
+  }
+
   return (
     <Box
       className={"container"}
@@ -106,337 +133,328 @@ const UpdateProductPage:React.FC = () => {
         backgroundColor: "#FCFCFC",
       }}
     >
-      <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
+      <form
+        style={{ width: "100%", display: "flex", gap: "1rem" }}
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             gap: "1rem",
-            width: "50%",
+            width: "calc((100% / 3) * 2)",
           }}
         >
-          <Controller
-            name="title"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductInput
-                label={"Назва свічки"}
-                field={field}
-                error={errors.title}
-              />
-            // <UpdateInput label={"Назва свічки"} field={field} error={errors.title} />
-            )}
-          />
-          <Controller
-            name="short_describe"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductInput
-                label={"Опис свічки"}
-                field={field}
-                error={errors.short_describe}
-              />
-            )}
-          />
-          <Controller
-            name="burning_time"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductInput
-                label={"Час горіння"}
-                field={field}
-                error={errors.burning_time}
-              />
-            )}
-          />
-          <Controller
-            name="price"
-            control={control}
-            rules={{
-              required: true,
-              pattern: {
-                value: /^\d+(\.\d+)?$/,
-                message: "Введіть тільки додатне число",
-              },
-            }}
-            render={({ field }) => (
-              <AddProductInput
-                label={"Ціна"}
-                type="number"
-                field={field}
-                error={errors.price}
-              />
-            )}
-          />
-          <Controller
-            name="size"
-            control={control}
-            rules={{
-              required: true,
-              pattern: {
-                value: /^\d+(\.\d+)?$/,
-                message: "Введіть тільки додатне число",
-              },
-            }}
-            render={({ field }) => (
-              <AddProductInput
-                label={"Розмір свічки(см)"}
-                field={field}
-                type="number"
-                error={errors.size}
-              />
-            )}
-          />
-          <Controller
-            name="stock"
-            control={control}
-            rules={{
-              required: true,
-              pattern: {
-                value: /^[1-9]\d*$/,
-                message: "Введіть тільки додатне ціле число",
-              },
-            }}
-            render={({ field }) => (
-              <AddProductInput
-                label={"Кількість"}
-                field={field}
-                type="number"
-                error={errors.stock}
-              />
-            )}
-          />
-          <Controller
-            name="characteristics.baseNotes"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductInput
-                label={"Базові ноти"}
-                field={field}
-                error={errors.characteristics?.baseNotes}
-              />
-            )}
-          />
-          <Controller
-            name="characteristics.heartNotes"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductInput
-                label={"Серцеві ноти"}
-                field={field}
-                error={errors.characteristics?.heartNotes}
-              />
-            )}
-          />
-          <Controller
-            name="characteristics.topNotes"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductInput
-                label={"Верхні ноти"}
-                field={field}
-                error={errors.characteristics?.topNotes}
-              />
-            )}
-          />
-          <Controller
-            name="care"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductInput
-                label={"Догляд"}
-                field={field}
-                error={errors.care}
-              />
-            )}
-          />
-          <Controller
-            name="composition"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductInput
-                label={"Склад"}
-                field={field}
-                error={errors.composition}
-              />
-            )}
-          />
-          <Controller
-            name="type_candle"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductSelect
-                label={"Тип свічки"}
-                options={filterOptions.types}
-                field={field}
-                error={errors.type_candle}
-              />
-            )}
-          />
-          <Controller
-            name="aroma"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductSelect
-                label={"Аромат свічки"}
-                options={filterOptions.aroma}
-                field={field}
-                error={errors.aroma}
-              />
-            )}
-          />
-          <Controller
-            name="appointment"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductSelect
-                label={"Призначення"}
-                options={filterOptions.assignment}
-                field={field}
-                error={errors.appointment}
-              />
-            )}
-          />
-          <Controller
-            name="color"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductSelect
-                label={"Колір"}
-                options={filterOptions.color}
-                field={field}
-                error={errors.color}
-              />
-            )}
-          />
-          <Controller
-            name="material"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductSelect
-                label={"Матеріал"}
-                options={filterOptions.material}
-                field={field}
-                error={errors.material}
-              />
-            )}
-          />
-          <Controller
-            name="shape"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductSelect
-                label={"Форма"}
-                options={filterOptions.form}
-                field={field}
-                error={errors.shape}
-              />
-            )}
-          />
-          <Controller
-            name="features"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AddProductSelect
-                label={"Особливості"}
-                options={filterOptions.features}
-                field={field}
-                error={errors.features}
-              />
-            )}
-          />
-          <Controller
-            name="gift_packaging"
-            control={control}
-            render={({ field }) => (
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={field.value}
-                    onChange={(e) => field.onChange(e.target.checked)}
-                  />
-                }
-                label="Подарункова упаковка"
-              />
-            )}
-          />
-          <Controller
-            name="season_collection"
-            control={control}
-            render={({ field }) => (
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={field.value}
-                    onChange={(e) => field.onChange(e.target.checked)}
-                  />
-                }
-                label="Сезонна колекція"
-              />
-            )}
-          />
-          <Box sx={{ display: "flex", gap: "1rem" }}>
-            {product?.image.map((image) => (
-              <Box
-                key={image}
-                sx={{ width: "200px", height: "200px", objectFit: "cover" }}
-                src={`${SUPABASE_PRODUCT_URL_PART}${image}`}
-                component={"img"}
-              />
-            ))}
+          <Box>
+            <h3 className={styles.title}>Назва товару</h3>
+            <Typography
+              sx={{ fontSize: "1rem", lineHeight: "1.5rem", color: "#111111" }}
+            >
+              {product?._id}
+            </Typography>
           </Box>
-          <Controller
-            name="file"
-            control={control}
-            // rules={{ required: "Виберіть файл" }}
-            render={({ field }) => (
-              <>
-                <label style={{ padding: "1rem 0" }} htmlFor="fileInput">
-                  <Button component="span" variant="contained">
-                    {selectedFiles.length > 0
-                      ? "Файли вибрано"
-                      : "Завантажити файли"}
-                  </Button>
-                </label>
-                <input
-                  id="fileInput"
-                  type="file"
-                  hidden
-                  multiple
-                  accept="*/*"
-                  // placeholder="Завантаження фото"
-                  onChange={(e) => {
-                    if (e.target.files) {
-                      const files = Array.from(e.target.files);
-                      field.onChange(files);
-                      setSelectedFiles(files);
-                    }
-                  }}
-                />
-                {errors.file && (
-                  <Typography color="red">{errors.file.message}</Typography>
-                )}
-              </>
-            )}
+          <UpdateInput
+            label={"Назва товару"}
+            name="title"
+            rules={{ required: "Назва свічки обовязкова!!!" }}
+            register={register}
+            error={errors.title}
           />
+          <UpdateInput
+            label="Опис"
+            register={register}
+            name="short_describe"
+            rules={{ required: `Опис обовязковий!!!` }}
+            error={errors.short_describe}
+            textArea={true}
+          />
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <UpdateInput
+              label="Ціна"
+              register={register}
+              name="price"
+              rules={{
+                required: `Ціна обовязкова!!!`,
+                pattern: {
+                  value: /^\d+(\.\d+)?$/,
+                  message: "Введіть тільки додатне число",
+                },
+              }}
+              error={errors.price}
+            />
+            <Box
+              sx={{ display: "flex", gap: "0.5rem", flexDirection: "column" }}
+            >
+              <label htmlFor="stock" className={styles.title}>
+                Залишок в шт.
+              </label>
+              <Box sx={{ display: "flex", gap: "0.5rem" }}>
+                <span onClick={decrementStock} className={styles.icon}>
+                  <RemoveIcon />
+                </span>
+                <input
+                  id="stock"
+                  className={styles.stockInput}
+                  type="text"
+                  {...register("stock", {
+                    pattern: {
+                      value: /^(0|[1-9]\d*)$/,
+                      message: "Введіть тільки додатне ціле число",
+                    },
+                  })}
+                />
+                <span
+                  onClick={incrementStock}
+                  className={`${styles.add} ${styles.icon}`}
+                >
+                  <AddIcon />
+                </span>
+              </Box>
+              {errors.stock && (
+                <Typography sx={{ color: "red", fontSize: "0.75rem" }}>
+                  {errors.stock.message}
+                </Typography>
+              )}
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1rem",
+              flexWrap: "wrap",
+              paddingTop: "20px",
+            }}
+          >
+            <Controller
+              name="type_candle"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <AddProductSelect
+                  sx={{ width: "calc(100% / 2 - 0.5rem)" }}
+                  label={"Тип свічки"}
+                  options={filterOptions.types}
+                  field={field}
+                  error={errors.type_candle}
+                />
+              )}
+            />
+            <Controller
+              name="aroma"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <AddProductSelect
+                  sx={{ width: "calc(100% / 2 - 0.5rem)" }}
+                  label={"Аромат свічки"}
+                  options={filterOptions.aroma}
+                  field={field}
+                  error={errors.aroma}
+                />
+              )}
+            />
+            <Controller
+              name="appointment"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <AddProductSelect
+                  sx={{ width: "calc(100% / 2 - 0.5rem)" }}
+                  label={"Призначення"}
+                  options={filterOptions.assignment}
+                  field={field}
+                  error={errors.appointment}
+                />
+              )}
+            />
+            <Controller
+              name="color"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <AddProductSelect
+                  sx={{ width: "calc(100% / 2 - 0.5rem)" }}
+                  label={"Колір"}
+                  options={filterOptions.color}
+                  field={field}
+                  error={errors.color}
+                />
+              )}
+            />
+            <Controller
+              name="material"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <AddProductSelect
+                  sx={{ width: "calc(100% / 2 - 0.5rem)" }}
+                  label={"Матеріал"}
+                  options={filterOptions.material}
+                  field={field}
+                  error={errors.material}
+                />
+              )}
+            />
+            <Controller
+              name="shape"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <AddProductSelect
+                  sx={{ width: "calc(100% / 2 - 0.5rem)" }}
+                  label={"Форма"}
+                  options={filterOptions.form}
+                  field={field}
+                  error={errors.shape}
+                />
+              )}
+            />
+            <Controller
+              name="features"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <AddProductSelect
+                  sx={{ width: "calc(100% / 2 - 0.5rem)" }}
+                  label={"Особливості"}
+                  options={filterOptions.features}
+                  field={field}
+                  error={errors.features}
+                />
+              )}
+            />
+          </Box>
+          <Box>
+            <h3 className={styles.title}>Тег</h3>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+              }}
+            >
+              <Controller
+                name="gift_packaging"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                      />
+                    }
+                    label="Подарункова упаковка"
+                  />
+                )}
+              />
+              <Controller
+                name="season_collection"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                      />
+                    }
+                    label="Сезонна колекція"
+                  />
+                )}
+              />
+            </Box>
+          </Box>
+          <Box>
+            <h3 className={styles.title}>Характеристики</h3>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: "36px" }}>
+              {/* <UpdateInput
+                label="Залишок в шт"
+                register={register}
+                rules={{
+                  pattern: {
+                    value: /^(0|[1-9]\d*)$/,
+                    message: "Введіть тільки додатне ціле число",
+                  },
+                }}
+                name="stock"
+                error={errors.stock}
+                variant="sm"
+              /> */}
+              <UpdateInput
+                label="Розмір в см"
+                register={register}
+                rules={{
+                  pattern: {
+                    value: /^\d+(\.\d+)?$/,
+                    message: "Введіть тільки додатне число",
+                  },
+                }}
+                name="size"
+                error={errors.size}
+                variant="sm"
+              />
+              <UpdateInput
+                label="Верхні ноти"
+                register={register}
+                name="characteristics.topNotes"
+                error={errors.characteristics?.topNotes}
+                variant="sm"
+              />
+              <UpdateInput
+                label="Серцеві ноти"
+                register={register}
+                rules={{ required: `Заповніть будь-ласка!` }}
+                name="characteristics.heartNotes"
+                error={errors.characteristics?.heartNotes}
+                variant="sm"
+              />
+              <UpdateInput
+                label="Базові ноти"
+                register={register}
+                rules={{ required: `Заповніть будь-ласка!` }}
+                name="characteristics.baseNotes"
+                error={errors.characteristics?.baseNotes}
+                variant="sm"
+              />
+              <UpdateInput
+                label="Час горіння"
+                register={register}
+                name="burning_time"
+                error={errors.burning_time}
+                variant="sm"
+              />
+              <UpdateInput
+                label="Склад"
+                register={register}
+                name="composition"
+                error={errors.composition}
+                variant="sm"
+                textArea={true}
+                rows={5}
+              />
+              <UpdateInput
+                label="Догляд"
+                register={register}
+                name="care"
+                error={errors.care}
+                variant="sm"
+                textArea={true}
+                rows={10}
+              />
+            </Box>
+          </Box>
+          <FormButtonSubmit>Оновити</FormButtonSubmit>
         </Box>
-
-        <FormButtonSubmit>Оновити</FormButtonSubmit>
+        {id && (
+          <ImagesBlock
+            selectedFiles={selectedFiles}
+            setSelectedFiles={setSelectedFiles}
+            control={control}
+            errors={errors}
+            id={id}
+          />
+        )}
       </form>
     </Box>
   );

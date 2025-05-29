@@ -5,7 +5,7 @@ import React from "react";
 //   children: string;
 // }
 
-const ButtonOutline: React.FC<ButtonProps> = ({ children, ...restProps }) => {
+const ButtonOutline: React.FC<ButtonProps> = ({ children, sx, ...restProps }) => {
   return (
     <Button
       variant="outlined"
@@ -18,6 +18,7 @@ const ButtonOutline: React.FC<ButtonProps> = ({ children, ...restProps }) => {
         lineHeight: "12px",
         textTransform: 'none',
         width: "fit-content",
+        ...sx
       }}
       {...restProps}
     >

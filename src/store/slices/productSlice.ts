@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { Product } from "../../types";
 import { API } from "../../constants";
@@ -100,7 +100,6 @@ export const updateProduct = createAsyncThunk<
   try {
     const response = await axiosInstance.patch(`/api/products/${id}`, product);
     console.log('response updateProduct',response);
-    
     return response.data as Product;
   } catch (error: unknown) {
     console.error("Error creating product:", error);
@@ -163,6 +162,16 @@ const productSlice = createSlice({
       state.carts = [];
       localStorage.setItem("carts", JSON.stringify(state.carts));
     },
+    makeMainImg: (state, {payload}: PayloadAction<string>) => {
+      if (!state.product) return
+      const curIndex = state.product.image.indexOf(payload);
+      state.product.image[curIndex] = state.product.image[0];
+      state.product.image[0] = payload;
+    },
+    deleteImage: (state, {payload}: PayloadAction<string>) => {
+      if (!state.product) return
+      state.product.image = state.product.image.filter((img) => img !== payload)
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -250,7 +259,7 @@ const productSlice = createSlice({
   },
 });
 
-export const { addCart, decreaseCart, deleteCart, clearCart } =
+export const { addCart, decreaseCart, deleteCart, clearCart, makeMainImg, deleteImage } =
   productSlice.actions;
 
 export default productSlice.reducer;
