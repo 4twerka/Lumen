@@ -45,28 +45,28 @@ const convertImagesToFiles = async (filenames: string[]): Promise<File[]> => {
 
 interface ImagesBlockProps<T extends FieldValues> {
   control: Control<T>;
-  id: string;
   errors: FieldErrors<T>;
   selectedFiles: File[];
   setSelectedFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  isEditForm: boolean;
 }
 
 const ImagesBlock = <T extends FieldValues>({
   control,
-  id,
   errors,
   selectedFiles,
   setSelectedFiles,
+  isEditForm,
 }: ImagesBlockProps<T>) => {
   const product = useAppSelector((state) => state.products.product);
 
   useEffect(() => {
-    if (product?._id && product?.image?.length) {
+    if (product?._id && product?.image?.length && isEditForm) {
       convertImagesToFiles(product.image).then((files) => {
         setSelectedFiles([...files]);
       });
     }
-  }, [product?._id, setSelectedFiles, product?.image]);
+  }, [product?._id, setSelectedFiles, product?.image, isEditForm]);
 
   useEffect(() => {
     return () => {
@@ -89,6 +89,7 @@ const ImagesBlock = <T extends FieldValues>({
       setSelectedFiles([selectedFiles[0], ...reordered]);
     }
   };
+  console.log("selectedFiles", selectedFiles);
 
   return (
     <Box sx={{ width: "calc(100% / 3)" }}>
@@ -103,7 +104,7 @@ const ImagesBlock = <T extends FieldValues>({
               component={"img"}
             />
           )}
-          <Badge />
+          {selectedFiles.length > 0 && <Badge />}
         </Box>
         <DndContext
           sensors={sensors}
@@ -135,6 +136,8 @@ const ImagesBlock = <T extends FieldValues>({
                 <ButtonOutline
                   component="span"
                   sx={{
+                    paddingLeft: 0,
+                    paddingRight: 0,
                     display: "flex",
                     gap: "11px",
                     alignItems: "center",
@@ -152,7 +155,7 @@ const ImagesBlock = <T extends FieldValues>({
                 multiple
                 accept="*/*"
                 onChange={(e) => {
-                  if (e.target.files && id) {
+                  if (e.target.files) {
                     const files = Array.from(e.target.files);
                     field.onChange(files);
                     setSelectedFiles((prev: File[]) => [...prev, ...files]);
@@ -167,6 +170,18 @@ const ImagesBlock = <T extends FieldValues>({
             </>
           )}
         />
+      </Box>
+      <Box
+        sx={{
+          textAlign: "center",
+          fontSize: "0.875rem",
+          color: "#A3A3A3",
+          "&>p": { fontSize: "0.875rem" },
+        }}
+      >
+        <Typography>Дозволені формати: jpeg, png.</Typography>
+        <Typography>Максимальний розмір файлу: 00 Мб.</Typography>
+        <Typography>Максимальна кількість фото: 00 шт.</Typography>
       </Box>
     </Box>
   );

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styles from "./Order.module.css";
-import OrderStatus from "./OrderStatus";
 import OrderSwiper from "./OrderSwiper";
 import { Button } from "@mui/material";
 import PlusIcon from "../../../../assets/PlusOrder.svg?react";
@@ -8,6 +7,8 @@ import MinusIcon from "../../../../assets/MinusOrder.svg?react";
 import { useAppSelector } from "../../../../hooks";
 import OrderDrawer from "./OrderDrawer";
 import { highLightMatchText } from "../../../../utils/highLightMatchText";
+import { OrderStatus } from "../../../../types";
+import OrderStatusComponent from "./OrderStatusComponent";
 
 interface OrderProduct {
   productId: string;
@@ -26,7 +27,7 @@ interface OrderProps {
   };
   firstName: string;
   phoneNumber: string;
-  status: "processing" | "accepted" | "sent" | "received" | "canceled";
+  status: keyof typeof OrderStatus;
   paymentMethod: "cash" | "online payment";
   products: OrderProduct[];
   lastName: string;
@@ -103,7 +104,7 @@ const Order: React.FC<OrderProps> = ({
       <div className={`${styles.orderWrapper} ${styles.orderDesctop}`}>
         <div className={styles.orderTitle}>
           <h3 className={styles.order}>Замовлення № {highLightMatchText(code, search || '')}</h3>
-          <OrderStatus status={status} />
+          <OrderStatusComponent status={status} />
         </div>
         <div className={styles.detailsWrapper}>
           <p className={styles.details}>Створено: {date}</p>
@@ -154,7 +155,7 @@ const Order: React.FC<OrderProps> = ({
             <h3 className={styles.order}>Замовлення № {code}</h3>
             <p className={styles.details}>Створено: {date}</p>
           </div>
-          <OrderStatus status={status} />
+          <OrderStatusComponent status={status} />
         </div>
         <Button
           onClick={handleOpenDrawer}

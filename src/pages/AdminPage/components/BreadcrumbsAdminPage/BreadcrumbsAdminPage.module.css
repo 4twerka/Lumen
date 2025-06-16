@@ -1,0 +1,26 @@
+.link {
+    color: rgba(0, 0, 0, 0.20);
+    font-size: 0.875rem;
+    font-weight: 400;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    svg {
+        width: 14px;
+        height: 14px;
+        fill-opacity: 0.2;
+    }
+}
+.active {
+    color: #111111;
+}
+.active path {
+    fill-opacity: 1;
+}
+
+@media (max-width: 900px) {
+    /* .link {
+        font-size: 0.75rem;
+    } */
+}

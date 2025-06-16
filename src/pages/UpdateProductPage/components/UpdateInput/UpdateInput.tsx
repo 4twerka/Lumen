@@ -18,6 +18,7 @@ interface UpdateInputProps<T extends FieldValues> {
   rules?: RegisterOptions<T>;
   variant?: "sm" | "lg";
   rows?: number;
+  style?: React.CSSProperties;
 }
 
 const UpdateInput = <T extends FieldValues>({
@@ -31,9 +32,10 @@ const UpdateInput = <T extends FieldValues>({
   variant = "lg",
   rules,
   rows = 4,
+  style
 }: UpdateInputProps<T>) => {
   return (
-    <div className={styles.inputWrapper}>
+    <div style={{...style}} className={styles.inputWrapper}>
       <label
         className={`${styles.label} ${variant === "sm" ? styles.labelSm : ""}`}
         htmlFor={`${label}`}

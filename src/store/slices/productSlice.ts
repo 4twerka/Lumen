@@ -85,6 +85,7 @@ export const createProduct = createAsyncThunk<
 >("products/createProduct", async (product: FormData, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(`/api/products`, product);
+    console.log('createProduct response',response)    
     return response.data as Product;
   } catch (error: unknown) {
     console.error("Error creating product:", error);
@@ -99,7 +100,6 @@ export const updateProduct = createAsyncThunk<
 >("products/updateProduct", async ({ id, product }, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.patch(`/api/products/${id}`, product);
-    console.log('response updateProduct',response);
     return response.data as Product;
   } catch (error: unknown) {
     console.error("Error creating product:", error);
@@ -162,16 +162,18 @@ const productSlice = createSlice({
       state.carts = [];
       localStorage.setItem("carts", JSON.stringify(state.carts));
     },
-    makeMainImg: (state, {payload}: PayloadAction<string>) => {
-      if (!state.product) return
+    makeMainImg: (state, { payload }: PayloadAction<string>) => {
+      if (!state.product) return;
       const curIndex = state.product.image.indexOf(payload);
       state.product.image[curIndex] = state.product.image[0];
       state.product.image[0] = payload;
     },
-    deleteImage: (state, {payload}: PayloadAction<string>) => {
-      if (!state.product) return
-      state.product.image = state.product.image.filter((img) => img !== payload)
-    }
+    deleteImage: (state, { payload }: PayloadAction<string>) => {
+      if (!state.product) return;
+      state.product.image = state.product.image.filter(
+        (img) => img !== payload
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -229,6 +231,7 @@ const productSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(createProduct.fulfilled, (state, action) => {
+        state.product = null;
         state.products.push(action.payload);
         state.isLoading = false;
       })
@@ -247,6 +250,9 @@ const productSlice = createSlice({
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
         state.product = action.payload;
+        state.products = state.products.map((product) =>
+          product._id === action.payload._id ? action.payload : product
+        );
         state.isLoading = false;
       })
       .addCase(updateProduct.pending, (state) => {
@@ -255,11 +261,17 @@ const productSlice = createSlice({
       .addCase(updateProduct.rejected, (state, action) => {
         state.error = action.payload || "Something went wrong";
         state.isLoading = false;
-      })
+      });
   },
 });
 
-export const { addCart, decreaseCart, deleteCart, clearCart, makeMainImg, deleteImage } =
-  productSlice.actions;
+export const {
+  addCart,
+  decreaseCart,
+  deleteCart,
+  clearCart,
+  makeMainImg,
+  deleteImage,
+} = productSlice.actions;
 
 export default productSlice.reducer;
