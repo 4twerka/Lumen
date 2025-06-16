@@ -18,6 +18,10 @@ import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import Orders from "../pages/ProfilePage/Orders";
 import MyData from "../pages/ProfilePage/MyData";
 import UpdateProductPage from "../pages/UpdateProductPage/UpdateProductPage";
+import AdminPage from "../pages/AdminPage/AdminPage";
+import AdminProducts from "../pages/AdminPage/components/AdminProducts/AdminProducts";
+import AdminMain from "../pages/AdminPage/components/AdminMain/AdminMain";
+import AdminOrders from "../pages/AdminPage/components/AdminOrders/AdminOrders";
 // import ProfilePageMyData from "../pages/ProfilePage/ProfilePageMyData";
 // import ProfilePageMyOrders from "../pages/ProfilePage/ProfilePageMyOrders";
 
@@ -31,7 +35,7 @@ const RootRouter: React.FC = () => {
         <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Route>
       <Route element={<MainLayout />}>
-        <Route path="/" element={<HomePage />} />
+        <Route index element={<HomePage />} />
         <Route path="/api/auth/verifyEmail/:id" element={<VerifyEmailPage />} />
         <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/product/:id" element={<ProductPage />} />
@@ -44,8 +48,13 @@ const RootRouter: React.FC = () => {
             <Route path="my-orders" element={<Orders />} />
             <Route path="my-data" element={<MyData />} />
         </Route>
-        {/* <Route path="/profile/my-data" element={<ProfilePageMyData />} />
-        <Route path="/profile/my-orders" element={<ProfilePageMyOrders />} /> */}
+        <Route path="/admin" element={<AdminPage />} >
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="main" element={<AdminMain />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="edit-product/:id" element={<UpdateProductPage />} />
+            <Route path="create-product" element={<UpdateProductPage />} />
+        </Route>
       </Route>
     </Routes>
   );

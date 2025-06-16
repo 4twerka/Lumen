@@ -19,9 +19,7 @@ interface AdminFormOrdersProps {
   setSortDate: React.Dispatch<React.SetStateAction<"" | "old" | "new">>;
   sortStatus: keyof typeof OrderStatus | "";
   setSortStatus: React.Dispatch<
-    React.SetStateAction<
-      "" | "processing" | "accepted" | "sent" | "received" | "canceled"
-    >
+    React.SetStateAction<keyof typeof OrderStatus | "">
   >;
 }
 

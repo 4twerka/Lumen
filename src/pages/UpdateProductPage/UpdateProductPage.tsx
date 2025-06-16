@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
+  createProduct,
   fetchProductById,
   updateProduct,
 } from "../../store/slices/productSlice";
@@ -17,6 +18,8 @@ import ImagesBlock from "./components/ImagesBlock/ImagesBlock";
 import Loader from "../../components/Loader/Loader";
 import AddIcon from "../../assets/Plus.svg?react";
 import RemoveIcon from "../../assets/Minus.svg?react";
+import BreadcrumbsAdminEditProduct from "../AdminPage/components/BreadcrumbsAdminPage/BreadcrumbsAdminEditProduct";
+import BreadcrumbsAdminCreateProduct from "../AdminPage/components/BreadcrumbsAdminPage/BreadcrumbsAdminCreateProduct";
 
 const initialProductValues = {
   title: "",
@@ -34,7 +37,7 @@ const initialProductValues = {
   features: "",
   gift_packaging: false,
   season_collection: false,
-  stock: "",
+  stock: "0",
   care: "",
   composition: "",
   characteristics: {
@@ -42,19 +45,22 @@ const initialProductValues = {
     heartNotes: "",
     baseNotes: "",
   },
-  _id: "",
+  // _id: "",
 };
 
 const UpdateProductPage: React.FC = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
+  const isEditForm = Boolean(id);
+  console.log(isEditForm);
+
   const { product, isLoading } = useAppSelector((state) => state.products);
   useEffect(() => {
     if (id) {
       dispatch(fetchProductById(id));
     }
   }, [dispatch, id]);
-  console.log("product", product);
+
   const {
     handleSubmit,
     formState: { errors },
@@ -85,16 +91,22 @@ const UpdateProductPage: React.FC = () => {
 
     if (id && data) {
       dispatch(updateProduct({ id: id, product: formData }));
+      console.log("updateProduct", id);
+      console.log("updateProduct", data);
+    } else {
+      dispatch(createProduct(formData));
+      console.log("createProduct", data);
+      console.log("Перша створена свічка", formData);
     }
   };
   useEffect(() => {
-    if (product) {
+    if (product && id) {
       reset({
         ...initialProductValues,
         ...product,
       });
     }
-  }, [product, reset]);
+  }, [product, reset, id]);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const incrementStock = () => {
     const currentStock = getValues("stock");
@@ -124,17 +136,19 @@ const UpdateProductPage: React.FC = () => {
 
   return (
     <Box
-      className={"container"}
       sx={{
-        display: { xs: "block", md: "flex" },
         width: "100%",
-        padding: { xs: "16px 16px", md: "48px 80px" },
         gap: "1.25rem",
         backgroundColor: "#FCFCFC",
       }}
     >
+      {isEditForm ? (
+        <BreadcrumbsAdminEditProduct />
+      ) : (
+        <BreadcrumbsAdminCreateProduct />
+      )}
       <form
-        style={{ width: "100%", display: "flex", gap: "1rem" }}
+        style={{ width: "100%", display: "flex", gap: "1.5rem" }}
         onSubmit={handleSubmit(onSubmit)}
       >
         <Box
@@ -145,14 +159,20 @@ const UpdateProductPage: React.FC = () => {
             width: "calc((100% / 3) * 2)",
           }}
         >
-          <Box>
-            <h3 className={styles.title}>Назва товару</h3>
-            <Typography
-              sx={{ fontSize: "1rem", lineHeight: "1.5rem", color: "#111111" }}
-            >
-              {product?._id}
-            </Typography>
-          </Box>
+          {isEditForm && (
+            <Box>
+              <h3 className={styles.title}>Номер товару</h3>
+              <Typography
+                sx={{
+                  fontSize: "1rem",
+                  lineHeight: "1.5rem",
+                  color: "#111111",
+                }}
+              >
+                {product?._id}
+              </Typography>
+            </Box>
+          )}
           <UpdateInput
             label={"Назва товару"}
             name="title"
@@ -168,8 +188,9 @@ const UpdateProductPage: React.FC = () => {
             error={errors.short_describe}
             textArea={true}
           />
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex", gap: "1.5rem" }}>
             <UpdateInput
+              style={{ width: "50%" }}
               label="Ціна"
               register={register}
               name="price"
@@ -183,7 +204,12 @@ const UpdateProductPage: React.FC = () => {
               error={errors.price}
             />
             <Box
-              sx={{ display: "flex", gap: "0.5rem", flexDirection: "column" }}
+              sx={{
+                display: "flex",
+                gap: "0.5rem",
+                flexDirection: "column",
+                width: "50%",
+              }}
             >
               <label htmlFor="stock" className={styles.title}>
                 Залишок в шт.
@@ -220,7 +246,7 @@ const UpdateProductPage: React.FC = () => {
           <Box
             sx={{
               display: "flex",
-              gap: "1rem",
+              gap: "1.5rem",
               flexWrap: "wrap",
               paddingTop: "20px",
             }}
@@ -231,7 +257,7 @@ const UpdateProductPage: React.FC = () => {
               rules={{ required: true }}
               render={({ field }) => (
                 <AddProductSelect
-                  sx={{ width: "calc(100% / 2 - 0.5rem)" }}
+                  sx={{ width: "calc(100% / 2 - 0.75rem)" }}
                   label={"Тип свічки"}
                   options={filterOptions.types}
                   field={field}
@@ -245,7 +271,7 @@ const UpdateProductPage: React.FC = () => {
               rules={{ required: true }}
               render={({ field }) => (
                 <AddProductSelect
-                  sx={{ width: "calc(100% / 2 - 0.5rem)" }}
+                  sx={{ width: "calc(100% / 2 - 0.75rem)" }}
                   label={"Аромат свічки"}
                   options={filterOptions.aroma}
                   field={field}
@@ -259,7 +285,7 @@ const UpdateProductPage: React.FC = () => {
               rules={{ required: true }}
               render={({ field }) => (
                 <AddProductSelect
-                  sx={{ width: "calc(100% / 2 - 0.5rem)" }}
+                  sx={{ width: "calc(100% / 2 - 0.75rem)" }}
                   label={"Призначення"}
                   options={filterOptions.assignment}
                   field={field}
@@ -273,7 +299,7 @@ const UpdateProductPage: React.FC = () => {
               rules={{ required: true }}
               render={({ field }) => (
                 <AddProductSelect
-                  sx={{ width: "calc(100% / 2 - 0.5rem)" }}
+                  sx={{ width: "calc(100% / 2 - 0.75rem)" }}
                   label={"Колір"}
                   options={filterOptions.color}
                   field={field}
@@ -287,7 +313,7 @@ const UpdateProductPage: React.FC = () => {
               rules={{ required: true }}
               render={({ field }) => (
                 <AddProductSelect
-                  sx={{ width: "calc(100% / 2 - 0.5rem)" }}
+                  sx={{ width: "calc(100% / 2 - 0.75rem)" }}
                   label={"Матеріал"}
                   options={filterOptions.material}
                   field={field}
@@ -301,7 +327,7 @@ const UpdateProductPage: React.FC = () => {
               rules={{ required: true }}
               render={({ field }) => (
                 <AddProductSelect
-                  sx={{ width: "calc(100% / 2 - 0.5rem)" }}
+                  sx={{ width: "calc(100% / 2 - 0.75rem)" }}
                   label={"Форма"}
                   options={filterOptions.form}
                   field={field}
@@ -315,7 +341,7 @@ const UpdateProductPage: React.FC = () => {
               rules={{ required: true }}
               render={({ field }) => (
                 <AddProductSelect
-                  sx={{ width: "calc(100% / 2 - 0.5rem)" }}
+                  sx={{ width: "calc(100% / 2 - 0.75rem)" }}
                   label={"Особливості"}
                   options={filterOptions.features}
                   field={field}
@@ -368,19 +394,6 @@ const UpdateProductPage: React.FC = () => {
           <Box>
             <h3 className={styles.title}>Характеристики</h3>
             <Box sx={{ display: "flex", flexDirection: "column", gap: "36px" }}>
-              {/* <UpdateInput
-                label="Залишок в шт"
-                register={register}
-                rules={{
-                  pattern: {
-                    value: /^(0|[1-9]\d*)$/,
-                    message: "Введіть тільки додатне ціле число",
-                  },
-                }}
-                name="stock"
-                error={errors.stock}
-                variant="sm"
-              /> */}
               <UpdateInput
                 label="Розмір в см"
                 register={register}
@@ -444,17 +457,19 @@ const UpdateProductPage: React.FC = () => {
               />
             </Box>
           </Box>
-          <FormButtonSubmit>Оновити</FormButtonSubmit>
+          <FormButtonSubmit>
+            {isEditForm ? "Оновити" : "Зберегти"}
+          </FormButtonSubmit>
         </Box>
-        {id && (
-          <ImagesBlock
-            selectedFiles={selectedFiles}
-            setSelectedFiles={setSelectedFiles}
-            control={control}
-            errors={errors}
-            id={id}
-          />
-        )}
+        {/* {id && ( */}
+        <ImagesBlock
+          selectedFiles={selectedFiles}
+          setSelectedFiles={setSelectedFiles}
+          control={control}
+          errors={errors}
+          isEditForm={isEditForm}
+        />
+        {/* )} */}
       </form>
     </Box>
   );

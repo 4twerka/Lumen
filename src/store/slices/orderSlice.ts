@@ -3,6 +3,7 @@ import axios from "axios";
 import axiosInstance from "../../utils/axiosInstance";
 import { API } from "../../constants";
 import { OrderStatus } from "../../types";
+import { AdminOrder } from "../../types";
 
 interface ProductOrder {
   productId: string;
@@ -29,7 +30,7 @@ interface CreateOrder {
 
 interface OrderResponce extends CreateOrder {
   amountOrder: number;
-  status: "processing" | "accepted" | "sent" | "received" | "canceled";
+  status: keyof typeof OrderStatus;
   isPaid: boolean;
   code: string;
   created: string;
@@ -44,12 +45,14 @@ interface OrderState {
   orders: Order[];
   error: string | null;
   isLoading: boolean;
+  adminOrders: AdminOrder[];
 }
 
 const initialState: OrderState = {
   orders: [],
   error: null,
   isLoading: false,
+  adminOrders: [],
 };
 
 export const createOrder = createAsyncThunk<
@@ -67,6 +70,7 @@ export const createOrder = createAsyncThunk<
     return rejectWithValue("Unexpected error occurred!");
   }
 });
+
 export const fetchOrders = createAsyncThunk<
   Order[],
   void,
@@ -84,8 +88,9 @@ export const fetchOrders = createAsyncThunk<
     return rejectWithValue("Unexpected error occurred!");
   }
 });
+
 export const fetchAdminsOrders = createAsyncThunk<
-  Order[],
+  AdminOrder[],
   void,
   { rejectValue: string }
 >("order/fetchAdminsOrders", async (_, { rejectWithValue }) => {
@@ -101,6 +106,7 @@ export const fetchAdminsOrders = createAsyncThunk<
     return rejectWithValue("Unexpected error occurred!");
   }
 });
+
 export const deleteOrderById = createAsyncThunk<
   string,
   string,
@@ -118,9 +124,10 @@ export const deleteOrderById = createAsyncThunk<
     return rejectWithValue("Unexpected error occurred!");
   }
 });
+
 export const changeOrderStatusById = createAsyncThunk<
-  { id: string; status: OrderStatus },
-  { id: string; status: OrderStatus },
+  { id: string; status: keyof typeof OrderStatus },
+  { id: string; status: keyof typeof OrderStatus },
   { rejectValue: string }
 >(
   "order/changeOrderStatusById",
@@ -174,7 +181,7 @@ const userSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchAdminsOrders.fulfilled, (state, action) => {
-        state.orders = action.payload;
+        state.adminOrders = action.payload;
         state.error = null;
         state.isLoading = false;
       })
@@ -197,6 +204,22 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(deleteOrderById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(changeOrderStatusById.fulfilled, (state, action) => {
+        state.adminOrders = state.adminOrders.map((order) =>
+          order._id === action.payload.id
+            ? { ...order, status: action.payload.status }
+            : order
+        );
+        state.error = null;
+        state.isLoading = false;
+      })
+      .addCase(changeOrderStatusById.rejected, (state, action) => {
+        state.error = action.payload || "Something went wrong";
+        state.isLoading = false;
+      })
+      .addCase(changeOrderStatusById.pending, (state) => {
         state.isLoading = true;
       });
   },

@@ -125,9 +125,11 @@ export interface userInfo {
 export enum OrderStatus {
   processing = "Обробляється",
   accepted = "Прийнято",
-  sent = "Відправлено",
+  delivered = "Відправлено",
   received = "Отримано",
   canceled = "Відхилено",
+  'on the way' = "В дорозі",
+  return = "Повернення"
 }
 // export const orderStatusLabels: Record<OrderStatus, string> = {
 //   [OrderStatus.Processing]: "Обробляється",
@@ -136,3 +138,40 @@ export enum OrderStatus {
 //   [OrderStatus.Received]: "Отримано",
 //   [OrderStatus.Canceled]: "Скасовано",
 // };
+interface OrderProducts {
+  id: string;
+}
+
+export type DeliveryMethod = "self_pickup" | "nova_post";
+
+export type PaymentMethod = "cash" | "online payment";
+
+interface Delivery {
+  address: {
+    city: string,
+    department: string
+  };
+  method: DeliveryMethod
+}
+
+
+
+export interface AdminOrder {
+  _id: string;
+  code: string;
+  created: string;
+  amountOrder: number;
+  delivery: Delivery;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  notes: string;
+  isCallRestricted: boolean;
+  isPaid: boolean;
+  paymentMethod: PaymentMethod;
+  products: OrderProducts[];
+  status: keyof typeof OrderStatus;
+  userId: string;
+  __v?: number;
+}

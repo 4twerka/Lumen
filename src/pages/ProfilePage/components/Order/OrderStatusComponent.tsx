@@ -5,10 +5,12 @@ import ProcessingIcon from "@mui/icons-material/Autorenew";
 import TakenIcon from "../../../../assets/Taken.svg?react";
 import SendIcon from "@mui/icons-material/Send";
 import CancelIcon from "@mui/icons-material/Cancel";
+import OnTheWayIcon from '@mui/icons-material/ForwardToInbox';
+import ReturnIcon from '@mui/icons-material/AssignmentReturn';
 import { OrderStatus } from "../../../../types";
 
 interface OrderStatusProps {
-  status: "processing" | "accepted" | "sent" | "received" | "canceled";
+  status: keyof typeof OrderStatus;
 }
 
 const OrderStatusComponent: React.FC<OrderStatusProps> = ({ status }) => {
@@ -26,8 +28,8 @@ const OrderStatusComponent: React.FC<OrderStatusProps> = ({ status }) => {
       Icon = DoneIcon;
       statusClass = styles.accept;
       break
-    case "sent":
-      text = OrderStatus.sent;
+    case "delivered":
+      text = OrderStatus.delivered;
       Icon = SendIcon;
       statusClass = styles.send;
       break
@@ -39,6 +41,16 @@ const OrderStatusComponent: React.FC<OrderStatusProps> = ({ status }) => {
     case "canceled":
       text = OrderStatus.canceled;
       Icon = CancelIcon;
+      statusClass = styles.canceled;
+      break
+    case "on the way":  
+      text = OrderStatus['on the way'];
+      Icon = OnTheWayIcon;
+      statusClass = styles.send;
+      break
+      case "return":  
+      text = OrderStatus.return;
+      Icon = ReturnIcon;
       statusClass = styles.canceled;
       break
   }
