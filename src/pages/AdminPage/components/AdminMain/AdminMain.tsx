@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AdminMain = () => {
+const AdminMain:React.FC = () => {
   return (
     <div>
       AdminMain
