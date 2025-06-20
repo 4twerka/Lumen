@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import axiosInstance from "../../utils/axiosInstance";
 import { API } from "../../constants";
-import { OrderStatus } from "../../types";
+import { AdminOrderStatistics, OrderStatus } from "../../types";
 import { AdminOrder } from "../../types";
 
 interface ProductOrder {
@@ -145,6 +145,24 @@ export const changeOrderStatusById = createAsyncThunk<
     }
   }
 );
+
+export const fetchAdminsOrdersStatistics = createAsyncThunk<
+  AdminOrderStatistics,
+  {startDate: string, endDate: string},
+  { rejectValue: string }
+>("order/fetchAdminsOrdersStatistics", async ({startDate, endDate}, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.get(`/api/orders/statistics?startDate=${startDate}&endDate=${endDate}`);
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return rejectWithValue(
+        (error.response.data.title as string) || "Server Error!"
+      );
+    }
+    return rejectWithValue("Unexpected error occurred!");
+  }
+});
 
 const userSlice = createSlice({
   name: "order",
