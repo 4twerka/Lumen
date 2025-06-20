@@ -22,6 +22,7 @@ import AdminPage from "../pages/AdminPage/AdminPage";
 import AdminProducts from "../pages/AdminPage/components/AdminProducts/AdminProducts";
 import AdminMain from "../pages/AdminPage/components/AdminMain/AdminMain";
 import AdminOrders from "../pages/AdminPage/components/AdminOrders/AdminOrders";
+import AdminMenuMobile from "../pages/AdminPage/components/AdminMenuMobile/AdminMenuMobile";
 // import ProfilePageMyData from "../pages/ProfilePage/ProfilePageMyData";
 // import ProfilePageMyOrders from "../pages/ProfilePage/ProfilePageMyOrders";
 
@@ -49,6 +50,7 @@ const RootRouter: React.FC = () => {
             <Route path="my-data" element={<MyData />} />
         </Route>
         <Route path="/admin" element={<AdminPage />} >
+            <Route index element={<AdminMenuMobile />} />
             <Route path="products" element={<AdminProducts />} />
             <Route path="main" element={<AdminMain />} />
             <Route path="orders" element={<AdminOrders />} />

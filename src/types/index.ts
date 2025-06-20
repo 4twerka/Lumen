@@ -23,10 +23,10 @@ export interface Product {
   composition: string;
   care: string;
   characteristics: {
-      topNotes: string,
-      heartNotes: string,
-      baseNotes: string,
-    }
+    topNotes: string;
+    heartNotes: string;
+    baseNotes: string;
+  };
 }
 
 export interface cartProduct extends Product {
@@ -65,16 +65,16 @@ export interface CreateOrder {
   email: string;
   userEmail: string;
   lastname: string;
-  deliveryMethod: 'self_pickup' | 'nova_post';
+  deliveryMethod: "self_pickup" | "nova_post";
   deliveryCity: string;
   deliveryDepartment: string;
-  payment: 'cash' | 'online payment';
+  payment: "cash" | "online payment";
   isCallRestricted?: boolean;
   comment?: string;
 }
 
 export interface CreateProduct {
-  _id?:string;
+  _id?: string;
   title: string;
   price: number | string;
   file: File[];
@@ -114,12 +114,12 @@ export interface createOrderResponse {
 }
 
 export interface userInfo {
-  email?: string,
-  password?: string,
-  firstName: string,
-  lastName: string,
-  phoneNumber: string,
-  role?: 'admin' | 'user',
+  email?: string;
+  password?: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  role?: "admin" | "user";
 }
 
 export enum OrderStatus {
@@ -128,8 +128,8 @@ export enum OrderStatus {
   delivered = "Відправлено",
   received = "Отримано",
   canceled = "Відхилено",
-  'on the way' = "В дорозі",
-  return = "Повернення"
+  "on the way" = "В дорозі",
+  return = "Повернення",
 }
 // export const orderStatusLabels: Record<OrderStatus, string> = {
 //   [OrderStatus.Processing]: "Обробляється",
@@ -148,13 +148,11 @@ export type PaymentMethod = "cash" | "online payment";
 
 interface Delivery {
   address: {
-    city: string,
-    department: string
+    city: string;
+    department: string;
   };
-  method: DeliveryMethod
+  method: DeliveryMethod;
 }
-
-
 
 export interface AdminOrder {
   _id: string;
@@ -174,4 +172,24 @@ export interface AdminOrder {
   status: keyof typeof OrderStatus;
   userId: string;
   __v?: number;
+}
+
+interface OrderStatistics {
+  quantity: number;
+  amount: number;
+}
+
+export interface AdminOrderStatistics {
+  totalOrdersNum: OrderStatistics;
+  completedOrdersNum: OrderStatistics;
+  returnedOrdersNum: OrderStatistics;
+  mostPurchasedProducts: {
+    productId: string;
+    quantity: number;
+  }[];
+  salesScheduleInfo: {
+    date: string;
+    totalCreatedOrders: number;
+    totalAmount: number;
+  }[];
 }

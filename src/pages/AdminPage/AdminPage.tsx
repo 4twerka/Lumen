@@ -27,11 +27,11 @@ const StyledLink = styled(Link)({
 
 const AdminPage: React.FC = () => {
   const userRole = useAppSelector((state) => state.user.user?.role);
-  const isLoading = useAppSelector((state) => state.user.isLoading)
+  const isLoading = useAppSelector((state) => state.user.isLoading);
   const location = useLocation();
 
   if (userRole === undefined) {
-    return null
+    return null;
   }
 
   if (userRole !== "admin") {
@@ -58,7 +58,7 @@ const AdminPage: React.FC = () => {
             flex: "0 0 25%",
             padding: "64px 40px 80px 80px",
             backgroundColor: "#F1F1F4",
-            display: "flex",
+            display: { xs: "none", md: "flex" },
             flexDirection: "column",
             gap: "0.5rem",
           }}
@@ -97,7 +97,13 @@ const AdminPage: React.FC = () => {
             Замовлення
           </StyledLink>
         </Box>
-        <Box sx={{ flex: "1 1 auto", backgroundColor: "#ffffff", padding: '64px 40px' }}>
+        <Box
+          sx={{
+            flex: "1 1 auto",
+            backgroundColor: "#ffffff",
+            padding: "64px 40px",
+          }}
+        >
           {isLoading ? <Loader /> : <Outlet />}
         </Box>
       </div>
