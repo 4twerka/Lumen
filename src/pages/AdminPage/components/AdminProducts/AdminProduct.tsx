@@ -5,9 +5,18 @@ import { SUPABASE_PRODUCT_URL_PART } from "../../../../constants";
 import ProductMenu from "./ProductMenu";
 import { Product } from "../../../../types";
 
-type AdminProductProps = Pick<Product, "_id" | "title" | "price" | "stock" | "image">;
+type AdminProductProps = Pick<
+  Product,
+  "_id" | "title" | "price" | "stock" | "image"
+>;
 
-const AdminProduct:React.FC<AdminProductProps> = ({ image, title, stock, price, _id }) => {
+const AdminProduct: React.FC<AdminProductProps> = ({
+  image,
+  title,
+  stock,
+  price,
+  _id,
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -19,6 +28,7 @@ const AdminProduct:React.FC<AdminProductProps> = ({ image, title, stock, price, 
   return (
     <Box
       sx={{
+        width: { xs: "100%", md: "calc(100%/3 - 1rem)" },
         display: "flex",
         flexDirection: "column",
         gap: "1rem",
@@ -31,7 +41,7 @@ const AdminProduct:React.FC<AdminProductProps> = ({ image, title, stock, price, 
         sx={{ display: "flex", gap: "1rem", justifyContent: "space-between" }}
       >
         <Box
-          sx={{ width: "100px", height: "100px" }}
+          sx={{ width: "100px", height: "100px", borderRadius: '4px', objectFit: 'cover' }}
           component={"img"}
           src={`${SUPABASE_PRODUCT_URL_PART}${image[0]}`}
           alt={title}

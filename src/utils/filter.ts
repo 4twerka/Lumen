@@ -99,5 +99,4 @@ export const filterOptions: FiltersState = {
     "Для подарунка",
     "Для особливих моментів",
   ],
-  giftWrapping: false
 };

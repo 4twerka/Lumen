@@ -46,6 +46,7 @@ interface OrderState {
   error: string | null;
   isLoading: boolean;
   adminOrders: AdminOrder[];
+  adminOrder: AdminOrder | null;
 }
 
 const initialState: OrderState = {
@@ -53,6 +54,7 @@ const initialState: OrderState = {
   error: null,
   isLoading: false,
   adminOrders: [],
+  adminOrder: null,
 };
 
 export const createOrder = createAsyncThunk<
@@ -107,6 +109,24 @@ export const fetchAdminsOrders = createAsyncThunk<
   }
 });
 
+export const fetchAdminsOrderById = createAsyncThunk<
+  AdminOrder,
+  string,
+  { rejectValue: string }
+>("order/fetchAdminsOrderById", async (id, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.get(`/api/orders/${id}`);
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return rejectWithValue(
+        (error.response.data.title as string) || "Server Error!"
+      );
+    }
+    return rejectWithValue("Unexpected error occurred!");
+  }
+});
+
 export const deleteOrderById = createAsyncThunk<
   string,
   string,
@@ -115,6 +135,24 @@ export const deleteOrderById = createAsyncThunk<
   try {
     await axiosInstance.delete(`/api/orders/${id}`);
     return id;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return rejectWithValue(
+        (error.response.data.title as string) || "Server Error!"
+      );
+    }
+    return rejectWithValue("Unexpected error occurred!");
+  }
+});
+
+export const updateOrderById = createAsyncThunk<
+  AdminOrder,
+  AdminOrder,
+  { rejectValue: string }
+>("order/updateOrderById", async (data, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.put(`/api/orders/${data._id}`, data);
+    return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
       return rejectWithValue(
@@ -148,21 +186,26 @@ export const changeOrderStatusById = createAsyncThunk<
 
 export const fetchAdminsOrdersStatistics = createAsyncThunk<
   AdminOrderStatistics,
-  {startDate: string, endDate: string},
+  { startDate: string; endDate: string },
   { rejectValue: string }
->("order/fetchAdminsOrdersStatistics", async ({startDate, endDate}, { rejectWithValue }) => {
-  try {
-    const response = await axiosInstance.get(`/api/orders/statistics?startDate=${startDate}&endDate=${endDate}`);
-    return response.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error) && error.response) {
-      return rejectWithValue(
-        (error.response.data.title as string) || "Server Error!"
+>(
+  "order/fetchAdminsOrdersStatistics",
+  async ({ startDate, endDate }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/orders/statistics?startDate=${startDate}&endDate=${endDate}`
       );
+      return response.data;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        return rejectWithValue(
+          (error.response.data.title as string) || "Server Error!"
+        );
+      }
+      return rejectWithValue("Unexpected error occurred!");
     }
-    return rejectWithValue("Unexpected error occurred!");
   }
-});
+);
 
 const userSlice = createSlice({
   name: "order",
@@ -230,6 +273,12 @@ const userSlice = createSlice({
             ? { ...order, status: action.payload.status }
             : order
         );
+        if (state.adminOrder && state.adminOrder._id === action.payload.id) {
+          state.adminOrder = {
+            ...state.adminOrder,
+            status: action.payload.status,
+          };
+        }
         state.error = null;
         state.isLoading = false;
       })
@@ -238,6 +287,35 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(changeOrderStatusById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAdminsOrderById.fulfilled, (state, action) => {
+        state.adminOrder = action.payload;
+        state.error = null;
+        state.isLoading = false;
+      })
+      .addCase(fetchAdminsOrderById.rejected, (state, action) => {
+        state.adminOrder = null;
+        state.error = action.payload || "Something went wrong";
+        state.isLoading = false;
+      })
+      .addCase(fetchAdminsOrderById.pending, (state) => {
+        state.adminOrder = null;
+        state.isLoading = true;
+      })
+      .addCase(updateOrderById.fulfilled, (state, action) => {
+        state.adminOrders = state.adminOrders.map((order) =>
+          order._id === action.payload._id ? { ...action.payload } : order
+        );
+        state.adminOrder = { ...action.payload };
+        state.error = null;
+        state.isLoading = false;
+      })
+      .addCase(updateOrderById.rejected, (state, action) => {
+        state.error = action.payload || "Something went wrong";
+        state.isLoading = false;
+      })
+      .addCase(updateOrderById.pending, (state) => {
         state.isLoading = true;
       });
   },

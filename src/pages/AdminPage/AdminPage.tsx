@@ -101,7 +101,7 @@ const AdminPage: React.FC = () => {
           sx={{
             flex: "1 1 auto",
             backgroundColor: "#ffffff",
-            padding: "64px 40px",
+            padding: { xs: "32px 16px", md: "64px 40px" },
           }}
         >
           {isLoading ? <Loader /> : <Outlet />}

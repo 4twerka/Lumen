@@ -13,7 +13,8 @@ export interface Product {
   material: string;
   shape: string;
   features: string;
-  gift_packaging: boolean;
+  special_treat: boolean;
+  top_sales: boolean;
   season_collection: boolean;
   comments: string[];
   stock: number;
@@ -43,7 +44,6 @@ export interface FiltersState {
   material: string[];
   form: string[];
   features: string[];
-  giftWrapping: boolean;
 }
 
 export const initialFiltersState: FiltersState = {
@@ -56,7 +56,6 @@ export const initialFiltersState: FiltersState = {
   material: [],
   form: [],
   features: [],
-  giftWrapping: false,
 };
 
 export interface CreateOrder {
@@ -88,7 +87,9 @@ export interface CreateProduct {
   material: string;
   shape: string;
   features: string;
-  gift_packaging: boolean;
+  special_treat: boolean;
+  top_sales: boolean;
+  // gift_packaging: boolean;
   season_collection: boolean;
   stock: number | string;
   care: string;
@@ -121,6 +122,18 @@ export interface userInfo {
   phoneNumber: string;
   role?: "admin" | "user";
 }
+export interface userInfoById {
+  _id: string;
+  email: string;
+  password?: string;
+  role?: "admin" | "user";
+  isVerified: boolean;
+  isOAuth: boolean;
+  verificationCode: string;
+  verificationCodeCreatedAt: string;
+  __v: number;
+  refreshToken: string | null;
+}
 
 export enum OrderStatus {
   processing = "Обробляється",
@@ -139,7 +152,9 @@ export enum OrderStatus {
 //   [OrderStatus.Canceled]: "Скасовано",
 // };
 interface OrderProducts {
-  id: string;
+  productId: string;
+  quantity: number;
+  _id: string;
 }
 
 export type DeliveryMethod = "self_pickup" | "nova_post";

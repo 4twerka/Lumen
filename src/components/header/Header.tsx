@@ -19,12 +19,26 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import ProfileMenu from "./components/ProfileMenu/ProfileMenu";
 import { getUserInfo } from "../../store/slices/userSlice";
 import SearchMenu from "./components/SearchMenu/SearchMenu";
+import AdminHeader from "./components/AdminHeader";
 
 const nav = [
   { name: "Каталог", path: "/catalog" },
   { name: "Сезонна колекція", path: "#sezon-collection" },
   { name: "Про нас", path: "#about-us" },
   { name: "Контакти", path: "#contacts" },
+];
+const navMobile = [
+  { name: "Каталог", path: "/catalog" },
+  { name: "Сезонна колекція", path: "#sezon-collection" },
+  { name: "Корзина", path: "/order" },
+  { name: "Про нас", path: "#about-us" },
+  { name: "Контакти", path: "#contacts" },
+];
+
+const navAdmin = [
+  { name: "Головна", path: "/admin/main" },
+  { name: "Товари", path: "/admin/products" },
+  { name: "Замовлення", path: "/admin/orders" },
 ];
 
 const Header: React.FC = () => {
@@ -104,7 +118,11 @@ const Header: React.FC = () => {
   }, []);
 
   return (
-    <header className={styles.header}>
+    <header
+      className={`${styles.header} ${
+        userRole === "admin" ? styles.headerAdmin : ""
+      }`}
+    >
       <div className={styles["header-wrapper"]}>
         <Box sx={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
           <IconButton
@@ -113,10 +131,23 @@ const Header: React.FC = () => {
           >
             <MenuIcon />
           </IconButton>
-          <LogoIcon
-            onClick={() => handleNavigate("/")}
-            className={styles.logo}
-          />
+          <Box>
+            <LogoIcon
+              onClick={() => handleNavigate("/")}
+              className={styles.logo}
+            />
+            {userRole === "admin" && (
+              <Typography
+                sx={{
+                  display: { xs: "block", md: "none" },
+                  fontSize: "0.875rem",
+                  fontWeight: 400,
+                }}
+              >
+                Адміністративна панель
+              </Typography>
+            )}
+          </Box>
         </Box>
         <Menu
           id="menu-appbar"
@@ -134,7 +165,7 @@ const Header: React.FC = () => {
           onClose={handleCloseNavMenu}
           sx={{ display: { xs: "block", md: "none" } }}
         >
-          {nav.map((navItem) => (
+          {(userRole === "admin" ? navAdmin : navMobile).map((navItem) => (
             <MenuItem
               href={navItem.path}
               key={navItem.name}
@@ -149,79 +180,83 @@ const Header: React.FC = () => {
             </MenuItem>
           ))}
         </Menu>
-
-        <nav className={styles.navigation}>
-          {nav.map((navItem) => (
-            <Button
-              key={navItem.name}
+        {userRole === "admin" ? (
+          <AdminHeader />
+        ) : (
+          <>
+            <nav className={styles.navigation}>
+              {nav.map((navItem) => (
+                <Button
+                  key={navItem.name}
+                  sx={{
+                    fontSize: "0.875rem",
+                    fontWeight: 400,
+                    lineHeight: "20px",
+                    textTransform: "initial",
+                  }}
+                  color="inherit"
+                  onClick={() => handleNavigate(navItem.path)}
+                >
+                  {navItem.name}
+                </Button>
+              ))}
+            </nav>
+            <Box
               sx={{
-                fontSize: "0.875rem",
-                fontWeight: 400,
-                lineHeight: "20px",
-                textTransform: "initial",
+                display: "flex",
+                gap: { xs: "0.25rem", md: "1rem" },
+                alignItems: "center",
+                flex: 1,
+                justifyContent: "flex-end",
               }}
-              color="inherit"
-              onClick={() => handleNavigate(navItem.path)}
             >
-              {navItem.name}
-            </Button>
-          ))}
-        </nav>
-        <Box
-          sx={{
-            display: "flex",
-            gap: { xs: "0.25rem", md: "1rem" },
-            alignItems: "center",
-            flex: 1,
-            justifyContent: "flex-end",
-          }}
-        >
-          <label ref={searchWrapperRef} className={styles["input-wrapper"]}>
-            <span className={styles["input-icon"]}>
-              <SearchIcon />
-            </span>
-            <input
-              autoComplete="off"
-              onFocus={() => setSearchInFocus(true)}
-              onChange={(e) => setSearch(e.target.value)}
-              value={search}
-              id="search"
-              className={styles.input}
-              placeholder="Search"
-            />
-            {searchInFocus && search.length > 2 && (
-              <SearchMenu
-                setSearch={setSearch}
-                setSearchInFocus={setSearchInFocus}
-                search={search}
-              />
-            )}
-          </label>
-          <Box sx={{ display: "flex", gap: "2rem" }}>
-            <IconButton
-              id="profile-btn"
-              onClick={handleOpenProfile}
-              sx={{ display: { xs: "none", md: "block" }, height: "40px" }}
-            >
-              <UserIcon />
-            </IconButton>
-            <ProfileMenu
-              anchorProfileEl={anchorProfileEl}
-              isAuth={!!token}
-              openProfile={openProfile}
-              handleCloseProfile={handleCloseProfile}
-              userRole={userRole}
-            />
-            <IconButton
-              onClick={() => navigate("/order")}
-              sx={{ height: "40px" }}
-            >
-              <Badge badgeContent={carts.length} color="primary">
-                <ShoppingIcon />
-              </Badge>
-            </IconButton>
-          </Box>
-        </Box>
+              <label ref={searchWrapperRef} className={styles["input-wrapper"]}>
+                <span className={styles["input-icon"]}>
+                  <SearchIcon />
+                </span>
+                <input
+                  autoComplete="off"
+                  onFocus={() => setSearchInFocus(true)}
+                  onChange={(e) => setSearch(e.target.value)}
+                  value={search}
+                  id="search"
+                  className={styles.input}
+                  placeholder="Search"
+                />
+                {searchInFocus && search.length > 2 && (
+                  <SearchMenu
+                    setSearch={setSearch}
+                    setSearchInFocus={setSearchInFocus}
+                    search={search}
+                  />
+                )}
+              </label>
+              <Box sx={{ display: "flex", gap: { xs: "0.5rem", md: "2rem" } }}>
+                <IconButton
+                  id="profile-btn"
+                  onClick={handleOpenProfile}
+                  sx={{ height: "40px" }}
+                >
+                  <UserIcon />
+                </IconButton>
+                <ProfileMenu
+                  anchorProfileEl={anchorProfileEl}
+                  isAuth={!!token}
+                  openProfile={openProfile}
+                  handleCloseProfile={handleCloseProfile}
+                />
+                <IconButton
+                  onClick={() => navigate("/order")}
+                  sx={{ display: { xs: "none", md: "block" }, height: "40px" }}
+                >
+                  <Badge badgeContent={carts.length} color="primary">
+                    <ShoppingIcon />
+                  </Badge>
+                </IconButton>
+              </Box>
+            </Box>
+          </>
+        )}
       </div>
     </header>
   );

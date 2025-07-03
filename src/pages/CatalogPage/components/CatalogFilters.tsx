@@ -1,7 +1,7 @@
 import React from "react";
 import FilterItem from "./FilterItem";
 import { FiltersState } from "../../../types";
-import { Checkbox, FormControlLabel, ListItemButton } from "@mui/material";
+// import { Checkbox, FormControlLabel, ListItemButton } from "@mui/material";
 import { filterOptions } from "../../../utils/filter";
 
 interface CatalogFiltersProps {
@@ -13,45 +13,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
   setFiltersState,
   filtersState,
 }) => {
-  // const [fetchFilterOptions, setFetchFilterOptions] = useState<FiltersState>(filterOptions);
-  // const products = useAppSelector((state) => state.products.products);
-  // useEffect(() => {
-  //   const uniquesAroma = [
-  //     ...new Set(products.map((product: Product) => product.aroma)),
-  //   ];
-  //   const uniquesTypes = [
-  //     ...new Set(products.map((product: Product) => product.type_candle)),
-  //   ];
-  //   const uniquesAssignment = [
-  //     ...new Set(products.map((product: Product) => product.appointment)),
-  //   ];
-  //   const uniquesColor = [
-  //     ...new Set(products.map((product: Product) => product.color)),
-  //   ];
-  //   const uniquesMaterial = [
-  //     ...new Set(products.map((product: Product) => product.material)),
-  //   ];
-  //   const uniquesForm = [
-  //     ...new Set(products.map((product: Product) => product.shape)),
-  //   ];
-  //   const uniquesFeatures = [
-  //     ...new Set(products.map((product: Product) => product.features)),
-  //   ];
-  //   if (!products.length) return;
 
-  //   setFetchFilterOptions({
-  //     price: filterOptions.price,
-  //     size: filterOptions.size,
-  //     types: uniquesTypes,
-  //     aroma: uniquesAroma,
-  //     assignment: uniquesAssignment,
-  //     color: uniquesColor,
-  //     material: uniquesMaterial,
-  //     form: uniquesForm,
-  //     features: uniquesFeatures,
-  //     giftWrapping: false,
-  //   });
-  // }, [products]);
   const handleFilterChange = <K extends keyof FiltersState>(
     filterName: K,
     selected: string[]
@@ -59,13 +21,6 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
     setFiltersState((prev: FiltersState) => ({
       ...prev,
       [filterName]: selected,
-    }));
-  };
-
-  const handleGiftWrapping = <K extends keyof FiltersState>(filterName: K) => {
-    setFiltersState((prev: FiltersState) => ({
-      ...prev,
-      [filterName]: !prev[filterName],
     }));
   };
   
@@ -155,34 +110,6 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
         }`}
         options={filterOptions.features}
       />
-      <ListItemButton
-        sx={{
-          padding: 0,
-          color: "#111111",
-          borderRadius: "0.25rem",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
-        <FormControlLabel
-          sx={{
-            margin: 0,
-            padding: "0.1875rem 0.5rem 0.1875rem 1rem",
-            width: "100%",
-            "& .MuiFormControlLabel-label": { fontWeight: 600, flexGrow: 1 },
-          }}
-          labelPlacement="start"
-          control={
-            <Checkbox
-              onChange={() => handleGiftWrapping("giftWrapping")}
-              checked={filtersState.giftWrapping}
-            />
-          }
-          label={"Подарункова упаковка"}
-        />
-      </ListItemButton>
     </>
   );
 };

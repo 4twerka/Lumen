@@ -1,6 +1,5 @@
 import { Menu } from "@mui/material";
 import React from "react";
-import AdminMenu from "./AdminMenu";
 import UserMenu from "./UserMenu";
 import NotAuthMenu from "./NotAuthMenu";
 
@@ -9,7 +8,6 @@ interface ProfileMenuProps {
   openProfile: boolean;
   handleCloseProfile: () => void;
   isAuth: boolean;
-  userRole?: "admin" | "user";
 }
 
 const ProfileMenu: React.FC<ProfileMenuProps> = ({
@@ -17,7 +15,6 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
   openProfile,
   handleCloseProfile,
   isAuth,
-  userRole,
 }) => {
   return (
     <Menu
@@ -31,13 +28,7 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
       }}
     >
       {isAuth ? (
-        <>
-          {userRole === "admin" ? (
-            <AdminMenu handleCloseProfile={handleCloseProfile} />
-          ) : (
-            <UserMenu handleCloseProfile={handleCloseProfile} />
-          )}
-        </>
+        <UserMenu handleCloseProfile={handleCloseProfile} />
       ) : (
         <NotAuthMenu />
       )}

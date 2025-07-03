@@ -46,9 +46,7 @@ export const getFilteredProducts = (
     const filterFeaturesProducts =
       filtersState.features.length === 0 ||
       filtersState.features.some((typeItem) => product.features?.includes(typeItem));
-    const filterGiftWrappingProducts =
-      filtersState.giftWrapping === null ||
-      product.gift_packaging === filtersState.giftWrapping;
+
     return (
       filteredPriceProducts &&
       filteredSizeProducts &&
@@ -58,7 +56,6 @@ export const getFilteredProducts = (
       filterColorProducts &&
       filterMaterialProducts &&
       filterFormProducts &&
-      filterGiftWrappingProducts &&
       filterFeaturesProducts
     );
   });

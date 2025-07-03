@@ -2,7 +2,10 @@
 .header {
     width: 100%;
     background-color: #F1F1F4;
+}
 
+.headerAdmin {
+    border-bottom: 0.5px solid #A3A3A3;
 }
 
 .header-wrapper {
