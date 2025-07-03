@@ -10,7 +10,6 @@ import AuthLayout from "../layouts/AuthLayout";
 import MainLayout from "../layouts/MainLayout";
 import ProductPage from "../pages/ProductPage/ProductPage";
 import VerifyEmailPage from "../pages/VerifyEmailPage";
-import AddProductPage from "../pages/AddProductPage/AddProductPage";
 import OrderPage from "../pages/OrderPage/OrderPage";
 import ThanksOrderPage from "../pages/ThanksOrderPage/ThanksOrderPage";
 import CardPaymentPage from "../pages/CardPaymentPage/CardPaymentPage";
@@ -23,8 +22,7 @@ import AdminProducts from "../pages/AdminPage/components/AdminProducts/AdminProd
 import AdminMain from "../pages/AdminPage/components/AdminMain/AdminMain";
 import AdminOrders from "../pages/AdminPage/components/AdminOrders/AdminOrders";
 import AdminMenuMobile from "../pages/AdminPage/components/AdminMenuMobile/AdminMenuMobile";
-// import ProfilePageMyData from "../pages/ProfilePage/ProfilePageMyData";
-// import ProfilePageMyOrders from "../pages/ProfilePage/ProfilePageMyOrders";
+import AdminOrderDetails from "../pages/AdminPage/components/AdminOrderDetails/AdminOrderDetails";
 
 const RootRouter: React.FC = () => {
   return (
@@ -41,7 +39,6 @@ const RootRouter: React.FC = () => {
         <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/update-product/:id" element={<UpdateProductPage />} />
-        <Route path="/add-product" element={<AddProductPage />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/thanks-order" element={<ThanksOrderPage />} />
         <Route path="/card-payment" element={<CardPaymentPage />} />
@@ -56,6 +53,7 @@ const RootRouter: React.FC = () => {
             <Route path="orders" element={<AdminOrders />} />
             <Route path="edit-product/:id" element={<UpdateProductPage />} />
             <Route path="create-product" element={<UpdateProductPage />} />
+            <Route path="order/:id" element={<AdminOrderDetails />} />
         </Route>
       </Route>
     </Routes>

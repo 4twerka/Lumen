@@ -1,0 +1,14 @@
+.order {
+    /* background-color: #73270D1F; */
+    cursor: pointer;
+}
+.order:hover td {
+    background-color: #73270D1F;
+}
+/* 
+.order:hover > td > .MuiInputBase-root {
+    background-color: #FCFCFC;
+}
+.order:hover > td > .order-no-select {
+    background-color: #FCFCFC;
+} */

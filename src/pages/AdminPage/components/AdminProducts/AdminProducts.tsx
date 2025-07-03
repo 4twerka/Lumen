@@ -25,17 +25,30 @@ const AdminProducts: React.FC = () => {
   return (
     <Box>
       <BreadcrumbsAdminPage />
-      <Box sx={{ display: "flex", gap: "1.5rem" }}>
+      <Box
+        sx={{
+          display: "flex",
+          gap: { xs: "1rem", md: "1.5rem" },
+          flexDirection: { xs: "column-reverse", md: "row" },
+          alignItems: "center",
+        }}
+      >
         <Search
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onClear={() => setSearchValue("")}
           id={"product-search"}
-          sx={{ width: "70%" }}
+          sx={{ width: { xs: "100%", md: "70%" } }}
         />
         <FormButtonSubmit
           onClick={handleCreateProduct}
-          sx={{ width: "30%", textTransform: "none" }}
+          sx={{
+            width: { xs: "100%", md: "30%" },
+            textTransform: "none",
+            height: "48px",
+            borderRadius: "0.5rem",
+            gap: '0.5rem'
+          }}
         >
           <AddIcon />
           Додати новий продукт
@@ -43,11 +56,10 @@ const AdminProducts: React.FC = () => {
       </Box>
       <Box
         sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gridTemplateRows: "repeat(3, 1fr)",
-          gap: "1.5rem",
-          pt: "1.5rem",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: { xs: "1rem", md: "1.5rem" },
+          pt: { xs: "1rem", md: "1.5rem" },
         }}
       >
         {searchProducts.map((product) => (

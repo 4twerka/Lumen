@@ -20,7 +20,7 @@ import FormTitle from "./FormTitle";
 import { validationsDisplayErrors } from "./validationsDisplayErrors";
 import FormErrorsDisplay from "./FormErrorsDisplay";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { clearErrors, loginUser } from "../../store/slices/userSlice";
+import { clearErrors, loginUser, signUpGoogle } from "../../store/slices/userSlice";
 import { useNavigate } from "react-router";
 import ButtonLoader from "../ButtonLoader/ButtonLoader";
 
@@ -173,7 +173,7 @@ function FormLogin() {
             label="Запам'ятати?"
           />
         </Box>
-        <FormButtonSubmit disabled={!isValid || !isCheckedAgreement || isLoading}>
+        <FormButtonSubmit disabled={!isValid || isLoading}>
           {isLoading ? (
             <ButtonLoader size="11px" />
           ) : (
@@ -188,7 +188,7 @@ function FormLogin() {
       </Box>
       <Divider sx={{ mt: "32px" }}>або за допомогою</Divider>
       <Box sx={{ pt: "32px", pb: "48px" }}>
-        <FormButtonSocial>
+        <FormButtonSocial onClick={() => dispatch(signUpGoogle())}>
           <GoogleIcon />
         </FormButtonSocial>
       </Box>

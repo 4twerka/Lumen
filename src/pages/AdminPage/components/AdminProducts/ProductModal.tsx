@@ -29,6 +29,7 @@ const ProductModal:React.FC<ProductModalProps> = ({ title, handleCloseModal, ope
       sx={{
         "& .MuiDialog-paper": {
           alignItems: "center",
+          borderRadius: '12px',
         },
       }}
       open={openModal}

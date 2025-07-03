@@ -26,9 +26,10 @@ const Search: React.FC<SearchProps> = ({
   id,
 }) => {
   return (
-    <FormControl sx={sx} variant="outlined">
+    <FormControl sx={{ borderRadius: "0.5rem", ...sx }} variant="outlined">
       <InputLabel id={id}>Search</InputLabel>
       <OutlinedInput
+        sx={{borderRadius: '0.5rem'}}
         autoComplete="off"
         id={id}
         value={value}

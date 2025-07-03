@@ -89,10 +89,9 @@ const ImagesBlock = <T extends FieldValues>({
       setSelectedFiles([selectedFiles[0], ...reordered]);
     }
   };
-  console.log("selectedFiles", selectedFiles);
 
   return (
-    <Box sx={{ width: "calc(100% / 3)" }}>
+    <Box sx={{ width: { xs: "100%", md: "calc(100% / 3)" } }}>
       <h3 className={styles.title}>Фото товару</h3>
       <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         <Box sx={{ position: "relative", width: "100%" }}>

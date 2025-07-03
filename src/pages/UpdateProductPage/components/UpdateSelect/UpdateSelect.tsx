@@ -1,70 +1,64 @@
 import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  SxProps,
+  Theme,
+} from "@mui/material";
+import {
+  ControllerRenderProps,
   FieldError,
   FieldValues,
   Path,
-  RegisterOptions,
-  UseFormRegister,
 } from "react-hook-form";
 
-interface UpdateSelectProps<T extends FieldValues> {
+interface AddProductSelect<T extends FieldValues, K extends Path<T>> {
   label: string;
-  name: Path<T>;
-  register: UseFormRegister<T>;
-  error?: FieldError;
-  textArea?: boolean;
-  readonly?: boolean;
-  rules?: RegisterOptions<T>;
+  field: ControllerRenderProps<T, K>;
   options: string[];
+  error?: FieldError;
+  sx?: SxProps<Theme>;
 }
 
-const UpdateSelect = <T extends FieldValues>({
+const UpdateSelect = <T extends FieldValues, K extends Path<T>>({
   label,
-  error,
-  name,
-  register,
-  rules,
+  field,
   options,
-}: UpdateSelectProps<T>) => {
-//   const handleChange = (e: SelectChangeEvent<string>) => {
-//     field.onChange(e.target.value);
-//   };
+  error,
+  sx,
+}: AddProductSelect<T, K>) => {
+  const handleChange = (e: SelectChangeEvent<string>) => {
+    field.onChange(e.target.value);
+  };
   return (
-    //   <FormControl sx={{ border: error && '1px solid red', borderRadius: '4px'}} fullWidth>
-    //     <InputLabel>{label}</InputLabel>
-    //     <Select
-    //       value={field.value}
-    //     //   label={label}
-    //       inputProps={{ 'aria-label': 'Without label' }}
-    //       onChange={handleChange}
-    //     >
-    //       {options.map((option) => (
-    //         <MenuItem key={option} value={option}>
-    //           {option}
-    //         </MenuItem>
-    //       ))}
-    //     </Select>
-    //   </FormControl>
-    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-      <label
-        style={{
-          fontSize: "1.5rem",
-          fontWeight: 600,
-          lineHeight: "150%",
-          color: "#111111",
+    <FormControl
+      variant="filled"
+      sx={{ border: error && "1px solid red", borderRadius: "4px", ...sx }}
+    >
+      <InputLabel>{label}</InputLabel>
+      <Select
+        value={field.value}
+        label={label}
+        onChange={handleChange}
+        sx={{
+          backgroundColor: "rgba(115, 39, 13, 0.16)", // 👈 заміни на бажаний колір
+          "&:hover": {
+            backgroundColor: "rgba(115, 39, 13, 0.24)", // 👈 ховер ефект
+          },
+          "&.Mui-focused": {
+            backgroundColor: "rgba(115, 39, 13, 0.24)", // focus
+          },
         }}
       >
-        {label}
-      </label>
-      <select {...register(name, rules)}>
-        <option value="">Колір</option>
         {options.map((option) => (
-          <option key={option} value={option}>
+          <MenuItem key={option} value={option}>
             {option}
-          </option>
+          </MenuItem>
         ))}
-      </select>
-      {error && <p className={`styles.error`}>{error?.message}</p>}
-    </div>
+      </Select>
+    </FormControl>
   );
 };
 

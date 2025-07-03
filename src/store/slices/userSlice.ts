@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import axiosInstance from "../../utils/axiosInstance";
 import { API } from "../../constants";
-import { userInfo } from "../../types";
+import { userInfo, userInfoById } from "../../types";
 
 interface UserRegister {
   email: string;
@@ -23,6 +23,7 @@ interface UserState {
   status: string;
   isLoading: boolean;
   user: userInfo | null;
+  userInfoById: userInfoById | null;
 }
 
 const initialState: UserState = {
@@ -36,6 +37,7 @@ const initialState: UserState = {
   status: "",
   isLoading: false,
   user: null,
+  userInfoById: null,
 };
 
 export const registerUser = createAsyncThunk<
@@ -94,7 +96,7 @@ export const verifyEmail = createAsyncThunk<
 >("user/verifyEmail", async (id, { rejectWithValue }) => {
   try {
     await axiosInstance.get(`/api/auth/verifyEmail/${id}`);
-    const refreshResponse = await axiosInstance.post('/api/auth/refresh');
+    const refreshResponse = await axiosInstance.post("/api/auth/refresh");
     const token = refreshResponse.data.token;
     if (!token) {
       return rejectWithValue("Token not found in localStorage!");
@@ -163,6 +165,42 @@ export const updateUserInfo = createAsyncThunk<
     return rejectWithValue("Unexpected error occurred!");
   }
 });
+export const signUpGoogle = createAsyncThunk<
+  void,
+  void,
+  { rejectValue: string }
+>("user/signUpGoogle", async (_, { rejectWithValue }) => {
+  try {
+    await axios.get(`/api/auth/google-oauth`);
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return rejectWithValue(
+        (error.response.data.title as string) || "Server Error!"
+      );
+    }
+    return rejectWithValue("Unexpected error occurred!");
+  }
+});
+export const getUserInfoById = createAsyncThunk<
+  userInfoById | null,
+  string,
+  { rejectValue: string }
+>("user/getUserInfoById", async (id, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.get(`/api/users/${id}`);
+    return response.data as userInfoById;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      if (error.response.status === 404) {
+        return rejectWithValue("User not found");
+      }
+      return rejectWithValue(
+        (error.response.data.title as string) || "Server Error!"
+      );
+    }
+    return rejectWithValue("Unexpected error occurred!");
+  }
+});
 
 const userSlice = createSlice({
   name: "user",
@@ -216,6 +254,7 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(getUserInfo.pending, (state) => {
+        state.user = null;
         state.isLoading = true;
       })
       .addCase(getUserInfo.fulfilled, (state, action) => {
@@ -225,6 +264,7 @@ const userSlice = createSlice({
       .addCase(getUserInfo.rejected, (state, action) => {
         state.error = action.payload || "Something went wrong";
         state.isLoading = false;
+        state.user = null;
       })
       .addCase(updateUserInfo.pending, (state) => {
         state.isLoading = true;
@@ -262,6 +302,19 @@ const userSlice = createSlice({
       .addCase(verifyEmail.pending, (state) => {
         state.isLoading = true;
       })
+      // .addCase(getUserInfoById.pending, (state) => {
+      //   state.userInfoById = null;
+      //   state.isLoading = true;
+      // })
+      // .addCase(getUserInfoById.fulfilled, (state, action) => {
+      //   state.userInfoById = action.payload;
+      //   state.isLoading = false;
+      // })
+      // .addCase(getUserInfoById.rejected, (state, action) => {
+      //   state.error = action.payload || "Something went wrong";
+      //   state.isLoading = false;
+      //   state.userInfoById = null;
+      // })
   },
 });
 
