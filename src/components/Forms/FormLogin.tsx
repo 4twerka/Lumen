@@ -20,9 +20,13 @@ import FormTitle from "./FormTitle";
 import { validationsDisplayErrors } from "./validationsDisplayErrors";
 import FormErrorsDisplay from "./FormErrorsDisplay";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { clearErrors, loginUser, signUpGoogle } from "../../store/slices/userSlice";
+import {
+  clearErrors,
+  loginUser,
+} from "../../store/slices/userSlice";
 import { useNavigate } from "react-router";
 import ButtonLoader from "../ButtonLoader/ButtonLoader";
+import { API } from "../../constants";
 
 const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,}$/;
 
@@ -50,7 +54,7 @@ function FormLogin() {
   const navigate = useNavigate();
   const loginError = useAppSelector((state) => state.user.error);
   const isLoading = useAppSelector((state) => state.user.isLoading);
-  
+
   const {
     register,
     handleSubmit,
@@ -67,9 +71,9 @@ function FormLogin() {
 
   useEffect(() => {
     return () => {
-      dispatch(clearErrors())
-    }
-  }, [dispatch])
+      dispatch(clearErrors());
+    };
+  }, [dispatch]);
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -81,7 +85,6 @@ function FormLogin() {
         sessionStorage.setItem("accessToken", accessToken);
       }
       navigate("/");
-
     } catch (error) {
       console.log("Виникла помилка: ", error);
     }
@@ -174,21 +177,24 @@ function FormLogin() {
           />
         </Box>
         <FormButtonSubmit disabled={!isValid || isLoading}>
-          {isLoading ? (
-            <ButtonLoader size="11px" />
-          ) : (
-            'Увійти'
-          )}
+          {isLoading ? <ButtonLoader size="11px" /> : "Увійти"}
         </FormButtonSubmit>
       </Box>
       <Box sx={{ textAlign: "right", p: "10px" }}>
-        <Link onClick={() => navigate('/forgot-password')} sx={{ cursor: "pointer", display: "inline-block", fontWeight: 600 }}>
+        <Link
+          onClick={() => navigate("/forgot-password")}
+          sx={{ cursor: "pointer", display: "inline-block", fontWeight: 600 }}
+        >
           Забули пароль
         </Link>
       </Box>
       <Divider sx={{ mt: "32px" }}>або за допомогою</Divider>
       <Box sx={{ pt: "32px", pb: "48px" }}>
-        <FormButtonSocial onClick={() => dispatch(signUpGoogle())}>
+        <FormButtonSocial
+          onClick={() => {
+            window.location.href = `${API}/api/auth/google-oauth`;
+          }}
+        >
           <GoogleIcon />
         </FormButtonSocial>
       </Box>
@@ -225,7 +231,12 @@ function FormLogin() {
         }}
       >
         <Typography>Потрібен аккаунт?</Typography>
-        <Link onClick={() => navigate('/registration')} sx={{ color: "#73270D", cursor: "pointer", fontWeight: 600 }}>Реєструйся</Link>
+        <Link
+          onClick={() => navigate("/registration")}
+          sx={{ color: "#73270D", cursor: "pointer", fontWeight: 600 }}
+        >
+          Реєструйся
+        </Link>
       </Box>
     </Box>
   );

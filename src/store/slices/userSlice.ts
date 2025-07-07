@@ -165,22 +165,22 @@ export const updateUserInfo = createAsyncThunk<
     return rejectWithValue("Unexpected error occurred!");
   }
 });
-export const signUpGoogle = createAsyncThunk<
-  void,
-  void,
-  { rejectValue: string }
->("user/signUpGoogle", async (_, { rejectWithValue }) => {
-  try {
-    await axios.get(`/api/auth/google-oauth`);
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error) && error.response) {
-      return rejectWithValue(
-        (error.response.data.title as string) || "Server Error!"
-      );
-    }
-    return rejectWithValue("Unexpected error occurred!");
-  }
-});
+// export const signUpGoogle = createAsyncThunk<
+//   void,
+//   void,
+//   { rejectValue: string }
+// >("user/signUpGoogle", async (_, { rejectWithValue }) => {
+//   try {
+//     await axios.get(`/api/auth/google-oauth`);
+//   } catch (error: unknown) {
+//     if (axios.isAxiosError(error) && error.response) {
+//       return rejectWithValue(
+//         (error.response.data.title as string) || "Server Error!"
+//       );
+//     }
+//     return rejectWithValue("Unexpected error occurred!");
+//   }
+// });
 export const getUserInfoById = createAsyncThunk<
   userInfoById | null,
   string,
